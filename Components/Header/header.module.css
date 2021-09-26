@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bonheur+Royale&family=Scheherazade+New:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200&display=swap');
+.layout header {
+    width: 100%;
+    height: 400px;
+    border: solid 1px black;
+}
+.layout h1 {
+    font-family: 'Bonheur Royale', cursive;
+    font-size: 120px;
+    font-weight: 400;
+    padding: 0;
+    margin: 0;
+    display: block;
+    text-align: center;
+}
+
+.layout h2 {
+    font-family: 'Bonheur Royale', cursive;
+    font-weight: 400;
+    padding: 0;
+    margin: 0;
+    font-size: 40px;
+    display: block;
+}
+
+.layout h3, .layout h4 {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 200;
+    font-size: 40px;
+    padding: 0;
+    margin: 0 0 0 120px;
+    display: block;
+
+}
+.layout h4 {
+    font-size: 30px;
+    margin: 25px 120px 0 0;
+}
+
+.box {
+    display: flex;
+}
+.box p {
+    color: white;
+    margin: 2px 0 0 0;
+}
+.box svg {
+    margin: 2px 10px 0 0;
+}
+
+.footerContact {
+    width: 100%;
+    height: 30px;
+    background-color: black;
+}
+
+.footerContact a {
+    padding-top: 2px;
+}

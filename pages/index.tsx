@@ -1,28 +1,23 @@
-import type { NextPage } from 'next'
-import styles from '../styles/Home.module.css'
+import type {NextPage} from 'next'
 import {connect} from "react-redux";
+import Layout from "../Components/Layout/Layout";
 
 
 const Home: NextPage = () => {
-  return (
-    <div className={styles.container}>
-     <h1>Hello Next</h1>
-    </div>
-  )
+    return (
+        <Layout>
+                <h1>Hello Next</h1>
+        </Layout>
+    )
 }
 
 
 function mapStateToProps(state: any) {
-    console.log(state)
-    return {
-
-    }
+    return {}
 }
 
 function mapDispatchToProps(dispatch: any) {
-    return {
-
-    }
+    return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
