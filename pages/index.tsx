@@ -13,6 +13,7 @@ const Home: NextPage = () => {
 
 
 function mapStateToProps(state: any) {
+    console.log(state)
     return {}
 }
 

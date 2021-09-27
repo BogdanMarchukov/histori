@@ -43,7 +43,8 @@ const RegisterModel = (props: Props) => {
                             error={false}
                             id="outlined-basic"
                             label="Email"
-                            variant="outlined"/>
+                            variant="outlined"
+                        />
                         <TextField
                             error={false}
                             id="outlined-password-input"

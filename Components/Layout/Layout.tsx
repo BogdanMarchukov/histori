@@ -1,7 +1,6 @@
 import React from 'react'
 import classes from './layout.module.css'
-import Header from "../Header/Header";
-import RegisterModel from '../RegisterModel/RegisterModel'
+import Header from "../Header/Header"
 
 
 const Layout = ({children}: any) => {
