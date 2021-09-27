@@ -61,3 +61,8 @@
 .footerContact a {
     padding-top: 2px;
 }
+.btn {
+    width: 60px;
+    height: 30px;
+    background-color: #18ffff;
+}

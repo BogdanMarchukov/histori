@@ -9,7 +9,7 @@ interface userType {
 }
 
 type Props = {
-    isAuth: boolean
+    auth: boolean
     srcImg: string | null
     user: userType | null
 }
@@ -39,7 +39,7 @@ const RegisterBox = (props: Props) => {
 
                 <Button  size={'small'} variant="outlined" href="#outlined-buttons">
                     {
-                        props.isAuth?
+                        props.auth?
                             'выйти'
                             : 'Войти'
                     }
