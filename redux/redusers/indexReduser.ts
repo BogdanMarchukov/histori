@@ -1,7 +1,7 @@
-import {AnyAction, combineReducers} from "redux";
+import { combineReducers} from "redux";
 import {homePageReducer} from "./homePageReducer";
 import {HYDRATE} from "next-redux-wrapper";
-import {ActionTypes, homePageState, rootAction} from "../types/indexTyps";
+
 
 
 const rootReducer = combineReducers({
