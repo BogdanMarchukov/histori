@@ -10,14 +10,15 @@ export const initHomePage: homePageState = {
     tick: 'init'
 }
 
+interface homePageAction {
+    type: ActionTypes.TEST
+}
+
+
+export type rootAction =
+    homePageAction
+    | AnyAction
 export enum ActionTypes {
     TEST = 'TEST'
 }
 
-interface testAction {
-    type: ActionTypes.TEST
-}
-
-export type rootAction =
-    testAction
-    | AnyAction

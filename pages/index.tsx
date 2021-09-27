@@ -1,20 +1,23 @@
-import type {NextPage} from 'next'
 import {connect} from "react-redux";
 import Layout from "../Components/Layout/Layout";
 
+interface PropsType {
+    test: string
+}
 
-const Home: NextPage = () => {
+const Home = (props: PropsType) => {
     return (
         <Layout>
-                <h1>Hello Next</h1>
+                <h1>{props.test}</h1>
         </Layout>
     )
 }
 
 
 function mapStateToProps(state: any) {
-    console.log(state)
-    return {}
+    return {
+        test: state.homePageReducer.test
+    }
 }
 
 function mapDispatchToProps(dispatch: any) {

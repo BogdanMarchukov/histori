@@ -2,6 +2,7 @@ import React from 'react'
 import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
 import TextField from '@mui/material/TextField'
+import classes from './registerModel.module.css'
 
 type Props = {}
 
@@ -10,7 +11,7 @@ const RegisterModel = (props: Props) => {
     const handleOpen = () => setOpen(true)
     const handleClose = () => setOpen(false)
     return (
-        <div>
+        <div className={classes.registerWrapper}>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -39,6 +40,7 @@ const RegisterModel = (props: Props) => {
                             height: '70%'
                         }}
                     >
+                        <p>121</p>
                         <TextField
                             error={false}
                             id="outlined-basic"
