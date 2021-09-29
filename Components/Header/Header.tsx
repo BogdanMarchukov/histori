@@ -6,9 +6,17 @@ import AddLocationOutlinedIcon from "@mui/icons-material/AddLocationOutlined";
 import Grid from "@mui/material/Grid";
 import RegisterBox from "../RegisterBox/RegisterBox";
 import RegisterModel from "../RegisterModel/RegisterModel";
+import {connect} from 'react-redux'
+import {rootState} from "../../redux/types/indexTyps";
+import {openRegisterWindow, validateRegisterForm} from "../../redux/action-creators/homePageActionCreator";
 
 
-type Props = {}
+type Props = {
+    openRegisterWindow: ()=> void
+    registerWin: boolean
+    registerTitle: string
+    validateRegisterForm: (inputValue: string, inputName: string)=> void
+}
 
 const Header = (props: Props) => {
     return (
@@ -40,6 +48,7 @@ const Header = (props: Props) => {
                     <Grid item md={1} xl={1}>
                         <div>
                             <Button
+                                onClick={props.openRegisterWindow}
                                 variant="contained"
                                 sx={{
                                     width: 120,
@@ -89,9 +98,29 @@ const Header = (props: Props) => {
 
                 </Grid>
             </Grid>
-            <RegisterModel/>
+            <RegisterModel
+                open={props.registerWin}
+                onClose={props.openRegisterWindow}
+                registerTitle={props.registerTitle}
+            />
         </div>
     )
 }
 
-export default Header
+function mapStateToProps(state: rootState) {
+    return {
+        registerWin: state.homePageReducer.registerWin,
+        registerTitle: state.homePageReducer.registerTitle
+    }
+}
+
+function mapDispatchToProps(dispatch: any) {
+    return {
+        openRegisterWindow: ()=> dispatch(openRegisterWindow),
+        validateRegisterForm: (inputValue: string, inputName: string)=> dispatch(()=> validateRegisterForm(dispatch, inputValue, inputName))
+    }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

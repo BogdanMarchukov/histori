@@ -3,18 +3,21 @@ import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
 import TextField from '@mui/material/TextField'
 import classes from './registerModel.module.css'
+import {Button} from "@mui/material";
 
-type Props = {}
+type Props = {
+    open: boolean
+    onClose: ()=> void
+    registerTitle: string
+    validateRegisterForm: (inputValue: string, inputName: string)=> void // todo тут доделать
+}
 
 const RegisterModel = (props: Props) => {
-    const [open, setOpen] = React.useState(true)
-    const handleOpen = () => setOpen(true)
-    const handleClose = () => setOpen(false)
     return (
         <div className={classes.registerWrapper}>
             <Modal
-                open={open}
-                onClose={handleClose}
+                open={props.open}
+                onClose={props.onClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -34,26 +37,30 @@ const RegisterModel = (props: Props) => {
                     <Box
                         sx={{
                             display: 'flex',
+                            height: 190,
                             flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            height: '70%'
+
                         }}
                     >
-                        <p>121</p>
+                        <p className={classes.title}>{props.registerTitle}</p>
                         <TextField
+                            size={"small"}
                             error={false}
                             id="outlined-basic"
                             label="Email"
                             variant="outlined"
                         />
                         <TextField
+                            size={"small"}
                             error={false}
                             id="outlined-password-input"
                             label="Пароль"
                             type="password"
                             autoComplete="current-password"
                         />
+                        <Button variant="outlined">Отправить</Button>
 
                     </Box>
                 </Box>

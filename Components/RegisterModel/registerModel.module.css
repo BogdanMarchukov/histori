@@ -1,3 +1,9 @@
-.registerWrapper {
+.registerWrapper  {
+ justify-content: space-around;
+}
 
+.title {
+    font-family: 'Dosis', sans-serif;
+    font-size: 20px;
+    margin: 0 0 10px 0;
 }
