@@ -8,7 +8,11 @@ import RegisterBox from "../RegisterBox/RegisterBox";
 import RegisterModel from "../RegisterModel/RegisterModel";
 import {connect} from 'react-redux'
 import {rootState} from "../../redux/types/indexTyps";
-import {openRegisterWindow, validateRegisterForm} from "../../redux/action-creators/homePageActionCreator";
+import {
+    onSubmitForm,
+    openRegisterWindow,
+    validateRegisterForm
+} from "../../redux/action-creators/homePageActionCreator";
 
 
 type Props = {
@@ -16,9 +20,14 @@ type Props = {
     registerWin: boolean
     registerTitle: string
     validateRegisterForm: (inputValue: string, inputName: string)=> void
+    emailError: boolean | undefined
+    passwordError: boolean | undefined
+    onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string) => void
+    email: string | null
+    password: string | null
 }
 
-const Header = (props: Props) => {
+const Header = (props: Props)  => {
     return (
         <div className={classes.layout}>
             <div className={classes.footerContact}>
@@ -99,6 +108,12 @@ const Header = (props: Props) => {
                 </Grid>
             </Grid>
             <RegisterModel
+                onSubmitForm={props.onSubmitForm}
+                email={props.email}
+                password={props.password}
+                emailError={props.emailError}
+                passwordError={props.passwordError}
+                validateRegisterForm={props.validateRegisterForm}
                 open={props.registerWin}
                 onClose={props.openRegisterWindow}
                 registerTitle={props.registerTitle}
@@ -110,14 +125,20 @@ const Header = (props: Props) => {
 function mapStateToProps(state: rootState) {
     return {
         registerWin: state.homePageReducer.registerWin,
-        registerTitle: state.homePageReducer.registerTitle
+        registerTitle: state.homePageReducer.registerTitle,
+        emailError: state.homePageReducer.validateEmail,
+        passwordError: state.homePageReducer.validatePassword,
+        email: state.homePageReducer.emailValue,
+        password: state.homePageReducer.passwordValue
     }
+
 }
 
 function mapDispatchToProps(dispatch: any) {
     return {
         openRegisterWindow: ()=> dispatch(openRegisterWindow),
-        validateRegisterForm: (inputValue: string, inputName: string)=> dispatch(()=> validateRegisterForm(dispatch, inputValue, inputName))
+        validateRegisterForm: (inputValue: string, inputName: string)=> dispatch(()=> validateRegisterForm(dispatch, inputValue, inputName)),
+        onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string) => dispatch(()=> onSubmitForm(dispatch, emailValid, passwordValid, email, password))
     }
 }
 

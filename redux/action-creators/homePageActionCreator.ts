@@ -6,24 +6,55 @@ export interface openRegisterActionType {
     type: ActionTypes.OPEN_WINDOW_REGISTER
 }
 
-export function openRegisterWindow (dispatch: (object: openRegisterActionType)=> void) {
+export function openRegisterWindow(dispatch: (object: openRegisterActionType) => void) {
     dispatch({type: ActionTypes.OPEN_WINDOW_REGISTER})
-    const validator = new SimpleReactValidator()
-
-    console.log(validator.check('sas12/', 'alpha_num'))
 }
+
 // *****************************************************
 
-interface RegisterFormActionType {
-    type: ActionTypes.REGISTER_INPUT_EMAIL_VALIDATION,
-    result: boolean
+// ================валидация формы и сохранение в store=================
+interface PayloadRegisterFormEmail {
+    resultEmail: boolean
+    inputValue: string
+}
+interface PayloadRegisterFormPassword {
+    resultPassword: boolean
+    inputValue: string
 }
 
-export function validateRegisterForm(dispatch: ()=> void, inputValue: string, inputName: string) {
-    const validator  = new SimpleReactValidator()
-    switch (inputName){
+export interface RegisterFormActionType {
+    type: ActionTypes.REGISTER_INPUT_EMAIL_VALIDATION | ActionTypes.REGISTER_INPUT_PASSWORD_VALIDATION
+    payload: PayloadRegisterFormEmail | PayloadRegisterFormPassword
+}
+
+export function validateRegisterForm(dispatch: (object: RegisterFormActionType) => void, inputValue: string, inputName: string) {
+    const validator = new SimpleReactValidator()
+    switch (inputName) {
         case 'email':
-        const result = validator.check(inputValue, 'email')
-            console.log(result)
+            const resultEmail = validator.check(inputValue, 'required|email')
+            dispatch({type: ActionTypes.REGISTER_INPUT_EMAIL_VALIDATION, payload: {resultEmail: !resultEmail, inputValue}})
+            break
+        case 'password':
+            const resultPassword = validator.check(inputValue, 'required|min:6')
+            dispatch({type: ActionTypes.REGISTER_INPUT_PASSWORD_VALIDATION, payload: {resultPassword: !resultPassword, inputValue}})
+            break
+    }
+}
+//**************************************************************************************************
+
+// ==============================птправка формы регистрации на сервер
+
+export async function onSubmitForm (dispatch:()=> void, emailValid: boolean, passwordValid: boolean, email: string, password: string) {
+
+    if (!emailValid && !passwordValid) {
+        const data = {email, password}
+        const response = await fetch('/api/register', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-type': 'application/json'
+            }
+        })
+        console.log(response)
     }
 }

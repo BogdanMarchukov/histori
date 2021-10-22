@@ -7,9 +7,14 @@ import {Button} from "@mui/material";
 
 type Props = {
     open: boolean
-    onClose: ()=> void
+    onClose: () => void
     registerTitle: string
-    validateRegisterForm: (inputValue: string, inputName: string)=> void // todo тут доделать
+    validateRegisterForm: (inputValue: string, inputName: string) => void
+    emailError: boolean | undefined
+    passwordError: boolean | undefined
+    onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string) => void
+    email: string | null
+    password: string | null
 }
 
 const RegisterModel = (props: Props) => {
@@ -46,21 +51,33 @@ const RegisterModel = (props: Props) => {
                     >
                         <p className={classes.title}>{props.registerTitle}</p>
                         <TextField
+                            onChange={event => props.validateRegisterForm(event.target.value, 'email')}
                             size={"small"}
-                            error={false}
+                            error={props.emailError}
                             id="outlined-basic"
                             label="Email"
                             variant="outlined"
                         />
                         <TextField
+                            onChange={event => props.validateRegisterForm(event.target.value, 'password')}
                             size={"small"}
-                            error={false}
+                            error={props.passwordError}
                             id="outlined-password-input"
                             label="Пароль"
                             type="password"
                             autoComplete="current-password"
                         />
-                        <Button variant="outlined">Отправить</Button>
+                        <Button
+                            onClick={()=> {
+                                if (props.emailError === false && props.passwordError === false && props.email && props.password) {
+                                    props.onSubmitForm(props.emailError, props.passwordError, props.email, props.password )}
+                                }
+                            }
+                            variant="outlined"
+
+                        >
+                            Отправить
+                        </Button>
 
                     </Box>
                 </Box>
