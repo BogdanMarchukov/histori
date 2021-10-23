@@ -1,10 +1,12 @@
 const User = require('../models/mongoose/User')
 const bcrypt = require('bcrypt')
+import {Schema} from 'mongoose'
+
 
 
 class UserHandler {
     constructor(
-        public id: number | null = null,
+        public id: Schema.Types.ObjectId | null = null,
         public email: string | null = null,
         public password: string | null = null,
         public uuid: string | null = null
@@ -34,9 +36,9 @@ class UserHandler {
         }
     }
 
-    async mailServes(){
-        
-    }
+    // async mailServes(){
+    //     const tokenData = await
+    // }
 
 
 }
