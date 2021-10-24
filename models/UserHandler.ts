@@ -36,9 +36,7 @@ class UserHandler {
         }
     }
 
-    // async mailServes(){
-    //     const tokenData = await
-    // }
+
 
 
 }
