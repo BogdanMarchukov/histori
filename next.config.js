@@ -11,12 +11,5 @@ module.exports = {
     SMTP_PASSWORD: "rootroot",
     API_URL: "http://localhost:3000"
 
-  },
-  modules: [
-    // Simple usage
-    'cookie-universal-nuxt',
-
-    // With options
-    ['cookie-universal-nuxt', { alias: 'cookiz' }],
-  ]
+  }
 }

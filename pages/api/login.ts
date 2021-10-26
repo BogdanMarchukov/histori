@@ -1,7 +1,6 @@
 import {NextApiRequest, NextApiResponse} from "next"
 import {ErrorType, userType} from "../../serverTypes/serverTypes"
-import User from '../../models/mongoose/User'
-import {useUserDto} from '../../hooks/server/useUserDto'
+import {UserHandler} from '../../models/UserHandler'
 import {TokenHandler} from "../../models/TokenHandler"
 import cookie from "cookie"
 import dbConnect from "../../utils/dbConnect";
@@ -19,10 +18,11 @@ dbConnect();
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse<ErrorType | ResponseData>) {
     if (req.method === 'POST') {
-        const {email, password} = req.body
-        const user: userType = await User.findOne({email}) // поиск клиента на сервере
+        const {email, password}: {email: string, password: string} = req.body
+        const user: userType = await UserHandler.searchByEmail(email) // поиск клиента на сервере
         if (user) {
-            const {passwordDto, _id, emailDto, id, isActivation, role} = useUserDto(user)
+            const userHandler = new UserHandler(user)
+            const {passwordDto, _id, emailDto, id, isActivation, role} = userHandler.userDto()
             const passwordCompare: boolean = await bcrypt.compare(password, passwordDto) // проверка пароля
 
             if(!passwordCompare) {

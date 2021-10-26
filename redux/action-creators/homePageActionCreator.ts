@@ -48,13 +48,14 @@ export async function onSubmitForm (dispatch:()=> void, emailValid: boolean, pas
 
     if (!emailValid && !passwordValid) {
         const data = {email, password}
-        const response = await fetch('/api/login', { // todo изменить на register
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-type': 'application/json'
-            }
-        })
+        // const response = await fetch('/api/login', { // todo изменить на register
+        //     method: 'POST',
+        //     body: JSON.stringify(data),
+        //     headers: {
+        //         'Content-type': 'application/json'
+        //     }
+        // })
+        const response = await fetch('/api/logout')
         console.log(response)
     }
 }

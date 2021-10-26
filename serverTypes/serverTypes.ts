@@ -1,6 +1,6 @@
 import {Schema} from 'mongoose'
 
-export type userType = {
+export interface userType {
     _id: Schema.Types.ObjectId
     email: string
     password: string

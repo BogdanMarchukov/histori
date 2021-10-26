@@ -4,10 +4,9 @@ import dbConnect from '../../utils/dbConnect'
 import {TokenHandler} from '../../models/TokenHandler'
 import {MailHandler} from "../../models/MailHandler"
 import cookie from 'cookie'
-import {ErrorType, userType} from "../../serverTypes/serverTypes";
-import {useUserDto} from '../../hooks/server/useUserDto'
+import {ErrorType, userType} from "../../serverTypes/serverTypes"
 
-const uuid = require('uuid')
+
 
 
 dbConnect();
@@ -26,11 +25,11 @@ type ResponseData = {
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ErrorType | ResponseData>) {
     if (req.method === 'POST') {
         const {email, password}: { email: string, password: string } = req.body
-        const user = new UserHandler(null, email, password, uuid.v4())
-        const candidate = await user.searchByEmail() // проверка на регистрацию по email
+        const candidate = await UserHandler.searchByEmail(email) // проверка на регистрацию по email
         if (!candidate) {
-            const newUserResult: userType = await user.createUser() // создаем нового пользователя
-            const {emailDto, _id, role, id, isActivation, activatedLink} = useUserDto(newUserResult) // получаем данные user с сервера
+            const newUserResult: userType = await UserHandler.createUser(email, password, ['user']) // создаем нового пользователя
+            const user = new UserHandler(newUserResult)
+            const {_id, role, id, isActivation, activatedLink} = user.userDto()
             const tokenHandler = new TokenHandler(_id)
             tokenHandler.generateTokens() // генерация нового токена
             try {
@@ -53,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                         })
                     ])
                     res.status(200).json({
-                        email: emailDto,
+                        email,
                         id,
                         isActivation,
                         role,
