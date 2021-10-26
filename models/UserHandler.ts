@@ -27,7 +27,8 @@ class UserHandler {
         const newUser = new User({
             email: this.email,
             password: hashPassword,
-            activatedLink: this.uuid
+            activatedLink: this.uuid,
+            role: ['user']
         })
         try {
             return await newUser.save()

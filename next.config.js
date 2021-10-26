@@ -9,7 +9,14 @@ module.exports = {
     SMTP_PORT: 587,
     SMTP_USER: "historiroot@gmail.com",
     SMTP_PASSWORD: "rootroot",
-    API_URL: "http://locolhost:3000"
+    API_URL: "http://localhost:3000"
 
-  }
+  },
+  modules: [
+    // Simple usage
+    'cookie-universal-nuxt',
+
+    // With options
+    ['cookie-universal-nuxt', { alias: 'cookiz' }],
+  ]
 }

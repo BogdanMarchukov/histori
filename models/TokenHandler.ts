@@ -22,12 +22,30 @@ class TokenHandler {
 
     //  сохранение токена в БД
     async saveToken(){
-        const token = new Token({
-            _id: this.id,
-            refreshToken: this.refreshToken
-        })
-       return await token.save()
+        const token = await Token.findOne({refreshToken:this.refreshToken})
+        if (!token) {
+            const tokenNew = new Token({
+                _id: this.id,
+                refreshToken: this.refreshToken
+            })
+            return await tokenNew.save()
+        } else {
+            token.refreshToken = this.refreshToken
+            return await token.save()
+        }
     }
+
+    async replaceToken() {
+        try {
+            const userToken = await Token.findOne({_id:this.id})
+            userToken.refreshToken = this.refreshToken
+            await userToken.save()
+        } catch (e) {
+            throw e
+        }
+
+    }
+
 
 
 

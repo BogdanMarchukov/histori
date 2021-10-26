@@ -15,6 +15,10 @@ const user = new Schema({
     },
     activatedLink: {
         type: String
+    },
+    role: {
+        required: true,
+        type: Array
     }
 })
 
