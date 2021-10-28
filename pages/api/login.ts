@@ -4,6 +4,7 @@ import {UserHandler} from '../../models/UserHandler'
 import {TokenHandler} from "../../models/TokenHandler"
 import cookie from "cookie"
 import dbConnect from "../../utils/dbConnect";
+import testMiddleware from '../../serverMiddleware/testMiddleware'
 const bcrypt = require('bcrypt')
 type ResponseData = {
     email:string
@@ -16,8 +17,18 @@ type ResponseData = {
 }
 dbConnect();
 
-export default async function handler (req: NextApiRequest, res: NextApiResponse<ErrorType | ResponseData>) {
+
+export default function initMiddleware(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
+        testMiddleware(req, res, handlerNext)
+    } else {
+        res.status(405).json({error: true, errorMassage: 'Данный метод запрещен'})
+    }
+
+}
+
+async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType | ResponseData>) {
+        console.log(req.body.test)
         const {email, password}: {email: string, password: string} = req.body
         const user: userType = await UserHandler.searchByEmail(email) // поиск клиента на сервере
         if (user) {
@@ -51,6 +62,5 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
         } else {
             res.status(403).json({error: true, errorMassage: "Не верный логин или пароль"})
         }
-    }
 
 }
