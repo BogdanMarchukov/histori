@@ -32,7 +32,11 @@ function mapDispatchToProps(dispatch: any) {
 //@ts-ignore
 export const getServerSideProps = wrapper.getServerSideProps( (store) => async (context) => {
     const {token} = context.req.cookies
-     const userId = await TokenHandler.decodedPayloadRefresh(token)
+    let userId = false
+    if (token) {
+        userId = await TokenHandler.decodedPayloadRefresh(token)
+    } else
+
 
     if (userId) {
         const response = await fetch(`${process.env.API_URL}/api/init/user`, {

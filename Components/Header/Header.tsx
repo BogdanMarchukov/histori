@@ -14,27 +14,29 @@ import {
     validateRegisterForm
 } from "../../redux/action-creators/homePageActionCreator";
 import {RootState} from "../../redux/redusers/indexReduser";
-
+import RegisterAvatar from "../RegisterAvatar/RegisterAvatar";
 
 
 type Props = {
-    openRegisterWindow: ()=> void
+    openRegisterWindow: () => void
     registerWin: boolean
     registerTitle: string
-    validateRegisterForm: (inputValue: string, inputName: string)=> void
+    validateRegisterForm: (inputValue: string, inputName: string) => void
     emailError: boolean | undefined
     passwordError: boolean | undefined
     onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string) => void
     email: string | null
     password: string | null
+    userName: string | null
+    userEmail: string | null
 }
 
-const Header = (props: Props)  => {
+const Header = (props: Props) => {
     return (
         <div className={classes.layout}>
             <div className={classes.footerContact}>
-                <Grid container sx={{ height: '100%'}}>
-                    <Grid item md={11} xl={11}>
+                <Grid container sx={{height: '100%'}}>
+                    <Grid item md={10} xl={11}>
                         <Container
                             sx={{
                                 height: '100%',
@@ -56,59 +58,33 @@ const Header = (props: Props)  => {
 
                         </Container>
                     </Grid>
-                    <Grid item md={1} xl={1}>
-                        <div>
-                            <Button
-                                onClick={props.openRegisterWindow}
-                                variant="contained"
-                                sx={{
-                                    width: 120,
-                                    height: "30px",
-                                    borderRadius: 0,
-                                    boxShadow: 0,
-                                    color: "black",
-                                    background: '#ffee58',
-                                    '&:hover': {
-                                        background: '#ffee58'
-                                    }
-                                }}
-                            >Регистрация</Button>
-                        </div>
+                    <Grid item md={2} xl={1}>
+                        <RegisterAvatar imgSrs={null} email={props.userEmail}/>
                     </Grid>
                 </Grid>
-
-
             </div>
-            <Grid
-                container
+
+            <Container
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+
+                }}
             >
-                <Grid
-                    item md={11} xl={11}
-                >
-                    <Container
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center'
+                <h1>Olga</h1>
+                <h2>Marchukova</h2>
+                <h3>История | Общество</h3>
+                <h4>Право | Экономика</h4>
+            </Container>
 
-                        }}
-                    >
-                        <h1>Olga</h1>
-                        <h2>Marchukova</h2>
-                        <h3>История | Общество</h3>
-                        <h4>Право | Экономика</h4>
-                    </Container>
-                </Grid>
-                <Grid item md={1} xl={1}>
-                    <RegisterBox
-                        auth={false}
-                        srcImg={null}
-                        user={null}
-                    />
+            {/*<RegisterBox*/}
+            {/*    auth={false}*/}
+            {/*    srcImg={null}*/}
+            {/*    user={{name: props.userName, email: props.userEmail}}*/}
+            {/*/>*/}
 
-                </Grid>
-            </Grid>
             <RegisterModel
                 onSubmitForm={props.onSubmitForm}
                 email={props.email}
@@ -131,19 +107,20 @@ function mapStateToProps(state: RootState) {
         emailError: state.homePageReducer.validateEmail,
         passwordError: state.homePageReducer.validatePassword,
         email: state.homePageReducer.emailValue,
-        password: state.homePageReducer.passwordValue
+        password: state.homePageReducer.passwordValue,
+        userName: state.userReducer.userName,
+        userEmail: state.userReducer.email
     }
 
 }
 
 function mapDispatchToProps(dispatch: any) {
     return {
-        openRegisterWindow: ()=> dispatch(openRegisterWindow),
-        validateRegisterForm: (inputValue: string, inputName: string)=> dispatch(()=> validateRegisterForm(dispatch, inputValue, inputName)),
-        onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string) => dispatch(()=> onSubmitForm(dispatch, emailValid, passwordValid, email, password))
+        openRegisterWindow: () => dispatch(openRegisterWindow),
+        validateRegisterForm: (inputValue: string, inputName: string) => dispatch(() => validateRegisterForm(dispatch, inputValue, inputName)),
+        onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string) => dispatch(() => onSubmitForm(dispatch, emailValid, passwordValid, email, password))
     }
 }
-
 
 
 // @ts-ignore
