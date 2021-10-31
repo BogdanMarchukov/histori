@@ -19,6 +19,26 @@ const user = new Schema({
     role: {
         required: true,
         type: Array
+    },
+    surname: {
+        required: false,
+        type: String
+    },
+    userName: {
+        required: false,
+        type: String
+    },
+    patronymic: {
+        required: false,
+        type: String
+    },
+    address: {
+        required: false,
+        type: String
+    },
+    tel: {
+        required: false,
+        type: String
     }
 })
 

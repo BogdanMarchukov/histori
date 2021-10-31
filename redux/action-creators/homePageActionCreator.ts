@@ -1,6 +1,8 @@
 //=============== открытие окна регистрации
 import SimpleReactValidator from 'simple-react-validator';
 import {ActionTypes} from "../types/indexTyps";
+import {userState} from "../redusers/userReducer";
+import {userDto} from "../../models/UserHandler";
 
 export interface openRegisterActionType {
     type: ActionTypes.OPEN_WINDOW_REGISTER
@@ -8,6 +10,20 @@ export interface openRegisterActionType {
 
 export function openRegisterWindow(dispatch: (object: openRegisterActionType) => void) {
     dispatch({type: ActionTypes.OPEN_WINDOW_REGISTER})
+}
+
+export const serverRenderClock = (payload: any) => (dispatch:any) => {
+    dispatch({
+        type: 'TICK',
+        payload
+    })
+}
+
+export const testTest = (payload: any) => (dispatch:any) => {
+    dispatch({
+            type: 'TEST',
+        payload
+    })
 }
 
 // *****************************************************
@@ -42,20 +58,34 @@ export function validateRegisterForm(dispatch: (object: RegisterFormActionType) 
 }
 //**************************************************************************************************
 
-// ==============================птправка формы регистрации на сервер
+// ==============================отправка формы регистрации на сервер====================================
 
 export async function onSubmitForm (dispatch:()=> void, emailValid: boolean, passwordValid: boolean, email: string, password: string) {
 
     if (!emailValid && !passwordValid) {
         const data = {email, password}
-        const response = await fetch('/api/login', { // todo изменить на register
+        const response = await fetch('/api/register', { // todo изменить на register
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
                 'Content-type': 'application/json'
             }
         })
-       // const response = await fetch('/api/logout')
-        console.log(response)
+
     }
+}
+/// ===================== инициализация пользователя SSR==========================
+
+export interface initUserType {
+    type: ActionTypes.INIT_USER
+    payload: userDto
+}
+
+// export function initUser(dispatch: (object: initUserType)=> void, userData: userState ) {
+//     dispatch({type: ActionTypes.INIT_USER, payload: userData})
+//
+// }
+
+export const initUser = (userData: userDto) => (dispatch: (object: initUserType)=> void) => {
+    dispatch({type: ActionTypes.INIT_USER, payload: userData})
 }

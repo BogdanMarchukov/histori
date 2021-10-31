@@ -5,8 +5,8 @@ export interface homePageState {
     registerWin: boolean
     pathAvatar: string | null
     registerTitle: string
-    validateEmail: boolean | undefined
-    validatePassword: boolean | undefined,
+    validateEmail: boolean | null
+    validatePassword: boolean | null,
     emailValue: string | null
     passwordValue: string | null
 }
@@ -16,8 +16,8 @@ export const initHomePage: homePageState = {
     registerWin: false,
     pathAvatar: null,
     registerTitle: 'Регистрация',
-    validateEmail: undefined,
-    validatePassword: undefined,
+    validateEmail: null,
+    validatePassword: null,
     emailValue: null,
     passwordValue: null
 }
@@ -31,13 +31,13 @@ export const homePageReducer = (state = initHomePage, action: rootAction): homeP
         case ActionTypes.REGISTER_INPUT_EMAIL_VALIDATION:
             return {
                 ...state,
-                validateEmail:  "resultEmail" in action.payload ? action.payload.resultEmail : undefined,
+                validateEmail:  "resultEmail" in action.payload ? action.payload.resultEmail : null,
                 emailValue: "inputValue" in action.payload ? action.payload.inputValue : null
             }
         case ActionTypes.REGISTER_INPUT_PASSWORD_VALIDATION:
             return {
                 ...state,
-                validatePassword: "resultPassword" in action.payload ? action.payload.resultPassword : undefined,
+                validatePassword: "resultPassword" in action.payload ? action.payload.resultPassword : null,
                 passwordValue: "inputValue" in action.payload ? action.payload.inputValue : null
             }
         default:

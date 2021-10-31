@@ -4,7 +4,7 @@ const User = require('../models/mongoose/User')
 const bcrypt = require('bcrypt')
 import {Schema} from 'mongoose'
 
-type userDto = {
+export type userDto = {
     _id: Schema.Types.ObjectId
     id: string
     emailDto: string
@@ -13,6 +13,11 @@ type userDto = {
     activatedLink: string
     role: string[]
     __v: number
+    surname: string
+    userName: string
+    patronymic: string
+    address: string
+    tel: string
 }
 
 class UserHandler {
@@ -24,26 +29,44 @@ class UserHandler {
     activatedLink: string
     role: string[]
     __v: number
+    surname: string
+    userName: string
+    patronymic: string
+    address: string
+    tel: string
 
     constructor(user: userType) {
-        this._id= user._id
-        this.email = user.email
-        this.password = user.password
-        this.isActivation = user.isActivation
-        this.activatedLink = user.activatedLink
-        this.role = user.role
-        this.__v = user.__v
-        this.id = user._id.valueOf().toString()
+        this._id= user._id ?? null
+        this.email = user.email ?? null
+        this.password = user.password ?? null
+        this.isActivation = user.isActivation ?? null
+        this.activatedLink = user.activatedLink ?? null
+        this.role = user.role ?? null
+        this.__v = user.__v ?? null
+        this.id = user._id.valueOf().toString() ?? null
+        this.surname = user.surname ?? null
+        this.userName = user.userName ?? null
+        this.patronymic = user.patronymic ?? null
+        this.address = user.address ?? null
+        this.tel = user.tel ?? null
     }
 
 
-    static async searchByEmail(email:string){ // поиск пользователя из БД по email
+    static async searchByEmail(email:string| null = null, id: Schema.Types.ObjectId | null = null){ // поиск пользователя из БД по email или id
         try {
-            return await User.findOne({email}).exec()
+            if (email){
+                return await User.findOne({email})
+            }
+            if (id) {
+                return await User.findById(id)
+            }
         } catch (e){
-            return e
+
+            return null
         }
     }
+
+
 
     static async createUser(email: string, password: string, role: string[]){ // создание нового пользователя
         const hashPassword = await bcrypt.hash(password, 3)
@@ -69,7 +92,12 @@ class UserHandler {
             activatedLink: this.activatedLink,
             role: this.role,
             __v: this.__v,
-            id: this.id
+            id: this.id,
+            patronymic: this.patronymic,
+            tel: this.tel,
+            address: this.address,
+            userName: this.userName,
+            surname: this.surname
         }
     }
 

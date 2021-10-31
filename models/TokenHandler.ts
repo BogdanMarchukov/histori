@@ -44,8 +44,17 @@ class TokenHandler {
         }
     }
 
-    static decodedPayloadRefresh(token: string) { // декодирование payload
-        return jwt.verify(token, process.env.JWT_REFRESH_SECRET)
+    static async decodedPayloadRefresh(token: string) { // декодирование payload
+        try {
+            return await jwt.verify(token, process.env.JWT_REFRESH_SECRET)
+        }
+        catch (e){
+            throw e
+        }
+    }
+
+    static async searchTokenMongo(id: string){ // поиск токина по id
+        return Token.findOne({_id: new ObjectId(id)})
     }
 
     async deleteTokenMongo() { // удаления токена из БД

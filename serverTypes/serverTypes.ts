@@ -8,6 +8,11 @@ export interface userType {
     activatedLink: string
     role: string[]
     __v: number
+    surname: string
+    userName: string
+    patronymic: string
+    address: string
+    tel: string
 }
 
 export type ErrorType = {

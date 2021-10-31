@@ -1,23 +1,29 @@
 import { combineReducers} from "redux";
-import {homePageReducer} from "./homePageReducer";
+import {homePageReducer, initHomePage} from "./homePageReducer";
 import {HYDRATE} from "next-redux-wrapper";
+import {initTestReducer, testReducer} from "./testReducer";
+import {userReducer} from "./userReducer";
 
 
 
 const rootReducer = combineReducers({
-    homePageReducer
+    homePageReducer,
+    testReducer,
+    userReducer
 })
 
 
 
 export const reducer = (state: any, action: any) => {
+
     switch (action.type) {
         case HYDRATE:
             return {...state, ...action.payload};
         case 'TICK':
-            return {...state, tick: action.payload};
+            return rootReducer(state, action);
         default:
             return rootReducer(state, action);
+
     }
 };
 

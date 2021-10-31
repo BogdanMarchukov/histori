@@ -3,13 +3,13 @@ import {ErrorType} from "../../serverTypes/serverTypes";
 import cookie from "cookie";
 import {TokenHandler} from '../../models/TokenHandler'
 import { ObjectId } from "mongodb";
-import {Schema} from 'mongoose'
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ErrorType>){
     if (req.method === 'GET') {
         const {token, role} = req.cookies
         if (token) {
-            const {payload}: {payload: string} = TokenHandler.decodedPayloadRefresh(token)
+            const {payload}: {payload: string} = await TokenHandler.decodedPayloadRefresh(token)
             const id = new ObjectId(payload)
             const tokenHandler = new TokenHandler(id)
             await tokenHandler.deleteTokenMongo()

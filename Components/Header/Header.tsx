@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {FC} from 'react'
 import classes from "./header.module.css";
 import {Container, Button} from "@mui/material";
 import WatSapIcon from "../../icons/WatSapIcon";
@@ -13,6 +13,8 @@ import {
     openRegisterWindow,
     validateRegisterForm
 } from "../../redux/action-creators/homePageActionCreator";
+import {RootState} from "../../redux/redusers/indexReduser";
+
 
 
 type Props = {
@@ -122,7 +124,7 @@ const Header = (props: Props)  => {
     )
 }
 
-function mapStateToProps(state: rootState) {
+function mapStateToProps(state: RootState) {
     return {
         registerWin: state.homePageReducer.registerWin,
         registerTitle: state.homePageReducer.registerTitle,
@@ -144,4 +146,5 @@ function mapDispatchToProps(dispatch: any) {
 
 
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatchToProps)(Header)
