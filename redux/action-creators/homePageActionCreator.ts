@@ -1,7 +1,6 @@
 //=============== открытие окна регистрации
 import SimpleReactValidator from 'simple-react-validator';
 import {ActionTypes} from "../types/indexTyps";
-import {userState} from "../redusers/userReducer";
 import {userDto} from "../../models/UserHandler";
 
 export interface openRegisterActionType {
@@ -64,7 +63,7 @@ export async function onSubmitForm (dispatch:()=> void, emailValid: boolean, pas
 
     if (!emailValid && !passwordValid) {
         const data = {email, password}
-        const response = await fetch('/api/register', { // todo изменить на register
+        const response = await fetch('/api/login', { // todo изменить на register
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -81,11 +80,18 @@ export interface initUserType {
     payload: userDto
 }
 
-// export function initUser(dispatch: (object: initUserType)=> void, userData: userState ) {
-//     dispatch({type: ActionTypes.INIT_USER, payload: userData})
-//
-// }
 
 export const initUser = (userData: userDto) => (dispatch: (object: initUserType)=> void) => {
     dispatch({type: ActionTypes.INIT_USER, payload: userData})
+}
+//*********************************************************************************************
+
+// ============================окно мини личный кобинет======================================
+export interface ShowProfileWindowType {
+    type: ActionTypes.OPEN_WINDOW_MINI_PROFILE,
+    payload: boolean
+}
+
+export const showProfileWindow = (dispatch: (object: ShowProfileWindowType)=>void, profileWindow: boolean) => {
+    dispatch({type: ActionTypes.OPEN_WINDOW_MINI_PROFILE, payload: !profileWindow})
 }

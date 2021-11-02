@@ -1,7 +1,6 @@
 import {ActionTypes, rootAction} from "../types/indexTyps";
 
 export interface homePageState {
-    tick: string
     registerWin: boolean
     pathAvatar: string | null
     registerTitle: string
@@ -9,17 +8,18 @@ export interface homePageState {
     validatePassword: boolean | null,
     emailValue: string | null
     passwordValue: string | null
+    profileWindow: boolean
 }
 
 export const initHomePage: homePageState = {
-    tick: 'init',
     registerWin: false,
     pathAvatar: null,
     registerTitle: 'Регистрация',
     validateEmail: null,
     validatePassword: null,
     emailValue: null,
-    passwordValue: null
+    passwordValue: null,
+    profileWindow: false
 }
 
 export const homePageReducer = (state = initHomePage, action: rootAction): homePageState => {
@@ -39,6 +39,11 @@ export const homePageReducer = (state = initHomePage, action: rootAction): homeP
                 ...state,
                 validatePassword: "resultPassword" in action.payload ? action.payload.resultPassword : null,
                 passwordValue: "inputValue" in action.payload ? action.payload.inputValue : null
+            }
+        case ActionTypes.OPEN_WINDOW_MINI_PROFILE:
+            return {
+                ...state,
+                profileWindow: action.payload
             }
         default:
             return state

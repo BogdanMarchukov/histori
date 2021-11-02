@@ -10,7 +10,7 @@ import {connect} from 'react-redux'
 import {rootState} from "../../redux/types/indexTyps";
 import {
     onSubmitForm,
-    openRegisterWindow,
+    openRegisterWindow, showProfileWindow,
     validateRegisterForm
 } from "../../redux/action-creators/homePageActionCreator";
 import {RootState} from "../../redux/redusers/indexReduser";
@@ -29,6 +29,8 @@ type Props = {
     password: string | null
     userName: string | null
     userEmail: string | null
+    showProfileWindow: (profileWindow: boolean)=> void
+    profileWindow: boolean
 }
 
 const Header = (props: Props) => {
@@ -59,31 +61,28 @@ const Header = (props: Props) => {
                         </Container>
                     </Grid>
                     <Grid item md={2} xl={1}>
-                        <RegisterAvatar imgSrs={null} email={props.userEmail}/>
+                        <RegisterAvatar
+                            showProfileWindow={()=> props.showProfileWindow(props.profileWindow)}
+                            openRegisterWindow={props.openRegisterWindow}
+                            imgSrs={null}
+                            email={props.userEmail}
+                        />
                     </Grid>
                 </Grid>
             </div>
-
-            <Container
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-
-                }}
-            >
-                <h1>Olga</h1>
-                <h2>Marchukova</h2>
-                <h3>История | Общество</h3>
-                <h4>Право | Экономика</h4>
-            </Container>
-
-            {/*<RegisterBox*/}
-            {/*    auth={false}*/}
-            {/*    srcImg={null}*/}
-            {/*    user={{name: props.userName, email: props.userEmail}}*/}
-            {/*/>*/}
+                    <div className={classes.flexColumn}>
+                        <h1>Olga</h1>
+                        <h2>Marchukova</h2>
+                        <h3>История | Общество</h3>
+                        <h4>Право | Экономика</h4>
+                    </div>
+                    <RegisterBox
+                        showProfileWindow={props.showProfileWindow}
+                        show={props.profileWindow}
+                        auth={false}
+                        srcImg={null}
+                        user={{name: props.userName, email: props.userEmail}}
+                    />
 
             <RegisterModel
                 onSubmitForm={props.onSubmitForm}
@@ -109,7 +108,8 @@ function mapStateToProps(state: RootState) {
         email: state.homePageReducer.emailValue,
         password: state.homePageReducer.passwordValue,
         userName: state.userReducer.userName,
-        userEmail: state.userReducer.email
+        userEmail: state.userReducer.email,
+        profileWindow: state.homePageReducer.profileWindow
     }
 
 }
@@ -118,7 +118,8 @@ function mapDispatchToProps(dispatch: any) {
     return {
         openRegisterWindow: () => dispatch(openRegisterWindow),
         validateRegisterForm: (inputValue: string, inputName: string) => dispatch(() => validateRegisterForm(dispatch, inputValue, inputName)),
-        onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string) => dispatch(() => onSubmitForm(dispatch, emailValid, passwordValid, email, password))
+        onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string) => dispatch(() => onSubmitForm(dispatch, emailValid, passwordValid, email, password)),
+        showProfileWindow: (profileWindow: boolean)=> dispatch(()=> showProfileWindow(dispatch, profileWindow))
     }
 }
 

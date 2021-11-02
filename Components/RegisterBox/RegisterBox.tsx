@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Image from "next/image"
-import {Avatar} from "@mui/material"
+import {Avatar, Grid} from "@mui/material"
 import classes from './RegisterBox.module.css'
 import Button from '@mui/material/Button';
 
@@ -13,9 +13,12 @@ type Props = {
     auth: boolean
     srcImg: string | null
     user: userType | null
+    show: boolean
+    showProfileWindow: (profileWindow: boolean)=> void
 }
 
 const RegisterBox = (props: Props) => {
+    const {show} = props
 
     const userName = (name: string | null, email: string | null): string | null => {
         if (name) {
@@ -26,29 +29,76 @@ const RegisterBox = (props: Props) => {
         } else return null
     }
 
-    return (
-        <div className={classes.box}>
-            <Avatar sx={{width: 40, height: 40}} alt="Гость">
-                {
-                    props.srcImg ?
-                        <Image
-                            src={props.srcImg}
-                            alt="Picture of the author"
-                            width={65}
-                            height={60}
-                        />
-                        : userName(props.user?.name ?? null , props.user?.email ?? null)
-                }
+    const showWindow = () => {
+        if (props.show) {
+            return `${classes.box} ${classes.show}`
+        } else {
+            return `${classes.box} ${classes.hide}`
+        }
+    }
 
-            </Avatar>
-            <div className={classes.boxBtn}>
-                {
-                    props.user?.email ?
-                        <p>{props.user.email}</p>
-                        : <p>Привет Гость!</p>
-                }
+    const closeWindow = () => {
+        if (props.show){
+            props.showProfileWindow(props.show)
+            window.removeEventListener('click', closeWindow)
+        }
+    }
 
-                <Button size={'small'} variant="outlined" href="#outlined-buttons">
+    useEffect(()=> {
+        if (show) {
+            window.addEventListener('click', closeWindow)
+        }
+    }, [show])
+
+
+
+        return (
+            <div className={showWindow()}>
+                <div className={classes.header}>
+                    <p>Привет Ольга</p>
+                </div>
+
+                <Avatar sx={{
+                    width: 70,
+                    height: 70,
+                    position: 'fixed',
+                    top: '84px'
+                }} alt="Гость">
+                    {
+                        props.srcImg ?
+                            <Image
+                                src={props.srcImg}
+                                alt="Picture of the author"
+                                width={65}
+                                height={60}
+                            />
+                            : userName(props.user?.name ?? null , props.user?.email ?? null)
+                    }
+
+                </Avatar>
+                <div className={classes.content}>
+                    <h6>bogdan_info@mail.ru</h6>
+                    <Grid container>
+
+                        <Grid item md={5}>
+                            <p>Имя:</p>
+                        </Grid>
+                        <Grid item md={5} >
+                            <p>qq</p>
+                        </Grid>
+                        <Grid item md={5}>
+                            <p>Фамилия:</p>
+                        </Grid>
+                        <Grid item md={5} >
+                            <p>qq</p>
+                        </Grid>
+
+                    </Grid>
+                </div>
+                <Button sx={{
+                    position: 'relative',
+                    top: '10px'
+                }} size={'small'} variant="outlined" href="#outlined-buttons">
                     {
                         props.auth ?
                             'выйти'
@@ -57,9 +107,8 @@ const RegisterBox = (props: Props) => {
 
                 </Button>
             </div>
-        </div>
+        )
 
-    )
 }
 
 export default RegisterBox

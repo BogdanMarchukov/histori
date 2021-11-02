@@ -28,7 +28,7 @@ export default function initMiddleware(req: NextApiRequest, res: NextApiResponse
 }
 
 async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType | ResponseData>) {
-        console.log(req.body.test)
+
         const {email, password}: {email: string, password: string} = req.body
         const user: userType = await UserHandler.searchByEmail(email) // поиск клиента на сервере
         if (user) {

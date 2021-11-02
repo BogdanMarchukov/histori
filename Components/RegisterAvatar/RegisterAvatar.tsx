@@ -6,6 +6,8 @@ import classes from './RegisterAvatar.module.css'
 type Props = {
     imgSrs: string | null
     email: string | null
+    openRegisterWindow: () => void
+    showProfileWindow: ()=> void
 }
 
 const RegisterAvatar = (props: Props) => {
@@ -15,7 +17,7 @@ const RegisterAvatar = (props: Props) => {
         <>
             {
                 props.email ?
-                        <Avatar sx={{width: 27, height: 27}} alt="Гость">
+                        <Avatar onClick={props.showProfileWindow} sx={{width: 27, height: 27}} alt="Гость">
                             {
                                 props.imgSrs ?
                                     <Image
@@ -30,7 +32,7 @@ const RegisterAvatar = (props: Props) => {
 
                     :
                     <Button
-                        // onClick={props.openRegisterWindow} todo функция оброботчик
+                         onClick={props.openRegisterWindow}
                         variant="contained"
                         sx={{
                             width: 120,
@@ -38,9 +40,9 @@ const RegisterAvatar = (props: Props) => {
                             borderRadius: 0,
                             boxShadow: 0,
                             color: "black",
-                            background: '#ffee58',
+                            background: '#aa00ff',
                             '&:hover': {
-                                background: '#ffee58'
+                                background: '#aa00ff'
                             }
                         }}
                     >Регистрация</Button>
