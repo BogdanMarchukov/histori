@@ -1,5 +1,5 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
-import {UserHandler} from '../../models/UserHandler'
+import {userDto, UserHandler} from '../../models/UserHandler'
 import dbConnect from '../../utils/dbConnect'
 import {TokenHandler} from '../../models/TokenHandler'
 import {MailHandler} from "../../models/MailHandler"
@@ -12,17 +12,8 @@ import {ErrorType, userType} from "../../serverTypes/serverTypes"
 dbConnect();
 
 
-type ResponseData = {
-    email: string
-    id: string
-    isActivation: boolean
-    accessToken: string
-    refreshToken: string
-    role: string[]
 
-}
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ErrorType | ResponseData>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ErrorType | userDto>) {
     if (req.method === 'POST') {
         const {email, password}: { email: string, password: string } = req.body
         const candidate = await UserHandler.searchByEmail(email) // проверка на регистрацию по email
@@ -51,14 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                             path: "/"
                         })
                     ])
-                    res.status(200).json({
-                        email,
-                        id,
-                        isActivation,
-                        role,
-                        accessToken: tokenHandler.accessToken ?? '',
-                        refreshToken: tokenHandler.refreshToken ?? ''
-                    }) // отправка на клиент данные нового пользователя
+                    res.status(200).json(user.userDto()) // отправка на клиент данные нового пользователя
                 } catch (e) {
                     res.status(501).json({error: true, errorMassage: 'Ошибка email сервиса'})
                 }

@@ -3,28 +3,34 @@ import Image from "next/image"
 import {Avatar, Grid} from "@mui/material"
 import classes from './RegisterBox.module.css'
 import Button from '@mui/material/Button';
+import Link from 'next/link'
+import EditIcon from '@mui/icons-material/Edit';
+
 
 interface userType {
     name: string | null
+    surname: string | null
     email: string | null
+    accessToken: string | null
+
 }
 
 type Props = {
     auth: boolean
     srcImg: string | null
-    user: userType | null
+    user: userType
     show: boolean
-    showProfileWindow: (profileWindow: boolean)=> void
+    showProfileWindow: (profileWindow: boolean) => void
 }
 
 const RegisterBox = (props: Props) => {
     const {show} = props
 
+
     const userName = (name: string | null, email: string | null): string | null => {
         if (name) {
             return name[0]
-        } else
-            if (email){
+        } else if (email) {
             return email[0]
         } else return null
     }
@@ -37,22 +43,21 @@ const RegisterBox = (props: Props) => {
         }
     }
 
-    const closeWindow = () => {
-        if (props.show){
-            props.showProfileWindow(props.show)
-            window.removeEventListener('click', closeWindow)
+    const closeWindow = (event: DragEventInit) => {
+            const control = event.clientY ?? 0
+            if (!props.show && control > 30) {
+            props.showProfileWindow(true)
+
         }
     }
 
-    useEffect(()=> {
-        if (show) {
-            window.addEventListener('click', closeWindow)
-        }
-    }, [show])
+
+    useEffect(() => {
+            window.addEventListener('click',(event)=> closeWindow(event))
+    }, [])
 
 
-
-        return (
+    return (
             <div className={showWindow()}>
                 <div className={classes.header}>
                     <p>Привет Ольга</p>
@@ -72,27 +77,40 @@ const RegisterBox = (props: Props) => {
                                 width={65}
                                 height={60}
                             />
-                            : userName(props.user?.name ?? null , props.user?.email ?? null)
+                            : userName(props.user?.name ?? null, props.user?.email ?? null)
                     }
 
                 </Avatar>
                 <div className={classes.content}>
-                    <h6>bogdan_info@mail.ru</h6>
+                    <Link
+                        href={{
+                            pathname: '/test',
+                            query: {
+                                email: props.user.email,
+                                token: 'dkdkdkdk'
+                            }
+
+                        }}
+
+                    >
+                        <a>
+                            <h6>{props.user.email} <EditIcon sx={{fontSize: "medium"}}/></h6>
+                        </a>
+                    </Link>
                     <Grid container>
 
                         <Grid item md={5}>
-                            <p>Имя:</p>
+                            <p>Имя: </p>
                         </Grid>
-                        <Grid item md={5} >
-                            <p>qq</p>
+                        <Grid item md={5}>
+                            <p>{props.user.name ?? '-'}</p>
                         </Grid>
                         <Grid item md={5}>
                             <p>Фамилия:</p>
                         </Grid>
-                        <Grid item md={5} >
-                            <p>qq</p>
+                        <Grid item md={5}>
+                            <p>{props.user.surname ?? '-'}</p>
                         </Grid>
-
                     </Grid>
                 </div>
                 <Button sx={{
@@ -100,14 +118,14 @@ const RegisterBox = (props: Props) => {
                     top: '10px'
                 }} size={'small'} variant="outlined" href="#outlined-buttons">
                     {
-                        props.auth ?
-                            'выйти'
+                        props.user.email ?
+                            'выход'
                             : 'Войти'
                     }
 
                 </Button>
             </div>
-        )
+    )
 
 }
 

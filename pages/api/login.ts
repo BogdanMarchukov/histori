@@ -1,20 +1,12 @@
 import {NextApiRequest, NextApiResponse} from "next"
 import {ErrorType, userType} from "../../serverTypes/serverTypes"
-import {UserHandler} from '../../models/UserHandler'
+import {userDto, UserHandler} from '../../models/UserHandler'
 import {TokenHandler} from "../../models/TokenHandler"
 import cookie from "cookie"
 import dbConnect from "../../utils/dbConnect";
 import testMiddleware from '../../serverMiddleware/testMiddleware'
 const bcrypt = require('bcrypt')
-type ResponseData = {
-    email:string
-    id: string
-    isActivation: boolean
-    accessToken: string
-    refreshToken: string
-    role: string[]
 
-}
 dbConnect();
 
 
@@ -27,7 +19,7 @@ export default function initMiddleware(req: NextApiRequest, res: NextApiResponse
 
 }
 
-async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType | ResponseData>) {
+async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType | userDto>) {
 
         const {email, password}: {email: string, password: string} = req.body
         const user: userType = await UserHandler.searchByEmail(email) // поиск клиента на сервере
@@ -56,7 +48,7 @@ async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType 
                         path: "/"
                     })
                 ])
-                res.status(200).json({email: emailDto, id, isActivation, role, accessToken: tokenHandler.accessToken ?? '', refreshToken: tokenHandler.refreshToken ?? ''}) // отправка на клиент данные пользователя
+                res.status(200).json(userHandler.userDto()) // отправка на клиент данные пользователя
 
             }
         } else {

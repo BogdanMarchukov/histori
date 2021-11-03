@@ -1,23 +1,24 @@
 import React from 'react'
 import Image from "next/image";
 import {Avatar, Button} from "@mui/material";
-import classes from './RegisterAvatar.module.css'
 
 type Props = {
     imgSrs: string | null
     email: string | null
     openRegisterWindow: () => void
     showProfileWindow: ()=> void
+    nameBtn: string
 }
 
 const RegisterAvatar = (props: Props) => {
+
 
 
     return (
         <>
             {
                 props.email ?
-                        <Avatar onClick={props.showProfileWindow} sx={{width: 27, height: 27}} alt="Гость">
+                        <Avatar key={'1111'} onClick={props.showProfileWindow} sx={{width: 27, height: 27}} alt="Гость">
                             {
                                 props.imgSrs ?
                                     <Image
@@ -39,13 +40,13 @@ const RegisterAvatar = (props: Props) => {
                             height: "30px",
                             borderRadius: 0,
                             boxShadow: 0,
-                            color: "black",
+                            color: "white",
                             background: '#aa00ff',
                             '&:hover': {
                                 background: '#aa00ff'
                             }
                         }}
-                    >Регистрация</Button>
+                    >{props.nameBtn}</Button>
             }
 
         </>

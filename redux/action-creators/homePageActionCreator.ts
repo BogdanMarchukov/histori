@@ -59,19 +59,28 @@ export function validateRegisterForm(dispatch: (object: RegisterFormActionType) 
 
 // ==============================отправка формы регистрации на сервер====================================
 
-export async function onSubmitForm (dispatch:()=> void, emailValid: boolean, passwordValid: boolean, email: string, password: string) {
 
-    if (!emailValid && !passwordValid) {
-        const data = {email, password}
-        const response = await fetch('/api/login', { // todo изменить на register
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-type': 'application/json'
+export async function onSubmitForm (dispatch: (object: initUserType)=> void, emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) {
+    let url = 'login'
+        if (!emailValid && !passwordValid) {
+            if (registerTitle === 'регистрация') {
+                url = 'register'
             }
-        })
+            const data = {email, password}
+
+            const response = await fetch(`/api/${url}`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+            const responseData: userDto = await response.json()
+            dispatch({type: ActionTypes.INIT_USER, payload: responseData})
+
 
     }
+
 }
 /// ===================== инициализация пользователя SSR==========================
 

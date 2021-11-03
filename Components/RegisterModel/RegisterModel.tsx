@@ -12,7 +12,7 @@ type Props = {
     validateRegisterForm: (inputValue: string, inputName: string) => void
     emailError: boolean | undefined
     passwordError: boolean | undefined
-    onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string) => void
+    onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) => void
     email: string | null
     password: string | null
 }
@@ -70,7 +70,7 @@ const RegisterModel = (props: Props) => {
                         <Button
                             onClick={()=> {
                                 if (props.emailError === false && props.passwordError === false && props.email && props.password) {
-                                    props.onSubmitForm(props.emailError, props.passwordError, props.email, props.password )}
+                                    props.onSubmitForm(props.emailError, props.passwordError, props.email, props.password, props.registerTitle)}
                                 }
                             }
                             variant="outlined"

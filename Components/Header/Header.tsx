@@ -7,7 +7,6 @@ import Grid from "@mui/material/Grid";
 import RegisterBox from "../RegisterBox/RegisterBox";
 import RegisterModel from "../RegisterModel/RegisterModel";
 import {connect} from 'react-redux'
-import {rootState} from "../../redux/types/indexTyps";
 import {
     onSubmitForm,
     openRegisterWindow, showProfileWindow,
@@ -24,7 +23,7 @@ type Props = {
     validateRegisterForm: (inputValue: string, inputName: string) => void
     emailError: boolean | undefined
     passwordError: boolean | undefined
-    onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string) => void
+    onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) => void
     email: string | null
     password: string | null
     userName: string | null
@@ -62,6 +61,7 @@ const Header = (props: Props) => {
                     </Grid>
                     <Grid item md={2} xl={1}>
                         <RegisterAvatar
+                            nameBtn={props.registerTitle}
                             showProfileWindow={()=> props.showProfileWindow(props.profileWindow)}
                             openRegisterWindow={props.openRegisterWindow}
                             imgSrs={null}
@@ -81,7 +81,7 @@ const Header = (props: Props) => {
                         show={props.profileWindow}
                         auth={false}
                         srcImg={null}
-                        user={{name: props.userName, email: props.userEmail}}
+                        user={{name: props.userName, email: props.userEmail, surname: null, accessToken: null}}
                     />
 
             <RegisterModel
@@ -118,7 +118,7 @@ function mapDispatchToProps(dispatch: any) {
     return {
         openRegisterWindow: () => dispatch(openRegisterWindow),
         validateRegisterForm: (inputValue: string, inputName: string) => dispatch(() => validateRegisterForm(dispatch, inputValue, inputName)),
-        onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string) => dispatch(() => onSubmitForm(dispatch, emailValid, passwordValid, email, password)),
+        onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) => dispatch(() => onSubmitForm(dispatch, emailValid, passwordValid, email, password, registerTitle)),
         showProfileWindow: (profileWindow: boolean)=> dispatch(()=> showProfileWindow(dispatch, profileWindow))
     }
 }

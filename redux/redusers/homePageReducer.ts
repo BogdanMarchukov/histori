@@ -14,7 +14,7 @@ export interface homePageState {
 export const initHomePage: homePageState = {
     registerWin: false,
     pathAvatar: null,
-    registerTitle: 'Регистрация',
+    registerTitle: 'вход',
     validateEmail: null,
     validatePassword: null,
     emailValue: null,
