@@ -18,6 +18,17 @@ type Props = {
 }
 
 const RegisterModel = (props: Props) => {
+
+    const bntRegister = ()=> { // добавление кнопки регистрации если нужно
+        if (props.registerTitle === 'вход') {
+            return (
+                <span>Регистрация</span>
+            )
+        }
+        else return null
+    }
+
+
     return (
         <div className={classes.registerWrapper}>
             <Modal
@@ -67,17 +78,21 @@ const RegisterModel = (props: Props) => {
                             type="password"
                             autoComplete="current-password"
                         />
-                        <Button
-                            onClick={()=> {
-                                if (props.emailError === false && props.passwordError === false && props.email && props.password) {
-                                    props.onSubmitForm(props.emailError, props.passwordError, props.email, props.password, props.registerTitle)}
+                        <div className={classes.btnBlock}>
+                            {bntRegister()}
+                            <Button
+                                onClick={() => {
+                                    if (props.emailError === false && props.passwordError === false && props.email && props.password) {
+                                        props.onSubmitForm(props.emailError, props.passwordError, props.email, props.password, props.registerTitle)
+                                    }
                                 }
-                            }
-                            variant="outlined"
+                                }
+                                variant="outlined"
 
-                        >
-                            Отправить
-                        </Button>
+                            >
+                                Отправить
+                            </Button>
+                        </div>
 
                     </Box>
                 </Box>

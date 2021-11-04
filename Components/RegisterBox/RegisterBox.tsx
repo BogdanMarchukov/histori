@@ -21,6 +21,7 @@ type Props = {
     user: userType
     show: boolean
     showProfileWindow: (profileWindow: boolean) => void
+    logout: ()=> void
 }
 
 const RegisterBox = (props: Props) => {
@@ -113,10 +114,12 @@ const RegisterBox = (props: Props) => {
                         </Grid>
                     </Grid>
                 </div>
-                <Button sx={{
+                <Button
+                    onClick={props.logout}
+                    sx={{
                     position: 'relative',
                     top: '10px'
-                }} size={'small'} variant="outlined" href="#outlined-buttons">
+                }} size={'small'} variant="outlined">
                     {
                         props.user.email ?
                             'выход'

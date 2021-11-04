@@ -1,5 +1,11 @@
 import {ActionTypes, rootAction} from "../types/indexTyps";
 
+interface alertObjectType {
+    alertType: 'error'
+    alertMassage: string | null
+    alertStart: boolean
+}
+
 export interface homePageState {
     registerWin: boolean
     pathAvatar: string | null
@@ -9,6 +15,8 @@ export interface homePageState {
     emailValue: string | null
     passwordValue: string | null
     profileWindow: boolean
+    loading: boolean
+    alert: alertObjectType
 }
 
 export const initHomePage: homePageState = {
@@ -19,7 +27,13 @@ export const initHomePage: homePageState = {
     validatePassword: null,
     emailValue: null,
     passwordValue: null,
-    profileWindow: false
+    profileWindow: false,
+    loading: false,
+    alert: {
+        alertMassage: null,
+        alertStart: false,
+        alertType: "error"
+    }
 }
 
 export const homePageReducer = (state = initHomePage, action: rootAction): homePageState => {
@@ -44,6 +58,36 @@ export const homePageReducer = (state = initHomePage, action: rootAction): homeP
             return {
                 ...state,
                 profileWindow: action.payload
+            }
+        case ActionTypes.LOADER_ON_OFF:
+            return <homePageState>{
+                ...state,
+                loading: action.payload
+            }
+        case ActionTypes.CLOSE_REGISTER_WINDOW:
+            return {
+                ...state,
+                registerWin: false
+            }
+        case ActionTypes.LOGIN_ERROR:
+            return <homePageState>{
+                ...state,
+                alert: {
+                    // @ts-ignore
+                    alertStart: action.payload.error,
+                    alertType: "error",
+                    // @ts-ignore
+                    alertMassage: action.payload.errorMassage
+                }
+            }
+        case ActionTypes.RESET_LOGIN_ERROR:
+            return <homePageState>{
+                ...state,
+                alert: initHomePage.alert
+            }
+        case ActionTypes.RESTART_STATE:
+            return {
+                ...initHomePage
             }
         default:
             return state

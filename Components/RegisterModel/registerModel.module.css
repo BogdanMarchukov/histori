@@ -7,3 +7,11 @@
     font-size: 20px;
     margin: 0 0 10px 0;
 }
+
+.btnBlock span {
+    color: #0070f3;
+    margin-right: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    text-decoration: underline;
+}

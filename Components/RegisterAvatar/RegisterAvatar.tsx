@@ -18,14 +18,14 @@ const RegisterAvatar = (props: Props) => {
         <>
             {
                 props.email ?
-                        <Avatar key={'1111'} onClick={props.showProfileWindow} sx={{width: 27, height: 27}} alt="Гость">
+                        <Avatar onClick={props.showProfileWindow} sx={{width: 27, height: 27}} alt="Гость">
                             {
                                 props.imgSrs ?
                                     <Image
                                         src={props.imgSrs}
                                         alt="Picture of the author"
-                                        width={65}
-                                        height={60}
+                                        width={27}
+                                        height={27}
                                     />
                                     : null
                             }

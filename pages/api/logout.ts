@@ -13,7 +13,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             const id = new ObjectId(payload)
             const tokenHandler = new TokenHandler(id)
             await tokenHandler.deleteTokenMongo()
-            res.setHeader("Set-Cookie", [
+            res.status(200)
+            .setHeader("Set-Cookie", [
                 cookie.serialize("token",  '', {
                     httpOnly: true,
                     secure: false,

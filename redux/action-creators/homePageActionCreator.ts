@@ -2,6 +2,7 @@
 import SimpleReactValidator from 'simple-react-validator';
 import {ActionTypes} from "../types/indexTyps";
 import {userDto} from "../../models/UserHandler";
+import {ErrorType} from "../../serverTypes/serverTypes";
 
 export interface openRegisterActionType {
     type: ActionTypes.OPEN_WINDOW_REGISTER
@@ -59,15 +60,28 @@ export function validateRegisterForm(dispatch: (object: RegisterFormActionType) 
 
 // ==============================отправка формы регистрации на сервер====================================
 
+export interface closeRegisterWindow {
+    type: ActionTypes.CLOSE_REGISTER_WINDOW | ActionTypes.RESET_LOGIN_ERROR
+}
 
-export async function onSubmitForm (dispatch: (object: initUserType)=> void, emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) {
+interface errorLogin {
+    error: boolean
+    errorMassage: string
+}
+export interface errorInitType {
+    type: ActionTypes.LOGIN_ERROR
+    payload: errorLogin
+}
+
+export async function onSubmitForm (dispatch: (object: initUserType | closeRegisterWindow | errorInitType)=> void, emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) {
     let url = 'login'
         if (!emailValid && !passwordValid) {
             if (registerTitle === 'регистрация') {
                 url = 'register'
             }
             const data = {email, password}
-
+            dispatch({type: ActionTypes.LOADER_ON_OFF, payload: true})
+            dispatch({type: ActionTypes.CLOSE_REGISTER_WINDOW})
             const response = await fetch(`/api/${url}`, {
                 method: 'POST',
                 body: JSON.stringify(data),
@@ -75,18 +89,27 @@ export async function onSubmitForm (dispatch: (object: initUserType)=> void, ema
                     'Content-type': 'application/json'
                 }
             })
-            const responseData: userDto = await response.json()
-            dispatch({type: ActionTypes.INIT_USER, payload: responseData})
 
-
+            if (response.status === 200) {
+                const responseData: userDto = await response.json()
+                dispatch({type: ActionTypes.LOADER_ON_OFF, payload: false})
+                dispatch({type: ActionTypes.INIT_USER, payload: responseData})
+            }
+            if (response.status === 403) {
+                const responseError: ErrorType = await response.json()
+                dispatch({type: ActionTypes.LOADER_ON_OFF, payload: false})
+                dispatch({type: ActionTypes.LOGIN_ERROR, payload: {error: responseError.error, errorMassage: responseError.errorMassage}})
+                setTimeout(()=> dispatch({type: ActionTypes.RESET_LOGIN_ERROR}), 4000)
+            }
     }
-
 }
+
+
 /// ===================== инициализация пользователя SSR==========================
 
 export interface initUserType {
-    type: ActionTypes.INIT_USER
-    payload: userDto
+    type: ActionTypes.INIT_USER | ActionTypes.LOADER_ON_OFF | ActionTypes.LOGIN_ERROR
+    payload: userDto | boolean | ErrorType
 }
 
 
@@ -104,3 +127,19 @@ export interface ShowProfileWindowType {
 export const showProfileWindow = (dispatch: (object: ShowProfileWindowType)=>void, profileWindow: boolean) => {
     dispatch({type: ActionTypes.OPEN_WINDOW_MINI_PROFILE, payload: !profileWindow})
 }
+//********************************************************************************************
+
+
+//===================выход из акаунта==========================
+
+export interface logoutType {
+    type: ActionTypes.RESTART_STATE
+}
+
+export async function logout(dispatch: (object: logoutType)=> void) {
+    const response = await fetch('api/logout')
+    if (response.status === 200) {
+        dispatch({type: ActionTypes.RESTART_STATE})
+    }
+}
+//**************************************************************

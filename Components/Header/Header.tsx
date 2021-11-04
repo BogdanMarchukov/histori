@@ -1,6 +1,6 @@
-import React, {FC} from 'react'
+import React from 'react'
 import classes from "./header.module.css";
-import {Container, Button} from "@mui/material";
+import {Container} from "@mui/material";
 import WatSapIcon from "../../icons/WatSapIcon";
 import AddLocationOutlinedIcon from "@mui/icons-material/AddLocationOutlined";
 import Grid from "@mui/material/Grid";
@@ -8,13 +8,21 @@ import RegisterBox from "../RegisterBox/RegisterBox";
 import RegisterModel from "../RegisterModel/RegisterModel";
 import {connect} from 'react-redux'
 import {
+    logout,
     onSubmitForm,
     openRegisterWindow, showProfileWindow,
     validateRegisterForm
 } from "../../redux/action-creators/homePageActionCreator";
 import {RootState} from "../../redux/redusers/indexReduser";
 import RegisterAvatar from "../RegisterAvatar/RegisterAvatar";
+import Loader from "../Loader/Loader";
+import AlertCustomize from "../AlertCustomize/AlertCustomize";
 
+interface alertObjectType {
+    alertType: 'error'
+    alertMassage: string | null
+    alertStart: boolean
+}
 
 type Props = {
     openRegisterWindow: () => void
@@ -28,8 +36,11 @@ type Props = {
     password: string | null
     userName: string | null
     userEmail: string | null
-    showProfileWindow: (profileWindow: boolean)=> void
+    showProfileWindow: (profileWindow: boolean) => void
     profileWindow: boolean
+    loading: boolean
+    alert: alertObjectType
+    logout: ()=> void
 }
 
 const Header = (props: Props) => {
@@ -62,7 +73,7 @@ const Header = (props: Props) => {
                     <Grid item md={2} xl={1}>
                         <RegisterAvatar
                             nameBtn={props.registerTitle}
-                            showProfileWindow={()=> props.showProfileWindow(props.profileWindow)}
+                            showProfileWindow={() => props.showProfileWindow(props.profileWindow)}
                             openRegisterWindow={props.openRegisterWindow}
                             imgSrs={null}
                             email={props.userEmail}
@@ -70,19 +81,22 @@ const Header = (props: Props) => {
                     </Grid>
                 </Grid>
             </div>
-                    <div className={classes.flexColumn}>
-                        <h1>Olga</h1>
-                        <h2>Marchukova</h2>
-                        <h3>История | Общество</h3>
-                        <h4>Право | Экономика</h4>
-                    </div>
-                    <RegisterBox
-                        showProfileWindow={props.showProfileWindow}
-                        show={props.profileWindow}
-                        auth={false}
-                        srcImg={null}
-                        user={{name: props.userName, email: props.userEmail, surname: null, accessToken: null}}
-                    />
+            <AlertCustomize alert={props.alert}/>
+            <Loader loading={props.loading}/>
+            <div className={classes.flexColumn}>
+                <h1>Olga</h1>
+                <h2>Marchukova</h2>
+                <h3>История | Общество</h3>
+                <h4>Право | Экономика</h4>
+            </div>
+            <RegisterBox
+                logout={props.logout}
+                showProfileWindow={props.showProfileWindow}
+                show={props.profileWindow}
+                auth={false}
+                srcImg={null}
+                user={{name: props.userName, email: props.userEmail, surname: null, accessToken: null}}
+            />
 
             <RegisterModel
                 onSubmitForm={props.onSubmitForm}
@@ -109,7 +123,9 @@ function mapStateToProps(state: RootState) {
         password: state.homePageReducer.passwordValue,
         userName: state.userReducer.userName,
         userEmail: state.userReducer.email,
-        profileWindow: state.homePageReducer.profileWindow
+        profileWindow: state.homePageReducer.profileWindow,
+        loading: state.homePageReducer.loading,
+        alert: state.homePageReducer.alert
     }
 
 }
@@ -119,7 +135,8 @@ function mapDispatchToProps(dispatch: any) {
         openRegisterWindow: () => dispatch(openRegisterWindow),
         validateRegisterForm: (inputValue: string, inputName: string) => dispatch(() => validateRegisterForm(dispatch, inputValue, inputName)),
         onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) => dispatch(() => onSubmitForm(dispatch, emailValid, passwordValid, email, password, registerTitle)),
-        showProfileWindow: (profileWindow: boolean)=> dispatch(()=> showProfileWindow(dispatch, profileWindow))
+        showProfileWindow: (profileWindow: boolean) => dispatch(() => showProfileWindow(dispatch, profileWindow)),
+        logout: () => dispatch(() => logout(dispatch))
     }
 }
 
