@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import Image from "next/image"
 import {Avatar, Grid} from "@mui/material"
 import classes from './RegisterBox.module.css'
@@ -27,6 +27,20 @@ type Props = {
 const RegisterBox = (props: Props) => {
     const {show} = props
 
+    const [classClose, setClassClose] = useState(null)
+
+    useEffect(()=> {
+        if (show) {
+            // @ts-ignore
+            setClassClose(<div onClick={()=> props.showProfileWindow(show)} className={classes.closeWin}/>)
+        }
+        if (!show) {
+            setClassClose(null)
+        }
+    }, [show])
+
+
+
 
     const userName = (name: string | null, email: string | null): string | null => {
         if (name) {
@@ -44,21 +58,11 @@ const RegisterBox = (props: Props) => {
         }
     }
 
-    const closeWindow = (event: DragEventInit) => {
-            const control = event.clientY ?? 0
-            if (!props.show && control > 30) {
-            props.showProfileWindow(true)
-
-        }
-    }
-
-
-    useEffect(() => {
-            window.addEventListener('click',(event)=> closeWindow(event))
-    }, [])
 
 
     return (
+        <>
+            {classClose}
             <div className={showWindow()}>
                 <div className={classes.header}>
                     <p>Привет Ольга</p>
@@ -85,11 +89,8 @@ const RegisterBox = (props: Props) => {
                 <div className={classes.content}>
                     <Link
                         href={{
-                            pathname: '/test',
-                            query: {
-                                email: props.user.email,
-                                token: 'dkdkdkdk'
-                            }
+                            pathname: '/test'
+
 
                         }}
 
@@ -128,6 +129,7 @@ const RegisterBox = (props: Props) => {
 
                 </Button>
             </div>
+        </>
     )
 
 }

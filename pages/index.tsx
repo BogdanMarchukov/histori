@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import Layout from "../Components/Layout/Layout";
 import {wrapper} from "../redux";
-import {initUser, testTest} from "../redux/action-creators/homePageActionCreator";
+import {initUser} from "../redux/action-creators/homePageActionCreator";
 import {TokenHandler} from "../models/TokenHandler";
 import {userDto} from "../models/UserHandler";
 

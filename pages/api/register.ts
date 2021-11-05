@@ -42,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                             path: "/"
                         })
                     ])
-                    res.status(200).json(user.userDto()) // отправка на клиент данные нового пользователя
+                    res.status(201).json(user.userDto()) // отправка на клиент данные нового пользователя
                 } catch (e) {
                     res.status(501).json({error: true, errorMassage: 'Ошибка email сервиса'})
                 }
@@ -52,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             }
 
         } else {
-            res.status(200).json({error: true, errorMassage: 'Пользователь уже зарегистрирован'})
+            res.status(404).json({error: true, errorMassage: 'Пользователь уже зарегистрирован'})
         }
 
     }

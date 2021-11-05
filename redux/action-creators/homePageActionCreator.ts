@@ -12,21 +12,39 @@ export function openRegisterWindow(dispatch: (object: openRegisterActionType) =>
     dispatch({type: ActionTypes.OPEN_WINDOW_REGISTER})
 }
 
-export const serverRenderClock = (payload: any) => (dispatch:any) => {
-    dispatch({
-        type: 'TICK',
-        payload
-    })
-}
-
-export const testTest = (payload: any) => (dispatch:any) => {
-    dispatch({
-            type: 'TEST',
-        payload
-    })
-}
+// export const serverRenderClock = (payload: any) => (dispatch:any) => {
+//     dispatch({
+//         type: 'TICK',
+//         payload
+//     })
+// }
+//
+// export const testTest = (payload: any) => (dispatch:any) => {
+//     dispatch({
+//             type: 'TEST',
+//         payload
+//     })
+// }
 
 // *****************************************************
+
+// =================переключение окна из режима вход в режим регистрации=======================
+
+export interface switchingDispatchType {
+    type: ActionTypes.SWITCHING_WINDOW_REGISTER
+    payload: 'вход' | 'регистрация'
+}
+
+export function switchingWindowRegister(dispatch: (object: switchingDispatchType)=> void, registerTitle: string) {
+    switch (registerTitle) {
+        case 'вход':
+        dispatch({type: ActionTypes.SWITCHING_WINDOW_REGISTER, payload: 'вход'})
+            break
+        case 'регистрация':
+            dispatch({type: ActionTypes.SWITCHING_WINDOW_REGISTER, payload: 'регистрация'})
+            break
+    }
+}
 
 // ================валидация формы и сохранение в store=================
 interface PayloadRegisterFormEmail {
@@ -58,29 +76,53 @@ export function validateRegisterForm(dispatch: (object: RegisterFormActionType) 
 }
 //**************************************************************************************************
 
-// ==============================отправка формы регистрации на сервер====================================
-
-export interface closeRegisterWindow {
-    type: ActionTypes.CLOSE_REGISTER_WINDOW | ActionTypes.RESET_LOGIN_ERROR
+// ================================on/off полосы загрузки========================================
+export interface loadingIndicatorType {
+    type: ActionTypes.LOADER_ON_OFF
+    payload: boolean
 }
 
-interface errorLogin {
-    error: boolean
-    errorMassage: string
+export function loadingIndicator(dispatch: (object: loadingIndicatorType)=> void, payload: boolean) {
+    dispatch({type: ActionTypes.LOADER_ON_OFF, payload})
 }
+//****************************************************************************************************
+
+// ==============================обработчик ошибки ===================================================
+export interface loginErrorType {
+    type: ActionTypes.RESET_LOGIN_ERROR
+}
+
 export interface errorInitType {
     type: ActionTypes.LOGIN_ERROR
     payload: errorLogin
 }
+interface errorLogin {
+    error: boolean
+    errorMassage: string
+    alertType: string
+}
+function errorHandlerServer(dispatch: (object: errorInitType | loginErrorType)=> void, responseError: ErrorType, errorType: string ){
+    dispatch({type: ActionTypes.LOGIN_ERROR, payload: {error: responseError.error, errorMassage: responseError.errorMassage, alertType: errorType}})
+    setTimeout(()=> dispatch({type: ActionTypes.RESET_LOGIN_ERROR}), 4000)
+}
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-export async function onSubmitForm (dispatch: (object: initUserType | closeRegisterWindow | errorInitType)=> void, emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) {
+
+// ==============================отправка формы регистрации на сервер====================================
+
+export interface closeRegisterWindow {
+    type: ActionTypes.CLOSE_REGISTER_WINDOW
+}
+
+
+export async function onSubmitForm (dispatch: (object: initUserType | closeRegisterWindow | loginErrorType | ErrorType )=> void, emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) {
     let url = 'login'
         if (!emailValid && !passwordValid) {
             if (registerTitle === 'регистрация') {
                 url = 'register'
             }
             const data = {email, password}
-            dispatch({type: ActionTypes.LOADER_ON_OFF, payload: true})
+            loadingIndicator(dispatch, true)
             dispatch({type: ActionTypes.CLOSE_REGISTER_WINDOW})
             const response = await fetch(`/api/${url}`, {
                 method: 'POST',
@@ -90,16 +132,23 @@ export async function onSubmitForm (dispatch: (object: initUserType | closeRegis
                 }
             })
 
-            if (response.status === 200) {
+            if (response.status === 200 || response.status === 201) {
                 const responseData: userDto = await response.json()
-                dispatch({type: ActionTypes.LOADER_ON_OFF, payload: false})
+                loadingIndicator(dispatch, false)
                 dispatch({type: ActionTypes.INIT_USER, payload: responseData})
+                if (response.status === 201) {
+                    errorHandlerServer(dispatch, {error: true, errorMassage: 'ссылка для активации отправленна на email'}, 'warning')
+                }
             }
             if (response.status === 403) {
                 const responseError: ErrorType = await response.json()
-                dispatch({type: ActionTypes.LOADER_ON_OFF, payload: false})
-                dispatch({type: ActionTypes.LOGIN_ERROR, payload: {error: responseError.error, errorMassage: responseError.errorMassage}})
-                setTimeout(()=> dispatch({type: ActionTypes.RESET_LOGIN_ERROR}), 4000)
+                loadingIndicator(dispatch, false)
+                errorHandlerServer(dispatch, responseError, 'error')
+            }
+            if (response.status === 404) {
+                const responseError: ErrorType = await response.json()
+                loadingIndicator(dispatch, false)
+                errorHandlerServer(dispatch, responseError, 'error')
             }
     }
 }
@@ -118,7 +167,7 @@ export const initUser = (userData: userDto) => (dispatch: (object: initUserType)
 }
 //*********************************************************************************************
 
-// ============================окно мини личный кобинет======================================
+// ============================окно мини личный кабинет======================================
 export interface ShowProfileWindowType {
     type: ActionTypes.OPEN_WINDOW_MINI_PROFILE,
     payload: boolean

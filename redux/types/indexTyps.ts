@@ -1,9 +1,9 @@
 import {
     closeRegisterWindow, errorInitType,
-    initUserType, logoutType,
+    initUserType, loadingIndicatorType, loginErrorType, logoutType,
     openRegisterActionType,
     RegisterFormActionType,
-    ShowProfileWindowType
+    ShowProfileWindowType, switchingDispatchType
 } from "../action-creators/homePageActionCreator";
 import {homePageState} from "../redusers/homePageReducer";
 import {testStateType} from "../redusers/testReducer";
@@ -19,7 +19,9 @@ export type rootAction =
     | closeRegisterWindow
     | errorInitType
     | logoutType
-
+    | switchingDispatchType
+    | loadingIndicatorType
+    | loginErrorType
 
 
 export type rootState =
@@ -28,7 +30,7 @@ export type rootState =
     | { userReducer: userState }
 
 export enum ActionTypes {
-    OPEN_WINDOW_REGISTER = 'HOME_PAGE/TEST',
+    OPEN_WINDOW_REGISTER = 'HOME_PAGE/OPEN_WINDOW_REGISTER',
     REGISTER_INPUT_EMAIL_VALIDATION = 'HOME_PAGE/REGISTER_INPUT_EMAIL_VALIDATION',
     REGISTER_INPUT_PASSWORD_VALIDATION = 'HOME_PAGE/REGISTER_INPUT_PASSWORD_VALIDATION',
     INIT_USER = 'INIT_USER',
@@ -37,7 +39,8 @@ export enum ActionTypes {
     CLOSE_REGISTER_WINDOW = 'HOME_PAGE/CLOSE_REGISTER_WINDOW',
     LOGIN_ERROR = 'HOME_PAGE/LOGIN_ERROR',
     RESET_LOGIN_ERROR = 'HOME_PAGE/RESET_LOGIN_ERROR',
-    RESTART_STATE = 'HOME_PAGE/RESTART_STATE'
+    RESTART_STATE = 'HOME_PAGE/RESTART_STATE',
+    SWITCHING_WINDOW_REGISTER = 'HOME_PAGE/SWITCHING_WINDOW_REGISTER'
 
 }
 

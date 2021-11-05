@@ -10,7 +10,7 @@ import {connect} from 'react-redux'
 import {
     logout,
     onSubmitForm,
-    openRegisterWindow, showProfileWindow,
+    openRegisterWindow, showProfileWindow, switchingWindowRegister,
     validateRegisterForm
 } from "../../redux/action-creators/homePageActionCreator";
 import {RootState} from "../../redux/redusers/indexReduser";
@@ -41,6 +41,7 @@ type Props = {
     loading: boolean
     alert: alertObjectType
     logout: ()=> void
+    switchingWindowRegister: (registerTitle: string)=> void
 }
 
 const Header = (props: Props) => {
@@ -99,6 +100,7 @@ const Header = (props: Props) => {
             />
 
             <RegisterModel
+                switchingWindowRegister={props.switchingWindowRegister}
                 onSubmitForm={props.onSubmitForm}
                 email={props.email}
                 password={props.password}
@@ -136,7 +138,8 @@ function mapDispatchToProps(dispatch: any) {
         validateRegisterForm: (inputValue: string, inputName: string) => dispatch(() => validateRegisterForm(dispatch, inputValue, inputName)),
         onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) => dispatch(() => onSubmitForm(dispatch, emailValid, passwordValid, email, password, registerTitle)),
         showProfileWindow: (profileWindow: boolean) => dispatch(() => showProfileWindow(dispatch, profileWindow)),
-        logout: () => dispatch(() => logout(dispatch))
+        logout: () => dispatch(() => logout(dispatch)),
+        switchingWindowRegister: (registerTitle: string)=> dispatch(()=> switchingWindowRegister(dispatch, registerTitle))
     }
 }
 

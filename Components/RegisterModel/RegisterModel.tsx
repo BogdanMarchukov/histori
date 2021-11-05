@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal"
 import TextField from '@mui/material/TextField'
 import classes from './registerModel.module.css'
 import {Button} from "@mui/material";
+import RegisterTab from "../RegisterTab/RegisterTab";
 
 type Props = {
     open: boolean
@@ -15,18 +16,11 @@ type Props = {
     onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) => void
     email: string | null
     password: string | null
+    switchingWindowRegister: (registerTitle: string)=> void
 }
 
 const RegisterModel = (props: Props) => {
 
-    const bntRegister = ()=> { // добавление кнопки регистрации если нужно
-        if (props.registerTitle === 'вход') {
-            return (
-                <span>Регистрация</span>
-            )
-        }
-        else return null
-    }
 
 
     return (
@@ -43,7 +37,7 @@ const RegisterModel = (props: Props) => {
                     left: "50%",
                     transform: "translate(-50%, -50%)",
                     width: 400,
-                    height: 250,
+                    height: 270,
                     bgcolor: "background.paper",
                     border: "2px solid #000",
                     boxShadow: 24,
@@ -53,14 +47,16 @@ const RegisterModel = (props: Props) => {
                     <Box
                         sx={{
                             display: 'flex',
-                            height: 190,
+                            height: 200,
                             flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'space-between',
 
                         }}
                     >
-                        <p className={classes.title}>{props.registerTitle}</p>
+                        <RegisterTab
+                            tabHandler={props.switchingWindowRegister}
+                        />
                         <TextField
                             onChange={event => props.validateRegisterForm(event.target.value, 'email')}
                             size={"small"}
@@ -78,8 +74,6 @@ const RegisterModel = (props: Props) => {
                             type="password"
                             autoComplete="current-password"
                         />
-                        <div className={classes.btnBlock}>
-                            {bntRegister()}
                             <Button
                                 onClick={() => {
                                     if (props.emailError === false && props.passwordError === false && props.email && props.password) {
@@ -92,10 +86,10 @@ const RegisterModel = (props: Props) => {
                             >
                                 Отправить
                             </Button>
-                        </div>
 
                     </Box>
                 </Box>
+
             </Modal>
         </div>
     )

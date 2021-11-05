@@ -10,8 +10,16 @@
 
 .btnBlock span {
     color: #0070f3;
+    margin-top: 10px;
     margin-right: 5px;
     cursor: pointer;
     font-size: 15px;
     text-decoration: underline;
 }
+
+.btnBlock {
+    display: flex;
+    flex-direction: column;
+
+}
+

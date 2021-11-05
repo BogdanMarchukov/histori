@@ -40,7 +40,11 @@ export const homePageReducer = (state = initHomePage, action: rootAction): homeP
     switch (action.type) {
         case ActionTypes.OPEN_WINDOW_REGISTER:
             return {
-                ...state, registerWin: !state.registerWin, validatePassword: initHomePage.validatePassword, validateEmail: initHomePage.validateEmail
+                ...state,
+                registerWin: !state.registerWin,
+                validatePassword: initHomePage.validatePassword,
+                validateEmail: initHomePage.validateEmail,
+                registerTitle: initHomePage.registerTitle
             }
         case ActionTypes.REGISTER_INPUT_EMAIL_VALIDATION:
             return {
@@ -67,7 +71,8 @@ export const homePageReducer = (state = initHomePage, action: rootAction): homeP
         case ActionTypes.CLOSE_REGISTER_WINDOW:
             return {
                 ...state,
-                registerWin: false
+                registerWin: false,
+                registerTitle: initHomePage.registerTitle
             }
         case ActionTypes.LOGIN_ERROR:
             return <homePageState>{
@@ -75,7 +80,8 @@ export const homePageReducer = (state = initHomePage, action: rootAction): homeP
                 alert: {
                     // @ts-ignore
                     alertStart: action.payload.error,
-                    alertType: "error",
+                    // @ts-ignore
+                    alertType: action.payload.alertType,
                     // @ts-ignore
                     alertMassage: action.payload.errorMassage
                 }
@@ -88,6 +94,10 @@ export const homePageReducer = (state = initHomePage, action: rootAction): homeP
         case ActionTypes.RESTART_STATE:
             return {
                 ...initHomePage
+            }
+        case ActionTypes.SWITCHING_WINDOW_REGISTER:
+            return {
+                ...state, registerTitle: action.payload
             }
         default:
             return state
