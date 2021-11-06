@@ -16,7 +16,8 @@ export interface homePageState {
     passwordValue: string | null
     profileWindow: boolean
     loading: boolean
-    alert: alertObjectType
+    alert: alertObjectType,
+    loadMini: boolean
 }
 
 export const initHomePage: homePageState = {
@@ -33,7 +34,8 @@ export const initHomePage: homePageState = {
         alertMassage: null,
         alertStart: false,
         alertType: "error"
-    }
+    },
+    loadMini: false
 }
 
 export const homePageReducer = (state = initHomePage, action: rootAction): homePageState => {

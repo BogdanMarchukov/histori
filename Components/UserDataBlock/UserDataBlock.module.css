@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+
+.wrepper {
+    position: relative;
+    top: 30px;
+    left: 0;
+    height: 900px;
+    width: 500px;
+    border-right: 3px solid #aa00ff;
+
+}
+
+.nameData p {
+    margin-left: 20px;
+}
+
+.data {
+
+}
+
+.nameData p, .data p {
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+
+}

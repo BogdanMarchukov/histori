@@ -89,7 +89,7 @@ const RegisterBox = (props: Props) => {
                 <div className={classes.content}>
                     <Link
                         href={{
-                            pathname: '/test'
+                            pathname: '/account'
 
 
                         }}
