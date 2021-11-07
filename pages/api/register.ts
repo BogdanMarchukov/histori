@@ -5,6 +5,7 @@ import {TokenHandler} from '../../models/TokenHandler'
 import {MailHandler} from "../../models/MailHandler"
 import cookie from 'cookie'
 import {ErrorType, userType} from "../../serverTypes/serverTypes"
+import {ResponseTypeLogin} from "./login";
 
 
 
@@ -13,7 +14,7 @@ dbConnect();
 
 
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ErrorType | userDto>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ErrorType | ResponseTypeLogin>) {
     if (req.method === 'POST') {
         const {email, password}: { email: string, password: string } = req.body
         const candidate = await UserHandler.searchByEmail(email) // проверка на регистрацию по email
@@ -42,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                             path: "/"
                         })
                     ])
-                    res.status(201).json(user.userDto()) // отправка на клиент данные нового пользователя
+                    res.status(201).json({...user.userDto(), accessToken: tokenHandler.accessToken ?? ''}) // отправка на клиент данные нового пользователя
                 } catch (e) {
                     res.status(501).json({error: true, errorMassage: 'Ошибка email сервиса'})
                 }

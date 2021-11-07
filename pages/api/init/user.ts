@@ -1,5 +1,4 @@
 import {NextApiRequest, NextApiResponse} from "next"
-import refreshTokenMiddleware from "../../../serverMiddleware/refreshTokenMiddleware";
 import dbConnect from "../../../utils/dbConnect";
 import {TokenHandler} from '../../../models/TokenHandler'
 import {UserHandler} from '../../../models/UserHandler'
@@ -9,7 +8,6 @@ dbConnect();
 
 export default async function initMiddleware(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
-        // await refreshTokenMiddleware(req, res, handler)
         await handler(req, res)
     } else {
         res.status(405).json({error: true, errorMassage: 'Данный метод запрещен'})

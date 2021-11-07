@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {RootState} from "../redux/redusers/indexReduser";
 import {connect} from "react-redux";
 import MiniNavigation from "../Components/MiniNavigation/MiniNavigation";
 import UserDataBlock from "../Components/UserDataBlock/UserDataBlock";
 import {Box} from "@mui/material";
+import {initAccount} from "../redux/action-creators/accountPageActionCreator";
 
 type Props = {
     email: string | null
@@ -12,10 +13,18 @@ type Props = {
     name: string | null
     surname: string | null
     tel: string | null
+    initAccount: ()=> void
 }
 
 
 const Account = (props: Props) => {
+
+    const {initAccount} = props
+
+    useEffect(()=> {
+        initAccount()
+    }, [initAccount])
+
     return (
         <>
             <MiniNavigation/>
@@ -46,7 +55,9 @@ function mapStateToProps(state: RootState) {
 }
 
 function mapDispatchToProps(dispatch: any) {
-    return {}
+    return {
+        initAccount: ()=> dispatch(()=> initAccount(dispatch))
+    }
 }
 
 

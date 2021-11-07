@@ -20,8 +20,31 @@ export type ErrorType = {
     errorMassage: string
 }
 
+export type RedirectType = {
+    redirect: boolean
+    patch: string
+}
+
 export type TokensType = {
     _id: Schema.Types.ObjectId
     refreshToken: string
     __V: number
+}
+
+export interface updateUserReducerType {
+    accessToken: string
+    activatedLink: string
+    address: string | null
+    emailDto: string
+    id: string
+    isActivation: boolean
+    passwordDto: string
+    patronymic: string | null
+    refreshToken: string
+    role: string[]
+    surname: string | null
+    tel: string | null
+    userName: string | null
+    __v: number
+    _id: string
 }

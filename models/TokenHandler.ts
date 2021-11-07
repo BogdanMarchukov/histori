@@ -4,6 +4,11 @@ import { ObjectId } from "mongodb";
 
 const jwt = require('jsonwebtoken')
 
+export interface tokenDtoType {
+    accessToken: string
+    refreshToken: string
+}
+
 
 class TokenHandler {
     constructor(
@@ -49,7 +54,16 @@ class TokenHandler {
             return await jwt.verify(token, process.env.JWT_REFRESH_SECRET)
         }
         catch (e){
-            throw e
+            return e
+        }
+    }
+
+    static async decodedPayloadAccess(token: string) { // декодирование payload Access токен
+        try {
+            return await jwt.verify(token, process.env.JWT_ACCESS_SECRET)
+        }
+        catch (e){
+            return e
         }
     }
 
@@ -65,6 +79,17 @@ class TokenHandler {
         } catch (e) {
             throw e
         }
+    }
+
+    tokenDTO(): tokenDtoType | void {
+        if (typeof this.refreshToken === 'string' && typeof this.accessToken === 'string'){
+            return {
+                accessToken: this.accessToken,
+                refreshToken: this.refreshToken
+
+            }
+        }
+
     }
 
 

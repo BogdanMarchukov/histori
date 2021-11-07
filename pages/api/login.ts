@@ -5,6 +5,7 @@ import {TokenHandler} from "../../models/TokenHandler"
 import cookie from "cookie"
 import dbConnect from "../../utils/dbConnect";
 import testMiddleware from '../../serverMiddleware/testMiddleware'
+import {Schema} from "mongoose";
 const bcrypt = require('bcrypt')
 
 dbConnect();
@@ -18,8 +19,24 @@ export default function initMiddleware(req: NextApiRequest, res: NextApiResponse
     }
 
 }
+export type ResponseTypeLogin = {
+    _id: Schema.Types.ObjectId
+    id: string
+    emailDto: string
+    passwordDto: string
+    isActivation: boolean
+    activatedLink: string
+    role: string[]
+    __v: number
+    surname: string
+    userName: string
+    patronymic: string
+    address: string
+    tel: string
+    accessToken: string
+}
 
-async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType | userDto>) {
+async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType | ResponseTypeLogin>) {
 
         const {email, password}: {email: string, password: string} = req.body
         const user: userType = await UserHandler.searchByEmail(email) // поиск клиента на сервере
@@ -48,7 +65,8 @@ async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType 
                         path: "/"
                     })
                 ])
-                res.status(200).json(userHandler.userDto()) // отправка на клиент данные пользователя
+
+                res.status(200).json({...userHandler.userDto(), accessToken: tokenHandler.accessToken ?? ''} ) // отправка на клиент данные пользователя
 
             }
         } else {

@@ -3,7 +3,8 @@ import {ErrorType} from "../../serverTypes/serverTypes";
 import cookie from "cookie";
 import {TokenHandler} from '../../models/TokenHandler'
 import { ObjectId } from "mongodb";
-
+import dbConnect from "../../utils/dbConnect";
+dbConnect();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ErrorType>){
     if (req.method === 'GET') {

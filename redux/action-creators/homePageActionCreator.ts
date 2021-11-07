@@ -3,6 +3,8 @@ import SimpleReactValidator from 'simple-react-validator';
 import {ActionTypes} from "../types/indexTyps";
 import {userDto} from "../../models/UserHandler";
 import {ErrorType} from "../../serverTypes/serverTypes";
+import {ResponseTypeLogin} from "../../pages/api/login";
+import {saveLocalStorage} from "./rootFunction";
 
 export interface openRegisterActionType {
     type: ActionTypes.OPEN_WINDOW_REGISTER
@@ -133,8 +135,9 @@ export async function onSubmitForm (dispatch: (object: initUserType | closeRegis
             })
 
             if (response.status === 200 || response.status === 201) {
-                const responseData: userDto = await response.json()
+                const responseData: ResponseTypeLogin = await response.json()
                 loadingIndicator(dispatch, false)
+                saveLocalStorage('accessToken', responseData.accessToken)
                 dispatch({type: ActionTypes.INIT_USER, payload: responseData})
                 if (response.status === 201) {
                     errorHandlerServer(dispatch, {error: true, errorMassage: 'ссылка для активации отправленна на email'}, 'warning')
@@ -157,13 +160,13 @@ export async function onSubmitForm (dispatch: (object: initUserType | closeRegis
 /// ===================== инициализация пользователя SSR==========================
 
 export interface initUserType {
-    type: ActionTypes.INIT_USER | ActionTypes.LOADER_ON_OFF | ActionTypes.LOGIN_ERROR
+    type: ActionTypes.INIT_USER_SSR | ActionTypes.LOADER_ON_OFF | ActionTypes.LOGIN_ERROR | ActionTypes.INIT_USER
     payload: userDto | boolean | ErrorType
 }
 
 
 export const initUser = (userData: userDto) => (dispatch: (object: initUserType)=> void) => {
-    dispatch({type: ActionTypes.INIT_USER, payload: userData})
+    dispatch({type: ActionTypes.INIT_USER_SSR, payload: userData})
 }
 //*********************************************************************************************
 

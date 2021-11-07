@@ -1,8 +1,9 @@
 import {NextApiRequest, NextApiResponse} from "next"
 import User from '../../../models/mongoose/User'
 import {ErrorType} from "../../../serverTypes/serverTypes";
+import dbConnect from "../../../utils/dbConnect";
 
-
+dbConnect();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ErrorType>) {
 

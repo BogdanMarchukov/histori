@@ -16,8 +16,9 @@ export interface homePageState {
     passwordValue: string | null
     profileWindow: boolean
     loading: boolean
-    alert: alertObjectType,
+    alert: alertObjectType
     loadMini: boolean
+
 }
 
 export const initHomePage: homePageState = {
