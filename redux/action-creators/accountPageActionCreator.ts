@@ -22,7 +22,7 @@ export async function initAccount(dispatch: (object: initAccountActionType | upd
         const tokenData = await updateToken()
         if ('accessToken' in tokenData) { // токен успешно обнавлен данные о пользователе получены
             const {accessToken} = tokenData
-            saveLocalStorage('token', accessToken)
+            saveLocalStorage('accessToken', accessToken)
             updateUserReducer(dispatch, tokenData)
 
         }
