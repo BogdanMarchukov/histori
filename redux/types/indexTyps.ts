@@ -9,7 +9,12 @@ import {homePageState} from "../redusers/homePageReducer";
 import {testStateType} from "../redusers/testReducer";
 import {userState} from "../redusers/userReducer";
 import {ResponseTypeLogin} from "../../pages/api/login";
-import {initAccountActionType, updateUserReducerPayloadType} from "../action-creators/accountPageActionCreator";
+import {
+    initAccountActionType,
+    miniLoaderDispatchType, onOffEditorAccountModelDispatchType,
+    updateUserReducerPayloadType
+} from "../action-creators/accountPageActionCreator";
+import {accountPageReducer, accountPageReducerType} from "../redusers/accountPageReducer";
 
 
 
@@ -26,6 +31,8 @@ export type rootAction =
     | loginErrorType
     | initAccountActionType
     | updateUserReducerPayloadType
+    | miniLoaderDispatchType
+    |onOffEditorAccountModelDispatchType
 
 
 
@@ -33,6 +40,7 @@ export type rootState =
     | { homePageReducer: homePageState }
     | { testReducer: testStateType }
     | { userReducer: userState }
+    | { accountPageReducer: accountPageReducerType }
 
 export enum ActionTypes {
     OPEN_WINDOW_REGISTER = 'HOME_PAGE/OPEN_WINDOW_REGISTER',
@@ -47,9 +55,10 @@ export enum ActionTypes {
     RESET_LOGIN_ERROR = 'HOME_PAGE/RESET_LOGIN_ERROR',
     RESTART_STATE = 'HOME_PAGE/RESTART_STATE',
     SWITCHING_WINDOW_REGISTER = 'HOME_PAGE/SWITCHING_WINDOW_REGISTER',
-    UPDATE_TOKENS = 'ROOT_FUNCTION/UPDATE_TOKENS',
     INIT_ACCOUNT = 'ACCOUNT/INIT_ACCOUNT',
-    UPDATE_USER_REDUCER = 'ACCOUNT/UPDATE_USER_REDUCER'
+    UPDATE_USER_REDUCER = 'ACCOUNT/UPDATE_USER_REDUCER',
+    MIMI_LOADER_START_STOP = 'ACCOUNT/MIMI_LOADER_START_STOP',
+    OPEN_MODEL_WIDOW_EDIT_ACCOUNT = 'OPEN_MODEL_WIDOW_EDIT_ACCOUNT'
 
 }
 

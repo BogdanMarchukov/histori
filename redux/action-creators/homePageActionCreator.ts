@@ -1,6 +1,6 @@
 //=============== открытие окна регистрации
 import SimpleReactValidator from 'simple-react-validator';
-import {ActionTypes} from "../types/indexTyps";
+import {ActionTypes, rootAction} from "../types/indexTyps";
 import {userDto} from "../../models/UserHandler";
 import {ErrorType} from "../../serverTypes/serverTypes";
 import {ResponseTypeLogin} from "../../pages/api/login";
@@ -9,24 +9,11 @@ import {saveLocalStorage} from "./rootFunction";
 export interface openRegisterActionType {
     type: ActionTypes.OPEN_WINDOW_REGISTER
 }
-
+// открытие закрытие окна регистрации или логин===========================
 export function openRegisterWindow(dispatch: (object: openRegisterActionType) => void) {
     dispatch({type: ActionTypes.OPEN_WINDOW_REGISTER})
 }
 
-// export const serverRenderClock = (payload: any) => (dispatch:any) => {
-//     dispatch({
-//         type: 'TICK',
-//         payload
-//     })
-// }
-//
-// export const testTest = (payload: any) => (dispatch:any) => {
-//     dispatch({
-//             type: 'TEST',
-//         payload
-//     })
-// }
 
 // *****************************************************
 
@@ -176,8 +163,13 @@ export interface ShowProfileWindowType {
     payload: boolean
 }
 
-export const showProfileWindow = (dispatch: (object: ShowProfileWindowType)=>void, profileWindow: boolean) => {
-    dispatch({type: ActionTypes.OPEN_WINDOW_MINI_PROFILE, payload: !profileWindow})
+export const showProfileWindow = (dispatch: (object: rootAction)=>void, profileWindow: boolean, isActivation: boolean) => {
+    if (!profileWindow && !isActivation) {
+        errorHandlerServer(dispatch, {error: true, errorMassage: 'email не подтвержден'}, 'error')
+    } else {
+        dispatch({type: ActionTypes.OPEN_WINDOW_MINI_PROFILE, payload: !profileWindow})
+    }
+
 }
 //********************************************************************************************
 

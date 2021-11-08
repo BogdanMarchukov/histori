@@ -102,6 +102,10 @@ export const homePageReducer = (state = initHomePage, action: rootAction): homeP
             return {
                 ...state, registerTitle: action.payload
             }
+        case ActionTypes.MIMI_LOADER_START_STOP:
+            return {
+                ...state, loadMini: action.payload
+            }
         default:
             return state
     }

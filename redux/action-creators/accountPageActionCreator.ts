@@ -1,6 +1,6 @@
 import {getLocalStorage, saveLocalStorage, updateToken} from "./rootFunction";
 import {userDto} from "../../models/UserHandler";
-import {ActionTypes} from "../types/indexTyps";
+import {ActionTypes, rootAction} from "../types/indexTyps";
 import {updateUserReducerType} from "../../serverTypes/serverTypes";
 
 
@@ -10,8 +10,8 @@ export interface initAccountActionType {
     type: ActionTypes.INIT_ACCOUNT
     payload: userDto
 }
-
-export async function initAccount(dispatch: (object: initAccountActionType | updateUserReducerPayloadType)=> void) {
+export async function initAccount(dispatch: (object: rootAction)=> void) {
+    onOffMiniLoader(dispatch, true) // индикатор загрузки включен
     const response = await fetch('/api/init/account', {
         method: 'GET',
         headers: {
@@ -22,23 +22,26 @@ export async function initAccount(dispatch: (object: initAccountActionType | upd
         const tokenData = await updateToken()
         if ('accessToken' in tokenData) { // токен успешно обнавлен данные о пользователе получены
             const {accessToken} = tokenData
-            saveLocalStorage('accessToken', accessToken)
-            updateUserReducer(dispatch, tokenData)
-
+            saveLocalStorage('accessToken', accessToken) // токен сохраннен в localStorage
+            updateUserReducer(dispatch, tokenData) // state userReducer обновлен
+            onOffMiniLoader(dispatch, false) // индикатор загрузки выключен
         }
         if ('error' in tokenData) { // ошибка
 
             const {error, errorMassage} = tokenData
+            onOffMiniLoader(dispatch, false) // индикатор загрузки выключен
 
         }
         if ('redirect' in tokenData) { // refreshToken просрочен редирект на главную страницу
             const {redirect, patch} = tokenData
+            onOffMiniLoader(dispatch, false) // индикатор загрузки выключен
 
         }
     }
-    if (response.status === 200){
+    if (response.status === 200){  // access токен жив state обновлен
         const responseData: userDto = await response.json()
         dispatch({type: ActionTypes.INIT_ACCOUNT, payload: responseData})
+        onOffMiniLoader(dispatch, false) // индикатор загрузки выключен
     }
 
 }
@@ -56,3 +59,26 @@ export function updateUserReducer(dispatch: (object: updateUserReducerPayloadTyp
 }
 
 //******************************************************************************************
+
+// ===============================запуск мини loader=====================================
+
+export interface miniLoaderDispatchType {
+    type: ActionTypes.MIMI_LOADER_START_STOP
+    payload: boolean
+}
+
+export function onOffMiniLoader(dispatch: (object:miniLoaderDispatchType)=> void, stateLoader: boolean){
+    dispatch({type: ActionTypes.MIMI_LOADER_START_STOP, payload: stateLoader})
+}
+//===================================================================================================
+
+// =========================открытие закрытие окна редактирования профиля=============================
+
+export interface onOffEditorAccountModelDispatchType {
+    type: ActionTypes.OPEN_MODEL_WIDOW_EDIT_ACCOUNT
+    payload: boolean
+}
+
+export function onOffEditorAccountModel (dispatch: (object: onOffEditorAccountModelDispatchType)=> void, editAccountWindow: boolean) {
+    dispatch({type: ActionTypes.OPEN_MODEL_WIDOW_EDIT_ACCOUNT, payload: !editAccountWindow})
+}

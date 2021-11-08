@@ -64,6 +64,7 @@ const RegisterModel = (props: Props) => {
                             id="outlined-basic"
                             label="Email"
                             variant="outlined"
+                            autoComplete={"email"}
                         />
                         <TextField
                             onChange={event => props.validateRegisterForm(event.target.value, 'password')}

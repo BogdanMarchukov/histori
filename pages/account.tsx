@@ -4,7 +4,8 @@ import {connect} from "react-redux";
 import MiniNavigation from "../Components/MiniNavigation/MiniNavigation";
 import UserDataBlock from "../Components/UserDataBlock/UserDataBlock";
 import {Box} from "@mui/material";
-import {initAccount} from "../redux/action-creators/accountPageActionCreator";
+import {initAccount, onOffEditorAccountModel} from "../redux/action-creators/accountPageActionCreator";
+import EditorAccountModel from "../Components/EditorAccountModel/EditorAccountModel";
 
 type Props = {
     email: string | null
@@ -14,6 +15,8 @@ type Props = {
     surname: string | null
     tel: string | null
     initAccount: ()=> void
+    editAccountWindow: boolean
+    onOffEditorAccountModel:(editAccountWindow: boolean) => void
 }
 
 
@@ -28,8 +31,14 @@ const Account = (props: Props) => {
     return (
         <>
             <MiniNavigation/>
+            <EditorAccountModel
+                editAccountWindow={props.editAccountWindow}
+                onOffEditorAccountModel={props.onOffEditorAccountModel}
+            />
             <Box sx={{display: 'flex'}}>
                 <UserDataBlock
+                    editAccountWindow={props.editAccountWindow}
+                    onOffEditorAccountModel={props.onOffEditorAccountModel}
                     avatarSrc={props.avatarSrc}
                     email={props.email}
                     loadMini={props.loadMini}
@@ -50,13 +59,15 @@ function mapStateToProps(state: RootState) {
         loadMini: state.homePageReducer.loadMini,
         name: state.userReducer.userName,
         surname: state.userReducer.surname,
-        tel: state.userReducer.tel
+        tel: state.userReducer.tel,
+        editAccountWindow: state.accountPageReducer.editAccountWindow
     }
 }
 
 function mapDispatchToProps(dispatch: any) {
     return {
-        initAccount: ()=> dispatch(()=> initAccount(dispatch))
+        initAccount: ()=> dispatch(()=> initAccount(dispatch)),
+        onOffEditorAccountModel:(editAccountWindow: boolean) => dispatch(()=> onOffEditorAccountModel(dispatch, editAccountWindow))
     }
 }
 

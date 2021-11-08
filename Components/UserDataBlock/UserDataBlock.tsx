@@ -11,6 +11,8 @@ type Props = {
     name: string | null
     surname: string | null
     tel: string | null
+    onOffEditorAccountModel:(editAccountWindow: boolean) => void
+    editAccountWindow: boolean
 }
 
 const UserDataBlock = (props: Props) => {
@@ -79,6 +81,7 @@ const UserDataBlock = (props: Props) => {
                 top: '75px'
             }}
                     variant="outlined"
+                    onClick={()=> props.onOffEditorAccountModel(props.editAccountWindow)}
             >Редактировать профиль
             </Button>
         </div>

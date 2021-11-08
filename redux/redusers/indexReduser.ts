@@ -3,13 +3,15 @@ import {homePageReducer, initHomePage} from "./homePageReducer";
 import {HYDRATE} from "next-redux-wrapper";
 import {initTestReducer, testReducer} from "./testReducer";
 import {userReducer} from "./userReducer";
+import {accountPageReducer} from "./accountPageReducer";
 
 
 
 const rootReducer = combineReducers({
     homePageReducer,
     testReducer,
-    userReducer
+    userReducer,
+    accountPageReducer
 })
 
 

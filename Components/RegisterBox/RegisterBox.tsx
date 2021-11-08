@@ -13,6 +13,7 @@ interface userType {
     email: string | null
     accessToken: string | null
 
+
 }
 
 type Props = {
@@ -20,8 +21,9 @@ type Props = {
     srcImg: string | null
     user: userType
     show: boolean
-    showProfileWindow: (profileWindow: boolean) => void
+    showProfileWindow: (profileWindow: boolean, isActivation: boolean) => void
     logout: ()=> void
+    isActivation: boolean
 }
 
 const RegisterBox = (props: Props) => {
@@ -32,7 +34,7 @@ const RegisterBox = (props: Props) => {
     useEffect(()=> {
         if (show) {
             // @ts-ignore
-            setClassClose(<div onClick={()=> props.showProfileWindow(show)} className={classes.closeWin}/>)
+            setClassClose(<div onClick={()=> props.showProfileWindow(show, props.isActivation)} className={classes.closeWin}/>)
         }
         if (!show) {
             setClassClose(null)
@@ -57,6 +59,8 @@ const RegisterBox = (props: Props) => {
             return `${classes.box} ${classes.hide}`
         }
     }
+
+
 
 
 

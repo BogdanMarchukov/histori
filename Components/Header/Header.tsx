@@ -36,12 +36,13 @@ type Props = {
     password: string | null
     userName: string | null
     userEmail: string | null
-    showProfileWindow: (profileWindow: boolean) => void
+    showProfileWindow: (profileWindow: boolean, isActivation: boolean) => void
     profileWindow: boolean
     loading: boolean
     alert: alertObjectType
     logout: ()=> void
     switchingWindowRegister: (registerTitle: string)=> void
+    isActivation: boolean
 }
 
 const Header = (props: Props) => {
@@ -74,7 +75,7 @@ const Header = (props: Props) => {
                     <Grid item md={2} xl={1}>
                         <RegisterAvatar
                             nameBtn={props.registerTitle}
-                            showProfileWindow={() => props.showProfileWindow(props.profileWindow)}
+                            showProfileWindow={() => props.showProfileWindow(props.profileWindow, props.isActivation)}
                             openRegisterWindow={props.openRegisterWindow}
                             imgSrs={null}
                             email={props.userEmail}
@@ -91,6 +92,7 @@ const Header = (props: Props) => {
                 <h4>Право | Экономика</h4>
             </div>
             <RegisterBox
+                isActivation={props.isActivation}
                 logout={props.logout}
                 showProfileWindow={props.showProfileWindow}
                 show={props.profileWindow}
@@ -127,7 +129,8 @@ function mapStateToProps(state: RootState) {
         userEmail: state.userReducer.email,
         profileWindow: state.homePageReducer.profileWindow,
         loading: state.homePageReducer.loading,
-        alert: state.homePageReducer.alert
+        alert: state.homePageReducer.alert,
+        isActivation: state.userReducer.isActivation
     }
 
 }
@@ -137,7 +140,7 @@ function mapDispatchToProps(dispatch: any) {
         openRegisterWindow: () => dispatch(openRegisterWindow),
         validateRegisterForm: (inputValue: string, inputName: string) => dispatch(() => validateRegisterForm(dispatch, inputValue, inputName)),
         onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) => dispatch(() => onSubmitForm(dispatch, emailValid, passwordValid, email, password, registerTitle)),
-        showProfileWindow: (profileWindow: boolean) => dispatch(() => showProfileWindow(dispatch, profileWindow)),
+        showProfileWindow: (profileWindow: boolean, isActivation: boolean) => dispatch(() => showProfileWindow(dispatch, profileWindow, isActivation)),
         logout: () => dispatch(() => logout(dispatch)),
         switchingWindowRegister: (registerTitle: string)=> dispatch(()=> switchingWindowRegister(dispatch, registerTitle))
     }
