@@ -2,7 +2,9 @@ import React from 'react'
 import classes from './UserDataBlock.module.css'
 import {Avatar, Button, Grid} from '@mui/material'
 import Image from "next/image";
-import LoaderMini from "../LoaderMini/LoaderMini";
+import LoaderMini from "../LoaderMini/LoaderMini"
+import {FileEventTarget} from "../../redux/types/indexTyps";
+
 
 type Props = {
     avatarSrc: string | null
@@ -11,8 +13,9 @@ type Props = {
     name: string | null
     surname: string | null
     tel: string | null
-    onOffEditorAccountModel:(editAccountWindow: boolean) => void
+    onOffEditorAccountModel: (editAccountWindow: boolean) => void
     editAccountWindow: boolean
+    updateAvatar: (event: React.ChangeEvent<HTMLInputElement>)=> void
 }
 
 const UserDataBlock = (props: Props) => {
@@ -34,9 +37,14 @@ const UserDataBlock = (props: Props) => {
         }
     }
 
-
     return (
         <div className={classes.wrepper}>
+                <input
+                    onChange={(event)=> props.updateAvatar(event)}
+                    className={classes.hiddenInput}
+                    type={'file'}
+                    title={''}
+                />
             <Avatar sx={{
                 width: 120,
                 height: 120,
@@ -50,12 +58,13 @@ const UserDataBlock = (props: Props) => {
                             src={props.avatarSrc}
 
                             alt="Picture of the author"
-                            width={27}
-                            height={27}
+                            width={120}
+                            height={120}
                         />
                         : null
                 }
             </Avatar>
+
             <Grid container>
                 <Grid item xs={4}>
                     <div className={classes.nameData}>
@@ -81,7 +90,7 @@ const UserDataBlock = (props: Props) => {
                 top: '75px'
             }}
                     variant="outlined"
-                    onClick={()=> props.onOffEditorAccountModel(props.editAccountWindow)}
+                    onClick={() => props.onOffEditorAccountModel(props.editAccountWindow)}
             >Редактировать профиль
             </Button>
         </div>

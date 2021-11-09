@@ -15,7 +15,7 @@ import {
     updateUserReducerPayloadType
 } from "../action-creators/accountPageActionCreator";
 import {accountPageReducer, accountPageReducerType} from "../redusers/accountPageReducer";
-
+export type FileEventTarget = EventTarget & { files: FileList }
 
 
 export type rootAction =
@@ -32,7 +32,7 @@ export type rootAction =
     | initAccountActionType
     | updateUserReducerPayloadType
     | miniLoaderDispatchType
-    |onOffEditorAccountModelDispatchType
+    | onOffEditorAccountModelDispatchType
 
 
 

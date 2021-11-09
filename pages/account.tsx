@@ -4,8 +4,9 @@ import {connect} from "react-redux";
 import MiniNavigation from "../Components/MiniNavigation/MiniNavigation";
 import UserDataBlock from "../Components/UserDataBlock/UserDataBlock";
 import {Box} from "@mui/material";
-import {initAccount, onOffEditorAccountModel} from "../redux/action-creators/accountPageActionCreator";
+import {initAccount, onOffEditorAccountModel, updateAvatar} from "../redux/action-creators/accountPageActionCreator";
 import EditorAccountModel from "../Components/EditorAccountModel/EditorAccountModel";
+import {FileEventTarget} from "../redux/types/indexTyps";
 
 type Props = {
     email: string | null
@@ -17,6 +18,7 @@ type Props = {
     initAccount: ()=> void
     editAccountWindow: boolean
     onOffEditorAccountModel:(editAccountWindow: boolean) => void
+    updateAvatar: (event: React.ChangeEvent<HTMLInputElement>)=> void
 }
 
 
@@ -37,6 +39,7 @@ const Account = (props: Props) => {
             />
             <Box sx={{display: 'flex'}}>
                 <UserDataBlock
+                    updateAvatar={props.updateAvatar}
                     editAccountWindow={props.editAccountWindow}
                     onOffEditorAccountModel={props.onOffEditorAccountModel}
                     avatarSrc={props.avatarSrc}
@@ -67,7 +70,8 @@ function mapStateToProps(state: RootState) {
 function mapDispatchToProps(dispatch: any) {
     return {
         initAccount: ()=> dispatch(()=> initAccount(dispatch)),
-        onOffEditorAccountModel:(editAccountWindow: boolean) => dispatch(()=> onOffEditorAccountModel(dispatch, editAccountWindow))
+        onOffEditorAccountModel:(editAccountWindow: boolean) => dispatch(()=> onOffEditorAccountModel(dispatch, editAccountWindow)),
+        updateAvatar: (event: React.ChangeEvent<HTMLInputElement>)=> dispatch(()=> updateAvatar(dispatch, event))
     }
 }
 

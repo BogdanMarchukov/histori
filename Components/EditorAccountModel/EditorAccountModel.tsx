@@ -28,24 +28,30 @@ const EditorAccountModel = (props: Props) => {
                     left: "50%",
                     transform: "translate(-50%, -50%)",
                     width: 400,
-                    height: 350,
+                    height: 550,
                     bgcolor: "background.paper",
                     border: "2px solid #000",
                     boxShadow: 24,
                     p: 4
                 }}
+
                 >
+
                     <Box
                         sx={{
                             display: 'flex',
-                            height: 280,
+                            height: 400,
                             flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'space-between',
 
                         }}
                     >
+
                         <TextField
+                           sx={{
+                               width: '100%'
+                           }}
                             size={"small"}
                             label="Имя"
                             variant="outlined"
@@ -53,20 +59,23 @@ const EditorAccountModel = (props: Props) => {
 
                         />
                         <TextField
+                            sx={{
+                                width: '100%'
+                            }}
                             size={"small"}
                             label="Фамилия"
                             autoComplete="family"
                         />
                         <TextField
+                            sx={{
+                                width: '100%'
+                            }}
                             size={"small"}
                             label="Телефон"
                             autoComplete="tel"
                             variant="outlined"
                         />
-                        <Input
-                            type={'file'}
 
-                        />
                         <Button
 
                             variant="outlined"

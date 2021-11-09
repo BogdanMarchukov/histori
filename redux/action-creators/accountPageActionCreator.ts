@@ -1,7 +1,8 @@
-import {getLocalStorage, saveLocalStorage, updateToken} from "./rootFunction";
+import {getLocalStorage, saveLocalStorage, sendFile, updateToken} from "./rootFunction";
 import {userDto} from "../../models/UserHandler";
 import {ActionTypes, rootAction} from "../types/indexTyps";
 import {updateUserReducerType} from "../../serverTypes/serverTypes";
+import {log} from "util";
 
 
 //=================отправка GET запроса на получение данных об акаунте========================
@@ -10,7 +11,8 @@ export interface initAccountActionType {
     type: ActionTypes.INIT_ACCOUNT
     payload: userDto
 }
-export async function initAccount(dispatch: (object: rootAction)=> void) {
+
+export async function initAccount(dispatch: (object: rootAction) => void) {
     onOffMiniLoader(dispatch, true) // индикатор загрузки включен
     const response = await fetch('/api/init/account', {
         method: 'GET',
@@ -38,13 +40,14 @@ export async function initAccount(dispatch: (object: rootAction)=> void) {
 
         }
     }
-    if (response.status === 200){  // access токен жив state обновлен
+    if (response.status === 200) {  // access токен жив state обновлен
         const responseData: userDto = await response.json()
         dispatch({type: ActionTypes.INIT_ACCOUNT, payload: responseData})
         onOffMiniLoader(dispatch, false) // индикатор загрузки выключен
     }
 
 }
+
 // *******************************************************************************************
 
 // ==============================обновление userReducer =====================================
@@ -54,7 +57,7 @@ export interface updateUserReducerPayloadType {
     payload: updateUserReducerType
 }
 
-export function updateUserReducer(dispatch: (object: updateUserReducerPayloadType)=> void, userData: updateUserReducerType ) {
+export function updateUserReducer(dispatch: (object: updateUserReducerPayloadType) => void, userData: updateUserReducerType) {
     dispatch({type: ActionTypes.UPDATE_USER_REDUCER, payload: userData})
 }
 
@@ -67,9 +70,10 @@ export interface miniLoaderDispatchType {
     payload: boolean
 }
 
-export function onOffMiniLoader(dispatch: (object:miniLoaderDispatchType)=> void, stateLoader: boolean){
+export function onOffMiniLoader(dispatch: (object: miniLoaderDispatchType) => void, stateLoader: boolean) {
     dispatch({type: ActionTypes.MIMI_LOADER_START_STOP, payload: stateLoader})
 }
+
 //===================================================================================================
 
 // =========================открытие закрытие окна редактирования профиля=============================
@@ -79,6 +83,45 @@ export interface onOffEditorAccountModelDispatchType {
     payload: boolean
 }
 
-export function onOffEditorAccountModel (dispatch: (object: onOffEditorAccountModelDispatchType)=> void, editAccountWindow: boolean) {
+export function onOffEditorAccountModel(dispatch: (object: onOffEditorAccountModelDispatchType) => void, editAccountWindow: boolean) {
     dispatch({type: ActionTypes.OPEN_MODEL_WIDOW_EDIT_ACCOUNT, payload: !editAccountWindow})
+}
+
+//========================================================================================================
+
+//===================== отправка файла аватар на сервер=============================================
+
+                        /// перезапуск функции
+function restartUpdateAvatar(dispatch: (obj: rootAction) => void, event: React.ChangeEvent<HTMLInputElement>, data: any){
+    if ('accessToken' in data) { // перезапуск функции
+        updateAvatar(dispatch, event)
+    } else {
+        return null // todo ошибка
+    }
+}
+
+export async function updateAvatar(dispatch: (obj: rootAction) => void, event: React.ChangeEvent<HTMLInputElement>) {
+    // @ts-ignore
+    const file = event.target.files[0]
+    if (file) {
+        const token = getLocalStorage('accessToken')
+        if (!token) {
+            const responseToken = await updateToken() // если токена нет в storage тогда обновляем
+            restartUpdateAvatar(dispatch, event, responseToken) /// перезапуск функции или остановка
+
+        } else {
+            const response = await sendFile('/api/create/avatar', [file], ['userAvatar'], token)
+            if (response.status === 401) {
+                 const tokenData = await updateToken() // обновление токена
+                restartUpdateAvatar(dispatch, event, tokenData)
+
+            }
+            if (response.status === 200){
+                console.log(response, 'все ок!!!!!!!!!!')
+            }
+
+        }
+
+    }
+
 }

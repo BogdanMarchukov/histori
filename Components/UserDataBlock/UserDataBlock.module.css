@@ -23,3 +23,15 @@
     font-family: 'Roboto', sans-serif;
 
 }
+
+.hiddenInput {
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    top: 0;
+    left: 344px;
+    z-index: 100;
+    opacity: 0;
+    border-right: 60px;
+    cursor: pointer;
+}
