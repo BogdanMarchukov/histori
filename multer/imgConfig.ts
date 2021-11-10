@@ -1,17 +1,18 @@
-import path from "path";
+
 
 const multer = require('multer')
 
-const storage = multer.diskStorage({
+const imgStorage = multer.diskStorage({
     destination: function (req: any, file: any, cb: any) {
-        cb(null, path.join('public', 'img'))
+        cb(null, 'public/img')
     },
     filename: function (req:any, file:any, cb: any) {
         console.log(req.body.userId + 'avatar')
-        cb(null, 'dkskdskdk')
+        cb(null, 'dddddd')
     }
 })
-const imgStorage = storage
 
 export default imgStorage
+
+
 

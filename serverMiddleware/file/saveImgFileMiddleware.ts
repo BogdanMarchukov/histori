@@ -1,6 +1,7 @@
 import {NextApiRequest, NextApiResponse} from "next"
 
 
+
 const multer = require('multer')
 
 const storage = multer.diskStorage({
@@ -9,30 +10,28 @@ const storage = multer.diskStorage({
     },
     filename: function (req:any, file:any, cb: any) {
 
-        cb(null, 'avatar121212')
+        cb(null, file.fieldname)
     }
 })
 
-export function testMiddleware(req: NextApiRequest, res: NextApiResponse, next: any) {
-    req.body = {...req.body, test2: 'test2'}
-}
 
 
 
-export function saveImgFileMiddleware(req: NextApiRequest, res: NextApiResponse, next: any){
-    // const upload = multer({storage}).single('userAvatar')
-    // console.log(req.body)
-    // upload(req, res, (error: Error)=>{
-    //     if (error){
-    //         console.log(error)
-    //     }else {
-    //         console.log('файл сохранен')
-    //
-    //     }
-    //
-    // })
-    req.body = {...req.body, test: 'test'}
-    console.log('saveImgFileMiddleware')
+export async function saveImgFileMiddleware(req: NextApiRequest, res: NextApiResponse, next: any){
+    console.log(req, 'request')
+    return new Promise<any>((resolve, reject) => {
+        const upload = multer({storage}).single('userAvatar')
+        upload(req, res, (error: Error)=>{
+            if (error){
+                reject()
+                console.log(error)
+            }else {
+                resolve({saveFile: true, patch: ''})
+                console.log('файл сохранен')
 
+            }
+
+        })
+    })
 
 }

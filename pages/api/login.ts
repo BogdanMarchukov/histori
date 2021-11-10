@@ -1,24 +1,16 @@
 import {NextApiRequest, NextApiResponse} from "next"
 import {ErrorType, userType} from "../../serverTypes/serverTypes"
-import {userDto, UserHandler} from '../../models/UserHandler'
+import { UserHandler} from '../../models/UserHandler'
 import {TokenHandler} from "../../models/TokenHandler"
 import cookie from "cookie"
 import dbConnect from "../../utils/dbConnect";
-import testMiddleware from '../../serverMiddleware/testMiddleware'
 import {Schema} from "mongoose";
 const bcrypt = require('bcrypt')
 
 dbConnect();
 
 
-export default function initMiddleware(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === 'POST') {
-        testMiddleware(req, res, handlerNext)
-    } else {
-        res.status(405).json({error: true, errorMassage: 'Данный метод запрещен'})
-    }
 
-}
 export type ResponseTypeLogin = {
     _id: Schema.Types.ObjectId
     id: string
@@ -36,8 +28,8 @@ export type ResponseTypeLogin = {
     accessToken: string
 }
 
-async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType | ResponseTypeLogin>) {
-
+export default async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType | ResponseTypeLogin>) {
+    if (req.method === 'POST') {
         const {email, password}: {email: string, password: string} = req.body
         const user: userType = await UserHandler.searchByEmail(email) // поиск клиента на сервере
         if (user) {
@@ -72,5 +64,9 @@ async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType 
         } else {
             res.status(403).json({error: true, errorMassage: "Не верный логин или пароль"})
         }
+    } else {
+        res.status(405).json({error: true, errorMassage: 'Данный метод запрещен'})
+    }
+
 
 }

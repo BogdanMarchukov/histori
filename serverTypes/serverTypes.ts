@@ -48,3 +48,8 @@ export interface updateUserReducerType {
     __v: number
     _id: string
 }
+
+export interface saveFileType {
+    saveFile: boolean
+    patch: string
+}

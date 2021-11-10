@@ -15,8 +15,7 @@ export async function authorizationMiddleware(req: NextApiRequest, res: NextApiR
                 res.status(401).json({error: true, errorMassage: 'Токен не валидный'})
                 reject()
             } else {
-                const {payload} = token
-                req.body = {...req.body, userId: payload}
+                const {payload}:{payload: string} = token
                 resolve(payload)
             }
 
