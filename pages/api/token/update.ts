@@ -3,14 +3,18 @@ import {validateTokenMiddleware} from "../../../serverMiddleware/refreshToken/va
 import {ObjectId} from "mongodb";
 import {TokenHandler} from "../../../models/TokenHandler";
 import cookie from "cookie";
+import Cors from "cors";
+const cors = Cors({
+    methods: ['GET'],
+})
 
+ async function initMiddlewareUpdateToken(req: NextApiRequest, res: NextApiResponse) {
 
-export default async function initMiddlewareUpdateToken(req: NextApiRequest, res: NextApiResponse) {
-    await validateTokenMiddleware(req, res, handlerUpdateToken)
 
 }
 
-async function handlerUpdateToken(req: NextApiRequest, res: NextApiResponse) {
+export default async function handlerUpdateToken(req: NextApiRequest, res: NextApiResponse) {
+    await validateTokenMiddleware(req, res, cors)
     const {userId} = req.body
     const id = new ObjectId(userId)
     const tokenHandler = new TokenHandler(id)

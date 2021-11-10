@@ -4,7 +4,7 @@ import {TokenHandler} from "../../models/TokenHandler"
 
 
 
-export async function validateTokenMiddleware(req: NextApiRequest, res: NextApiResponse, next: (req: NextApiRequest, res: NextApiResponse) => void) {
+export async function validateTokenMiddleware(req: NextApiRequest, res: NextApiResponse, next: any) {
     const {token} = req.cookies
     if (token) {
         const payloadToken = await TokenHandler.decodedPayloadRefresh(token)
@@ -14,7 +14,7 @@ export async function validateTokenMiddleware(req: NextApiRequest, res: NextApiR
         } else {
             const {payload} = payloadToken
             req.body = {userId: payload}
-            next(req, res)
+            return true
         }
 
 

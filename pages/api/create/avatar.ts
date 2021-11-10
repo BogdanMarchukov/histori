@@ -1,13 +1,28 @@
 import {NextApiRequest, NextApiResponse} from "next"
 import {authorizationMiddleware} from "../../../serverMiddleware/authorizationMiddleware";
+import {saveImgFileMiddleware, testMiddleware} from "../../../serverMiddleware/file/saveImgFileMiddleware";
+import Cors from 'cors';
+
+const cors = Cors({
+    methods: ['GET', "POST"],
+})
 
 
-export default async function avatarInit(req: NextApiRequest, res: NextApiResponse){
-    await authorizationMiddleware(req, res, avatarHandler)
-}
 
 
-function avatarHandler(req: NextApiRequest, res: NextApiResponse) {
-    console.log(req.body.userId)
-    res.json({text: 'все ок'})
+
+export default async function avatarHandler(req: NextApiRequest, res: NextApiResponse) {
+    try {
+        await authorizationMiddleware(req, res, cors)
+        res.json({text: 'все ок'})
+    }
+    catch (e) {
+        console.log(e)
+    }
+
+
+
+    //console.log(req.body)
+
+
 }
