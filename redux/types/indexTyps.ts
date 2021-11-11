@@ -11,7 +11,7 @@ import {userState} from "../redusers/userReducer";
 import {ResponseTypeLogin} from "../../pages/api/login";
 import {
     initAccountActionType,
-    miniLoaderDispatchType, onOffEditorAccountModelDispatchType,
+    miniLoaderDispatchType, onOffEditorAccountModelDispatchType, saveAvatarType,
     updateUserReducerPayloadType
 } from "../action-creators/accountPageActionCreator";
 import {accountPageReducer, accountPageReducerType} from "../redusers/accountPageReducer";
@@ -33,6 +33,7 @@ export type rootAction =
     | updateUserReducerPayloadType
     | miniLoaderDispatchType
     | onOffEditorAccountModelDispatchType
+    | saveAvatarType
 
 
 
@@ -58,7 +59,8 @@ export enum ActionTypes {
     INIT_ACCOUNT = 'ACCOUNT/INIT_ACCOUNT',
     UPDATE_USER_REDUCER = 'ACCOUNT/UPDATE_USER_REDUCER',
     MIMI_LOADER_START_STOP = 'ACCOUNT/MIMI_LOADER_START_STOP',
-    OPEN_MODEL_WIDOW_EDIT_ACCOUNT = 'OPEN_MODEL_WIDOW_EDIT_ACCOUNT'
+    OPEN_MODEL_WIDOW_EDIT_ACCOUNT = 'OPEN_MODEL_WIDOW_EDIT_ACCOUNT',
+    SAVE_AVATAR = 'ACCOUNT/SAVE_AVATAR'
 
 }
 

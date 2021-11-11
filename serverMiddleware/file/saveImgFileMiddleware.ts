@@ -1,33 +1,21 @@
 import {NextApiRequest, NextApiResponse} from "next"
-
-
-
+import {TokenHandler} from '../../models/TokenHandler'
+import {multerStorage} from "../../multer/storege";
+import {any} from "prop-types";
 const multer = require('multer')
 
-const storage = multer.diskStorage({
-    destination: function (req: any, file: any, cb: any) {
-        cb(null, 'public/img')
-    },
-    filename: function (req:any, file:any, cb: any) {
-
-        cb(null, file.fieldname)
-    }
-})
+export async function saveImgFileMiddleware(req: any, res: NextApiResponse, next: any) {
 
 
-
-
-export async function saveImgFileMiddleware(req: NextApiRequest, res: NextApiResponse, next: any){
-    console.log(req, 'request')
-    return new Promise<any>((resolve, reject) => {
-        const upload = multer({storage}).single('userAvatar')
-        upload(req, res, (error: Error)=>{
-            if (error){
-                reject()
-                console.log(error)
-            }else {
-                resolve({saveFile: true, patch: ''})
-                console.log('файл сохранен')
+    return new Promise<any>(async (resolve, reject) => {
+        const {token} = req.cookies
+        const {payload} = await TokenHandler.decodedPayloadRefresh(token)
+        const upload = multer({storage: multerStorage('public/img/avatar', payload)}).single('userAvatar')
+        upload(req, res, (error: Error) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve({userId: payload, patch: req.file.path})
 
             }
 

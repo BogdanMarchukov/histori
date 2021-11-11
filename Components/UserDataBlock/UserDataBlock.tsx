@@ -53,11 +53,9 @@ const UserDataBlock = (props: Props) => {
                 left: '344px'
             }} alt="Гость">
                 {
-                    props.avatarSrc ?
+                    props.avatarSrc ? // todo изменить путь
                         <Image
                             src={props.avatarSrc}
-
-                            alt="Picture of the author"
                             width={120}
                             height={120}
                         />

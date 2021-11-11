@@ -106,6 +106,10 @@ export const homePageReducer = (state = initHomePage, action: rootAction): homeP
             return {
                 ...state, loadMini: action.payload
             }
+        case ActionTypes.SAVE_AVATAR:
+            return {
+                ...state, pathAvatar: action.payload
+            }
         default:
             return state
     }

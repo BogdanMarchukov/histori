@@ -2,7 +2,6 @@ import {getLocalStorage, saveLocalStorage, sendFile, updateToken} from "./rootFu
 import {userDto} from "../../models/UserHandler";
 import {ActionTypes, rootAction} from "../types/indexTyps";
 import {updateUserReducerType} from "../../serverTypes/serverTypes";
-import {log} from "util";
 
 
 //=================отправка GET запроса на получение данных об акаунте========================
@@ -99,8 +98,13 @@ function restartUpdateAvatar(dispatch: (obj: rootAction) => void, event: React.C
         return null // todo ошибка
     }
 }
+export interface saveAvatarType {
+    type: ActionTypes.SAVE_AVATAR
+    payload: string
+}
 
 export async function updateAvatar(dispatch: (obj: rootAction) => void, event: React.ChangeEvent<HTMLInputElement>) {
+
     // @ts-ignore
     const file = event.target.files[0]
     if (file) {
@@ -117,7 +121,11 @@ export async function updateAvatar(dispatch: (obj: rootAction) => void, event: R
 
             }
             if (response.status === 200){
-                console.log(response, 'все ок!!!!!!!!!!')
+               const responseData = await response.json()
+                const reg = /\\/gi
+                const newStr = responseData.patch.replace(reg, '/') // делаем путь валидным
+                const validUrlImg = newStr.replace('public/', '/')
+                dispatch({type: ActionTypes.SAVE_AVATAR, payload: validUrlImg})
             }
 
         }

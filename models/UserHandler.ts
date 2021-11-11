@@ -3,6 +3,7 @@ const uuid = require('uuid')
 const User = require('../models/mongoose/User')
 const bcrypt = require('bcrypt')
 import {Schema} from 'mongoose'
+import dbConnect from "../utils/dbConnect";
 
 export type userDto = {
     _id: Schema.Types.ObjectId
@@ -69,6 +70,7 @@ class UserHandler {
 
 
     static async createUser(email: string, password: string, role: string[]){ // создание нового пользователя
+
         const hashPassword = await bcrypt.hash(password, 3)
         const newUser = new User({
             email,

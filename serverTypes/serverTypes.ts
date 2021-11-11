@@ -50,6 +50,17 @@ export interface updateUserReducerType {
 }
 
 export interface saveFileType {
-    saveFile: boolean
+    userId: string
     patch: string
+}
+
+export interface statusFile {
+    saveResult: boolean
+    patch: string
+}
+
+export interface mongoAvatarType {
+    _id: Schema.Types.ObjectId
+    avatarPath: string
+    __v: number
 }
