@@ -1,5 +1,5 @@
 
-import {ErrorType, RedirectType, updateUserReducerType} from "../../serverTypes/serverTypes";
+import {ErrorType, initAccountDto, RedirectType, updateUserReducerType} from "../../serverTypes/serverTypes";
 
 
 // ====================сохранение данных в LocalStorage==================
@@ -46,7 +46,7 @@ export async function updateToken() {
     }
 }
 //===============проверка токена на наличие в ответе и сохранение в LocalStorage=====================
-const  success = async <T extends Response> (response: T): Promise<updateUserReducerType| ErrorType>   => {
+const  success = async <T extends Response> (response: T): Promise<initAccountDto| ErrorType>   => {
     const data = await response.json()
     if ('accessToken' in data) { // елси все хорошо то сохраняем в LocalStorage и снова вызываем функцию
         const {accessToken} = data

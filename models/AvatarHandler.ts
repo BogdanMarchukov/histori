@@ -3,12 +3,17 @@ import dbConnect from "../utils/dbConnect";
 import {mongoAvatarType} from "../serverTypes/serverTypes";
 const Avatar = require('../models/mongoose/Avatar')
 
+export interface avatarDtoType {
+    avatarId: string
+    pathAvatar: string
+}
 
 
 class AvatarHandler {
     constructor(
-        public avatarId: string,
-        public pathAvatar: string,
+        public mongoAvatar?: mongoAvatarType,
+        public avatarId?: string,
+        public pathAvatar?: string,
         public _id = new ObjectId(avatarId)
     ) {}
 
@@ -36,9 +41,22 @@ class AvatarHandler {
 
         })
     }
+    //****************************************************************************************
 
+        // получение данных Avatar из БД======================
+     static async gerAvatar(id: string):Promise<mongoAvatarType> {
+        return await Avatar.findById(new ObjectId(id))
+    }
+//====================================== вывод данных===========================
+    avatarDto(): avatarDtoType{
+            return {
+                avatarId: this.mongoAvatar?._id.valueOf().toString() ?? '',
+                pathAvatar: this.mongoAvatar?.avatarPath ?? ''
+            }
+    }
 
 }
+//******************************************************************************
 
 
 export {AvatarHandler}

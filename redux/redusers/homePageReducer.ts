@@ -49,6 +49,26 @@ export const homePageReducer = (state = initHomePage, action: rootAction): homeP
                 validateEmail: initHomePage.validateEmail,
                 registerTitle: initHomePage.registerTitle
             }
+        case ActionTypes.INIT_USER_SSR:
+            return {
+                ...state,
+                pathAvatar: action.payload.pathAvatar
+            }
+        case ActionTypes.INIT_USER:
+            return {
+                ...state,
+                pathAvatar: action.payload.pathAvatar
+            }
+        case ActionTypes.INIT_ACCOUNT:
+            return {
+                ...state,
+                pathAvatar: action.payload.pathAvatar
+            }
+        case ActionTypes.UPDATE_USER_REDUCER:
+            return {
+                ...state,
+                pathAvatar: action.payload.pathAvatar
+            }
         case ActionTypes.REGISTER_INPUT_EMAIL_VALIDATION:
             return {
                 ...state,

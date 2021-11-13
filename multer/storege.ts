@@ -1,7 +1,8 @@
 const multer = require('multer')
 
 export function multerStorage<T extends string>(pathName: T, userId: T) {
-    return multer.diskStorage({
+    return{
+        configStorage: multer.diskStorage({
             destination: function (req: any, file: any, cb: any) {
                 cb(null, pathName)
             },
@@ -10,5 +11,6 @@ export function multerStorage<T extends string>(pathName: T, userId: T) {
                 cb(null, `${userId}.${extension[extension.length - 1]}`)
             }
         })
+    }
 
 }

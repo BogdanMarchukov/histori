@@ -3,7 +3,7 @@ import classes from './Alert.module.css'
 import {Alert} from '@mui/material'
 
 
-interface alertObjectType {
+export interface alertObjectType {
     alertType: 'error'
     alertMassage: string | null
     alertStart: boolean

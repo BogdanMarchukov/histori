@@ -2,9 +2,10 @@
 import SimpleReactValidator from 'simple-react-validator';
 import {ActionTypes, rootAction} from "../types/indexTyps";
 import {userDto} from "../../models/UserHandler";
-import {ErrorType} from "../../serverTypes/serverTypes";
+import {ErrorType, initAccountDto} from "../../serverTypes/serverTypes";
 import {ResponseTypeLogin} from "../../pages/api/login";
 import {saveLocalStorage} from "./rootFunction";
+import {avatarDtoType} from "../../models/AvatarHandler";
 
 export interface openRegisterActionType {
     type: ActionTypes.OPEN_WINDOW_REGISTER
@@ -90,7 +91,7 @@ interface errorLogin {
     errorMassage: string
     alertType: string
 }
-function errorHandlerServer(dispatch: (object: errorInitType | loginErrorType)=> void, responseError: ErrorType, errorType: string ){
+export function errorHandlerServer(dispatch: (object: errorInitType | loginErrorType)=> void, responseError: ErrorType, errorType: string ){
     dispatch({type: ActionTypes.LOGIN_ERROR, payload: {error: responseError.error, errorMassage: responseError.errorMassage, alertType: errorType}})
     setTimeout(()=> dispatch({type: ActionTypes.RESET_LOGIN_ERROR}), 4000)
 }
@@ -104,7 +105,7 @@ export interface closeRegisterWindow {
 }
 
 
-export async function onSubmitForm (dispatch: (object: initUserType | closeRegisterWindow | loginErrorType | ErrorType )=> void, emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) {
+export async function onSubmitForm (dispatch: (object: rootAction )=> void, emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) {
     let url = 'login'
         if (!emailValid && !passwordValid) {
             if (registerTitle === 'регистрация') {
@@ -122,7 +123,7 @@ export async function onSubmitForm (dispatch: (object: initUserType | closeRegis
             })
 
             if (response.status === 200 || response.status === 201) {
-                const responseData: ResponseTypeLogin = await response.json()
+                const responseData: initAccountDto = await response.json()
                 loadingIndicator(dispatch, false)
                 saveLocalStorage('accessToken', responseData.accessToken)
                 dispatch({type: ActionTypes.INIT_USER, payload: responseData})
@@ -148,11 +149,12 @@ export async function onSubmitForm (dispatch: (object: initUserType | closeRegis
 
 export interface initUserType {
     type: ActionTypes.INIT_USER_SSR | ActionTypes.LOADER_ON_OFF | ActionTypes.LOGIN_ERROR | ActionTypes.INIT_USER
-    payload: userDto | boolean | ErrorType
+    payload: userDto & avatarDtoType
 }
 
 
-export const initUser = (userData: userDto) => (dispatch: (object: initUserType)=> void) => {
+export const initUser = <T extends userDto & avatarDtoType>(userData: T ) => (dispatch: (object: initUserType)=> void) => {
+    console.log(userData, 'initUser111111')
     dispatch({type: ActionTypes.INIT_USER_SSR, payload: userData})
 }
 //*********************************************************************************************

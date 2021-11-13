@@ -2,7 +2,8 @@ import {NextApiRequest, NextApiResponse} from "next"
 import dbConnect from "../../../utils/dbConnect";
 import {TokenHandler} from '../../../models/TokenHandler'
 import {UserHandler} from '../../../models/UserHandler'
-import {userType} from "../../../serverTypes/serverTypes";
+import {mongoAvatarType, userType} from "../../../serverTypes/serverTypes";
+import {AvatarHandler} from "../../../models/AvatarHandler";
 
 dbConnect();
 
@@ -21,7 +22,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse){
         const {_id} = mongoToken
         const userMongo:userType = await UserHandler.searchByEmail(null, _id)
         const userHandler = new UserHandler(userMongo)
-        res.status(200).json(JSON.stringify(userHandler.userDto()))
+        const avatarMongo: mongoAvatarType  = await AvatarHandler.gerAvatar(_id)
+        if (avatarMongo){
+            const avatarHandler = new AvatarHandler(avatarMongo)
+            res.status(200).json(JSON.stringify({...userHandler.userDto(), ...avatarHandler.avatarDto()}))
+        } else {
+            res.status(200).json(JSON.stringify({...userHandler.userDto()}))
+
+        }
 
     } else {
         res.status(403).json({error: true, errorMassage: 'Пользователь не найден'})

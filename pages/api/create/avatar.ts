@@ -22,7 +22,7 @@ export default async function avatarHandler(req: NextApiRequest, res: NextApiRes
          const userId: string = await authorizationMiddleware(req, res, cors)
         try {
             const pathName: saveFileType = await saveImgFileMiddleware(req, res, cors)
-            const avatarHandler = new AvatarHandler(pathName.userId, pathName.patch)
+            const avatarHandler = new AvatarHandler(undefined, pathName.userId, pathName.patch)
             try {
                 const newAvatar: mongoAvatarType = await avatarHandler.saveAvatar()
 
@@ -31,9 +31,11 @@ export default async function avatarHandler(req: NextApiRequest, res: NextApiRes
                
             } catch (e) {
                 console.log(e, 'error тут')
+                res.status(415)
                 res.json({error: true, errorMassage: 'Ошибка сохранения!'})
             }
         } catch (e) {
+             res.status(415)
             res.json({error: true, errorMassage: 'Ошибка сохранения!'})
         }
 

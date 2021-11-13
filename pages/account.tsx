@@ -7,6 +7,7 @@ import {Box} from "@mui/material";
 import {initAccount, onOffEditorAccountModel, updateAvatar} from "../redux/action-creators/accountPageActionCreator";
 import EditorAccountModel from "../Components/EditorAccountModel/EditorAccountModel";
 import {FileEventTarget} from "../redux/types/indexTyps";
+import AlertCustomize, {alertObjectType} from "../Components/AlertCustomize/AlertCustomize";
 
 type Props = {
     email: string | null
@@ -19,6 +20,7 @@ type Props = {
     editAccountWindow: boolean
     onOffEditorAccountModel:(editAccountWindow: boolean) => void
     updateAvatar: (event: React.ChangeEvent<HTMLInputElement>)=> void
+    alert: alertObjectType
 }
 
 
@@ -37,6 +39,7 @@ const Account = (props: Props) => {
                 editAccountWindow={props.editAccountWindow}
                 onOffEditorAccountModel={props.onOffEditorAccountModel}
             />
+            <AlertCustomize alert={props.alert}/>
             <Box sx={{display: 'flex'}}>
                 <UserDataBlock
                     updateAvatar={props.updateAvatar}
@@ -63,7 +66,8 @@ function mapStateToProps(state: RootState) {
         name: state.userReducer.userName,
         surname: state.userReducer.surname,
         tel: state.userReducer.tel,
-        editAccountWindow: state.accountPageReducer.editAccountWindow
+        editAccountWindow: state.accountPageReducer.editAccountWindow,
+        alert: state.homePageReducer.alert
     }
 }
 

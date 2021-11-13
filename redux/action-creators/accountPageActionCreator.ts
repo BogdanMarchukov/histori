@@ -1,14 +1,15 @@
 import {getLocalStorage, saveLocalStorage, sendFile, updateToken} from "./rootFunction";
 import {userDto} from "../../models/UserHandler";
 import {ActionTypes, rootAction} from "../types/indexTyps";
-import {updateUserReducerType} from "../../serverTypes/serverTypes";
+import {ErrorType, initAccountDto, RedirectType, updateUserReducerType} from "../../serverTypes/serverTypes";
+import {errorHandlerServer} from "./homePageActionCreator";
 
 
 //=================отправка GET запроса на получение данных об акаунте========================
 
 export interface initAccountActionType {
     type: ActionTypes.INIT_ACCOUNT
-    payload: userDto
+    payload: initAccountDto
 }
 
 export async function initAccount(dispatch: (object: rootAction) => void) {
@@ -20,12 +21,14 @@ export async function initAccount(dispatch: (object: rootAction) => void) {
         }
     })
     if (response.status === 401) {
-        const tokenData = await updateToken()
+        const tokenData: initAccountDto | RedirectType | ErrorType = await updateToken()
+        console.log(tokenData, 'tokenData')
         if ('accessToken' in tokenData) { // токен успешно обнавлен данные о пользователе получены
             const {accessToken} = tokenData
             saveLocalStorage('accessToken', accessToken) // токен сохраннен в localStorage
-            updateUserReducer(dispatch, tokenData) // state userReducer обновлен
+            updateReducers(dispatch, tokenData) // state userReducer обновлен
             onOffMiniLoader(dispatch, false) // индикатор загрузки выключен
+
         }
         if ('error' in tokenData) { // ошибка
 
@@ -40,7 +43,7 @@ export async function initAccount(dispatch: (object: rootAction) => void) {
         }
     }
     if (response.status === 200) {  // access токен жив state обновлен
-        const responseData: userDto = await response.json()
+        const responseData: initAccountDto = await response.json()
         dispatch({type: ActionTypes.INIT_ACCOUNT, payload: responseData})
         onOffMiniLoader(dispatch, false) // индикатор загрузки выключен
     }
@@ -52,11 +55,12 @@ export async function initAccount(dispatch: (object: rootAction) => void) {
 // ==============================обновление userReducer =====================================
 
 export interface updateUserReducerPayloadType {
-    type: ActionTypes.UPDATE_USER_REDUCER,
-    payload: updateUserReducerType
+    type: ActionTypes.UPDATE_USER_REDUCER
+    payload: initAccountDto
 }
 
-export function updateUserReducer(dispatch: (object: updateUserReducerPayloadType) => void, userData: updateUserReducerType) {
+export function updateReducers(dispatch: (object: updateUserReducerPayloadType) => void, userData: initAccountDto) {
+    console.log(userData)
     dispatch({type: ActionTypes.UPDATE_USER_REDUCER, payload: userData})
 }
 
@@ -122,10 +126,13 @@ export async function updateAvatar(dispatch: (obj: rootAction) => void, event: R
             }
             if (response.status === 200){
                const responseData = await response.json()
-                const reg = /\\/gi
-                const newStr = responseData.patch.replace(reg, '/') // делаем путь валидным
-                const validUrlImg = newStr.replace('public/', '/')
+                const {patch} = responseData
+                console.log(responseData)
+                const validUrlImg = patch.replace('public/', '/')
                 dispatch({type: ActionTypes.SAVE_AVATAR, payload: validUrlImg})
+            }
+            if (response.status === 415) {
+                errorHandlerServer(dispatch, {error: true, errorMassage: 'Неверный фармат или размер файла привышыет 10mb'}, 'error')
             }
 
         }

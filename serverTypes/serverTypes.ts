@@ -1,4 +1,7 @@
 import {Schema} from 'mongoose'
+import {userDto} from "../models/UserHandler";
+import {avatarDtoType} from "../models/AvatarHandler";
+import {tokenDtoType} from "../models/TokenHandler";
 
 export interface userType {
     _id: Schema.Types.ObjectId
@@ -64,3 +67,5 @@ export interface mongoAvatarType {
     avatarPath: string
     __v: number
 }
+
+export type initAccountDto = userDto & avatarDtoType & tokenDtoType
