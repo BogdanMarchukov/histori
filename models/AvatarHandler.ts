@@ -1,6 +1,7 @@
 import {ObjectId} from 'mongodb'
 import dbConnect from "../utils/dbConnect";
 import {mongoAvatarType} from "../serverTypes/serverTypes";
+import {FileHandler} from "./FileHandler";
 const Avatar = require('../models/mongoose/Avatar')
 
 export interface avatarDtoType {
@@ -23,8 +24,12 @@ class AvatarHandler {
 
             const mongoAvatar = await Avatar.findById(this._id)
             if (mongoAvatar) {
+                const fileHandler = new FileHandler({path: mongoAvatar.avatarPath})
                 mongoAvatar.avatarPath = this.pathAvatar
                 const newAvatar:mongoAvatarType = await mongoAvatar.save()
+                fileHandler.removeFile()
+                    .then((data)=> console.log('Файл аватар удален', data))
+                    .catch((err)=> console.log('Ошибка удаления файла аватар', err))
                 resolve(newAvatar)
             } else {
                 const avatar = new Avatar({

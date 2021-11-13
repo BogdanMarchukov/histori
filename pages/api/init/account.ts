@@ -23,7 +23,7 @@ export default async function handlerInitUser(req: NextApiRequest, res: NextApiR
         const userHandler = new UserHandler(userDb)
         const avatar = await AvatarHandler.gerAvatar(userHandler.id)
         const avatarHandler = new AvatarHandler(avatar)
-        const responseData: initAccountDto = {
+        const responseData: any = {
             ...userHandler.userDto(),
             ...avatarHandler.avatarDto()
         }

@@ -20,6 +20,8 @@ type Props = {
 
 const UserDataBlock = (props: Props) => {
 
+    console.log(props.avatarSrc)
+
     const content = (loadMini: boolean, contentText: string | null) => {
         if (loadMini) {
             return (
@@ -55,7 +57,8 @@ const UserDataBlock = (props: Props) => {
                 {
                     props.avatarSrc ? // todo изменить путь
                         <Image
-                            src={props.avatarSrc}
+                            alt={''}
+                            src={`/api/img/avatar?path=${props.avatarSrc}`}
                             width={120}
                             height={120}
                         />
