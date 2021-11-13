@@ -13,7 +13,8 @@ class FileHandler{
     //==================удаление файла======================================
     removeFile(): Promise<boolean>{
         return new Promise(((resolve, reject) => {
-            fs.rm(path.join(__dirname, '/public', this.file.path), (err:Error)=> {
+            const rmPath = path.join(__dirname, process.env.DELETE_AVATAR_PATCH)
+            fs.rm(path.join(rmPath, this.file.path), (err:Error)=> {
                 if (err) {
                     reject(err)
 
