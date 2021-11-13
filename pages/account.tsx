@@ -8,6 +8,7 @@ import {initAccount, onOffEditorAccountModel, updateAvatar} from "../redux/actio
 import EditorAccountModel from "../Components/EditorAccountModel/EditorAccountModel";
 import {FileEventTarget} from "../redux/types/indexTyps";
 import AlertCustomize, {alertObjectType} from "../Components/AlertCustomize/AlertCustomize";
+import Loader from "../Components/Loader/Loader";
 
 type Props = {
     email: string | null
@@ -21,6 +22,7 @@ type Props = {
     onOffEditorAccountModel:(editAccountWindow: boolean) => void
     updateAvatar: (event: React.ChangeEvent<HTMLInputElement>)=> void
     alert: alertObjectType
+    loading: boolean
 }
 
 
@@ -35,6 +37,7 @@ const Account = (props: Props) => {
     return (
         <>
             <MiniNavigation/>
+            <Loader loading={props.loading}/>
             <EditorAccountModel
                 editAccountWindow={props.editAccountWindow}
                 onOffEditorAccountModel={props.onOffEditorAccountModel}
@@ -67,7 +70,8 @@ function mapStateToProps(state: RootState) {
         surname: state.userReducer.surname,
         tel: state.userReducer.tel,
         editAccountWindow: state.accountPageReducer.editAccountWindow,
-        alert: state.homePageReducer.alert
+        alert: state.homePageReducer.alert,
+        loading: state.homePageReducer.loading,
     }
 }
 

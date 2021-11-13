@@ -2,7 +2,7 @@ import {getLocalStorage, saveLocalStorage, sendFile, updateToken} from "./rootFu
 import {userDto} from "../../models/UserHandler";
 import {ActionTypes, rootAction} from "../types/indexTyps";
 import {ErrorType, initAccountDto, RedirectType, updateUserReducerType} from "../../serverTypes/serverTypes";
-import {errorHandlerServer} from "./homePageActionCreator";
+import {errorHandlerServer, loadingIndicator} from "./homePageActionCreator";
 
 
 //=================отправка GET запроса на получение данных об акаунте========================
@@ -108,7 +108,7 @@ export interface saveAvatarType {
 }
 
 export async function updateAvatar(dispatch: (obj: rootAction) => void, event: React.ChangeEvent<HTMLInputElement>) {
-
+    loadingIndicator(dispatch, true)
     // @ts-ignore
     const file = event.target.files[0]
     if (file) {
@@ -125,6 +125,7 @@ export async function updateAvatar(dispatch: (obj: rootAction) => void, event: R
 
             }
             if (response.status === 200){
+                loadingIndicator(dispatch, false)
                const responseData = await response.json()
                 const {patch} = responseData
                 console.log(responseData)
@@ -132,6 +133,7 @@ export async function updateAvatar(dispatch: (obj: rootAction) => void, event: R
                 dispatch({type: ActionTypes.SAVE_AVATAR, payload: validUrlImg})
             }
             if (response.status === 415) {
+                loadingIndicator(dispatch, false)
                 errorHandlerServer(dispatch, {error: true, errorMassage: 'Неверный фармат или размер файла привышыет 10mb'}, 'error')
             }
 
