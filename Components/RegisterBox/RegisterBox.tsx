@@ -18,7 +18,7 @@ interface userType {
 
 type Props = {
     auth: boolean
-    srcImg: string | null
+    avatarSrc: string | null
     user: userType
     show: boolean
     showProfileWindow: (profileWindow: boolean, isActivation: boolean) => void
@@ -28,7 +28,7 @@ type Props = {
 
 const RegisterBox = (props: Props) => {
     const {show} = props
-
+    const pathAvatar = process.env.NEXT_PUBLIC_IMG_AVATAR_PATCH
     const [classClose, setClassClose] = useState(null)
 
     useEffect(()=> {
@@ -79,12 +79,12 @@ const RegisterBox = (props: Props) => {
                     top: '84px'
                 }} alt="Гость">
                     {
-                        props.srcImg ?
+                        props.avatarSrc ?
                             <Image
-                                src={props.srcImg}
+                                src={`${pathAvatar}${props.avatarSrc}`}
                                 alt="Picture of the author"
-                                width={65}
-                                height={60}
+                                width={80}
+                                height={80}
                             />
                             : userName(props.user?.name ?? null, props.user?.email ?? null)
                     }

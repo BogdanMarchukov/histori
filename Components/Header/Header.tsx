@@ -43,6 +43,7 @@ type Props = {
     logout: ()=> void
     switchingWindowRegister: (registerTitle: string)=> void
     isActivation: boolean
+    avatarSrc: string | null
 }
 
 const Header = (props: Props) => {
@@ -77,7 +78,7 @@ const Header = (props: Props) => {
                             nameBtn={props.registerTitle}
                             showProfileWindow={() => props.showProfileWindow(props.profileWindow, props.isActivation)}
                             openRegisterWindow={props.openRegisterWindow}
-                            imgSrs={null}
+                            avatarSrc={props.avatarSrc}
                             email={props.userEmail}
                         />
                     </Grid>
@@ -97,7 +98,7 @@ const Header = (props: Props) => {
                 showProfileWindow={props.showProfileWindow}
                 show={props.profileWindow}
                 auth={false}
-                srcImg={null}
+                avatarSrc={props.avatarSrc}
                 user={{name: props.userName, email: props.userEmail, surname: null, accessToken: null}}
             />
 
@@ -130,7 +131,8 @@ function mapStateToProps(state: RootState) {
         profileWindow: state.homePageReducer.profileWindow,
         loading: state.homePageReducer.loading,
         alert: state.homePageReducer.alert,
-        isActivation: state.userReducer.isActivation
+        isActivation: state.userReducer.isActivation,
+        avatarSrc: state.homePageReducer.pathAvatar
     }
 
 }

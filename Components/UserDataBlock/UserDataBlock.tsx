@@ -4,6 +4,7 @@ import {Avatar, Button, Grid} from '@mui/material'
 import Image from "next/image";
 import LoaderMini from "../LoaderMini/LoaderMini"
 import {FileEventTarget} from "../../redux/types/indexTyps";
+import * as Process from "process";
 
 
 type Props = {
@@ -19,8 +20,8 @@ type Props = {
 }
 
 const UserDataBlock = (props: Props) => {
+    const pathAvatar = process.env.NEXT_PUBLIC_IMG_AVATAR_PATCH
 
-    console.log(props.avatarSrc)
 
     const content = (loadMini: boolean, contentText: string | null) => {
         if (loadMini) {
@@ -58,7 +59,7 @@ const UserDataBlock = (props: Props) => {
                     props.avatarSrc ? // todo изменить путь
                         <Image
                             alt={''}
-                            src={`/api/img/avatar?path=${props.avatarSrc}`}
+                            src={`${pathAvatar}${props.avatarSrc}`}
                             width={120}
                             height={120}
                         />

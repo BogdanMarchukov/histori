@@ -3,7 +3,7 @@ import Image from "next/image";
 import {Avatar, Button} from "@mui/material";
 
 type Props = {
-    imgSrs: string | null
+    avatarSrc: string | null
     email: string | null
     openRegisterWindow: () => void
     showProfileWindow: ()=> void
@@ -11,7 +11,7 @@ type Props = {
 }
 
 const RegisterAvatar = (props: Props) => {
-
+    const pathAvatar = process.env.NEXT_PUBLIC_IMG_AVATAR_PATCH
 
 
     return (
@@ -20,9 +20,9 @@ const RegisterAvatar = (props: Props) => {
                 props.email ?
                         <Avatar onClick={props.showProfileWindow} sx={{width: 27, height: 27}} alt="Гость">
                             {
-                                props.imgSrs ?
+                                props.avatarSrc ?
                                     <Image
-                                        src={props.imgSrs}
+                                        src={`${pathAvatar}${props.avatarSrc}`}
                                         alt="Picture of the author"
                                         width={27}
                                         height={27}
