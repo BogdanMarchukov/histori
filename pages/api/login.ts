@@ -1,10 +1,11 @@
 import {NextApiRequest, NextApiResponse} from "next"
-import {ErrorType, userType} from "../../serverTypes/serverTypes"
-import { UserHandler} from '../../models/UserHandler'
-import {TokenHandler} from "../../models/TokenHandler"
+import {ErrorType, initAccountDto, userType} from "../../serverTypes/serverTypes"
+import {userDto, UserHandler} from '../../models/UserHandler'
+import {tokenDtoType, TokenHandler} from "../../models/TokenHandler"
 import cookie from "cookie"
 import dbConnect from "../../utils/dbConnect";
 import {Schema} from "mongoose";
+import {avatarDtoType, AvatarHandler} from "../../models/AvatarHandler";
 const bcrypt = require('bcrypt')
 
 dbConnect();
@@ -28,7 +29,7 @@ export type ResponseTypeLogin = {
     accessToken: string
 }
 
-export default async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType | ResponseTypeLogin>) {
+export default async function handlerNext (req: NextApiRequest, res: NextApiResponse<ErrorType | initAccountDto>) {
     if (req.method === 'POST') {
         const {email, password}: {email: string, password: string} = req.body
         const user: userType = await UserHandler.searchByEmail(email) // поиск клиента на сервере
@@ -43,6 +44,11 @@ export default async function handlerNext (req: NextApiRequest, res: NextApiResp
                 const tokenHandler = new TokenHandler(_id)
                 tokenHandler.generateTokens() // создание токена
                 await tokenHandler.replaceToken() // перезапись токена
+                const avatarHandler = new AvatarHandler(await AvatarHandler.gerAvatar(id)) // получение пути Аватар
+                const tokenDto: tokenDtoType = await tokenHandler.tokenDTO()
+                const userDto: userDto = userHandler.userDto()
+                const avatarDto: avatarDtoType = avatarHandler.avatarDto()
+
                 res.setHeader("Set-Cookie", [
                     cookie.serialize("token", tokenHandler.refreshToken || '', {
                         httpOnly: true,
@@ -58,7 +64,7 @@ export default async function handlerNext (req: NextApiRequest, res: NextApiResp
                     })
                 ])
 
-                res.status(200).json({...userHandler.userDto(), accessToken: tokenHandler.accessToken ?? ''} ) // отправка на клиент данные пользователя
+                res.status(200).json({...tokenDto,...userDto, ...avatarDto } ) // отправка на клиент данные пользователя
 
             }
         } else {

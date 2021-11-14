@@ -81,12 +81,17 @@ class TokenHandler {
         }
     }
 
-    tokenDTO(): tokenDtoType | void {
+    tokenDTO(): tokenDtoType {
         if (typeof this.refreshToken === 'string' && typeof this.accessToken === 'string'){
             return {
                 accessToken: this.accessToken,
                 refreshToken: this.refreshToken
 
+            }
+        } else {
+            return {
+                accessToken: '',
+                refreshToken: ''
             }
         }
 
