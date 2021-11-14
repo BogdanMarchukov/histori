@@ -1,5 +1,6 @@
 import React from 'react'
 import classes from './MiniNavigation.module.css'
+import Link from 'next/link'
 
 type Props = {}
 const MiniNavigation = (props: Props) => {
@@ -8,7 +9,11 @@ const MiniNavigation = (props: Props) => {
             <div className={classes.container}>
                 <nav>
                     <ul>
-                        <li>Главная</li>
+                        <Link href={'/'}>
+                            <a>
+                                <li>Главная</li>
+                            </a>
+                        </Link>
                         <li>История</li>
                         <li>Общество</li>
                         <li>Право</li>

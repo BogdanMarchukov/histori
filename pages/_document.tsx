@@ -1,12 +1,12 @@
 // eslint-disable-next-line @next/next/no-document-import-in-page
-import Document, { Html, Head, Main, NextScript } from 'next/document'
-
+import Document, {Html, Head, Main, NextScript} from 'next/document'
 
 
 class MyDocument extends Document {
-    static async getInitialProps(ctx:any) {
+
+    static async getInitialProps(ctx: any) {
         const initialProps = await Document.getInitialProps(ctx)
-        return { ...initialProps }
+        return {...initialProps}
     }
 
     render() {
@@ -19,12 +19,32 @@ class MyDocument extends Document {
                     />
                     <link
                         rel="stylesheet"
-                        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+                        href='https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap'
+                    />
+                    <link
+                        rel="stylesheet"
+                        href='https://fonts.googleapis.com/css2?family=Bonheur+Royale&family=Scheherazade+New:wght@400;700&display=swap'
+                    />
+                    <link
+                        rel="stylesheet"
+                        href='https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap'
+                    />
+                    <link
+                        rel="stylesheet"
+                        href='https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap'
+                    />
+                    <link
+                        rel="stylesheet"
+                        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+                    />
+                    <link
+                        rel="stylesheet"
+                        href='https://fonts.googleapis.com/css2?family=Dosis:wght@200&display=swap'
                     />
                 </Head>
                 <body>
-                <Main />
-                <NextScript />
+                <Main/>
+                <NextScript/>
                 </body>
             </Html>
         )
