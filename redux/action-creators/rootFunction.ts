@@ -1,5 +1,5 @@
 
-import {ErrorType, initAccountDto, RedirectType, updateUserReducerType} from "../../serverTypes/serverTypes";
+import {ErrorType, initAccountDto, RedirectType} from "../../serverTypes/serverTypes";
 
 
 // ====================сохранение данных в LocalStorage==================

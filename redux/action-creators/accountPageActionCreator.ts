@@ -142,3 +142,26 @@ export async function updateAvatar(dispatch: (obj: rootAction) => void, event: R
     }
 
 }
+
+// =======================================редактирование акаунта отправка данных на сервер==========================
+
+export interface editUserData {
+    userName?: string
+    surname?: string
+    tel?: string
+}
+
+export async function editAccountUserData(dispatch: ()=> void, userData: editUserData, userId: string){
+    const token = getLocalStorage('accessToken')
+     const response = await fetch(`/api/edit/user/${userId}`, {
+         method: 'POST',
+         body: JSON.stringify(userData),
+         headers: {
+             'Content-Type': 'application/json',
+             'Authorization': token ?? ''
+         }
+     })
+    const responseData = await response.json()
+    console.log(responseData)
+
+}

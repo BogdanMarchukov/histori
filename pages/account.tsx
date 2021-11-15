@@ -4,7 +4,13 @@ import {connect} from "react-redux";
 import MiniNavigation from "../Components/MiniNavigation/MiniNavigation";
 import UserDataBlock from "../Components/UserDataBlock/UserDataBlock";
 import {Box} from "@mui/material";
-import {initAccount, onOffEditorAccountModel, updateAvatar} from "../redux/action-creators/accountPageActionCreator";
+import {
+    editAccountUserData,
+    editUserData,
+    initAccount,
+    onOffEditorAccountModel,
+    updateAvatar
+} from "../redux/action-creators/accountPageActionCreator";
 import EditorAccountModel from "../Components/EditorAccountModel/EditorAccountModel";
 import {FileEventTarget} from "../redux/types/indexTyps";
 import AlertCustomize, {alertObjectType} from "../Components/AlertCustomize/AlertCustomize";
@@ -23,6 +29,9 @@ type Props = {
     updateAvatar: (event: React.ChangeEvent<HTMLInputElement>)=> void
     alert: alertObjectType
     loading: boolean
+    editAccountUserData: (userData: editUserData, userId: string)=> void
+    userId: string
+    token: string
 }
 
 
@@ -39,6 +48,8 @@ const Account = (props: Props) => {
             <MiniNavigation/>
             <Loader loading={props.loading}/>
             <EditorAccountModel
+                editAccountUserData={props.editAccountUserData}
+                userId={props.userId}
                 editAccountWindow={props.editAccountWindow}
                 onOffEditorAccountModel={props.onOffEditorAccountModel}
             />
@@ -72,6 +83,7 @@ function mapStateToProps(state: RootState) {
         editAccountWindow: state.accountPageReducer.editAccountWindow,
         alert: state.homePageReducer.alert,
         loading: state.homePageReducer.loading,
+        userId: state.userReducer.id
     }
 }
 
@@ -79,7 +91,8 @@ function mapDispatchToProps(dispatch: any) {
     return {
         initAccount: ()=> dispatch(()=> initAccount(dispatch)),
         onOffEditorAccountModel:(editAccountWindow: boolean) => dispatch(()=> onOffEditorAccountModel(dispatch, editAccountWindow)),
-        updateAvatar: (event: React.ChangeEvent<HTMLInputElement>)=> dispatch(()=> updateAvatar(dispatch, event))
+        updateAvatar: (event: React.ChangeEvent<HTMLInputElement>)=> dispatch(()=> updateAvatar(dispatch, event)),
+        editAccountUserData: (userData: editUserData, userId: string)=> dispatch(()=> editAccountUserData(dispatch, userData, userId))
     }
 }
 
