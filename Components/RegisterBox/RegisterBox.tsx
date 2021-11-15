@@ -24,6 +24,7 @@ type Props = {
     showProfileWindow: (profileWindow: boolean, isActivation: boolean) => void
     logout: ()=> void
     isActivation: boolean
+    error: ()=> void
 }
 
 const RegisterBox = (props: Props) => {
@@ -61,9 +62,6 @@ const RegisterBox = (props: Props) => {
     }
 
 
-
-
-
     return (
         <>
             {classClose}
@@ -91,18 +89,26 @@ const RegisterBox = (props: Props) => {
 
                 </Avatar>
                 <div className={classes.content}>
-                    <Link
-                        href={{
-                            pathname: '/account'
+                    {props.isActivation?
+                        <Link
+                            href={{
+                                pathname: '/account'
 
 
-                        }}
+                            }}
 
-                    >
-                        <a>
-                            <h6>{props.user.email} <EditIcon sx={{fontSize: "medium"}}/></h6>
-                        </a>
-                    </Link>
+                        >
+                            <a>
+                                <h6>{props.user.email} <EditIcon sx={{fontSize: "medium"}}/></h6>
+                            </a>
+                        </Link>
+                        :
+                        <h6
+                            onClick={()=> props.error()}
+                        >{props.user.email} <EditIcon sx={{fontSize: "medium"}}/></h6>
+
+                    }
+
                     <Grid container>
 
                         <Grid item md={5}>

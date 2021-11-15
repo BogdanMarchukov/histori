@@ -22,14 +22,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse){
         const {_id} = mongoToken
         const userMongo:userType = await UserHandler.searchByEmail(null, _id)
         const userHandler = new UserHandler(userMongo)
-        const avatarMongo: mongoAvatarType  = await AvatarHandler.gerAvatar(_id)
-        if (avatarMongo){
-            const avatarHandler = new AvatarHandler(avatarMongo)
-            res.status(200).json(JSON.stringify({...userHandler.userDto(), ...avatarHandler.avatarDto()}))
-        } else {
-            res.status(200).json(JSON.stringify({...userHandler.userDto()}))
-
-        }
+        const avatarHandler = new AvatarHandler(await AvatarHandler.gerAvatar(_id))
+        res.status(200).json(JSON.stringify({...userHandler.userDto(), ...avatarHandler.avatarDto()}))
 
     } else {
         res.status(403).json({error: true, errorMassage: 'Пользователь не найден'})

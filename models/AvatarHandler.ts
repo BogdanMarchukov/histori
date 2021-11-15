@@ -5,8 +5,8 @@ import {FileHandler} from "./FileHandler";
 const Avatar = require('../models/mongoose/Avatar')
 
 export interface avatarDtoType {
-    avatarId: string
-    pathAvatar: string
+    avatarId: string | null
+    pathAvatar: string | null
 }
 
 
@@ -55,8 +55,8 @@ class AvatarHandler {
 //====================================== вывод данных===========================
     avatarDto(): avatarDtoType{
             return {
-                avatarId: this.mongoAvatar?._id.valueOf().toString() ?? '',
-                pathAvatar: this.mongoAvatar?.avatarPath ?? ''
+                avatarId: this.mongoAvatar?._id.valueOf().toString() ?? null,
+                pathAvatar: this.mongoAvatar?.avatarPath ?? null
             }
     }
 

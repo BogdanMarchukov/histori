@@ -165,12 +165,9 @@ export interface ShowProfileWindowType {
     payload: boolean
 }
 
-export const showProfileWindow = (dispatch: (object: rootAction)=>void, profileWindow: boolean, isActivation: boolean) => {
-    if (!profileWindow && !isActivation) {
-        errorHandlerServer(dispatch, {error: true, errorMassage: 'email не подтвержден'}, 'error')
-    } else {
+export const showProfileWindow = (dispatch: (object: rootAction)=>void, profileWindow: boolean) => {
         dispatch({type: ActionTypes.OPEN_WINDOW_MINI_PROFILE, payload: !profileWindow})
-    }
+
 
 }
 //********************************************************************************************

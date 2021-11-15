@@ -8,6 +8,7 @@ import RegisterBox from "../RegisterBox/RegisterBox";
 import RegisterModel from "../RegisterModel/RegisterModel";
 import {connect} from 'react-redux'
 import {
+    errorHandlerServer,
     logout,
     onSubmitForm,
     openRegisterWindow, showProfileWindow, switchingWindowRegister,
@@ -17,6 +18,7 @@ import {RootState} from "../../redux/redusers/indexReduser";
 import RegisterAvatar from "../RegisterAvatar/RegisterAvatar";
 import Loader from "../Loader/Loader";
 import AlertCustomize from "../AlertCustomize/AlertCustomize";
+import {ErrorType} from "../../serverTypes/serverTypes";
 
 interface alertObjectType {
     alertType: 'error'
@@ -36,14 +38,15 @@ type Props = {
     password: string | null
     userName: string | null
     userEmail: string | null
-    showProfileWindow: (profileWindow: boolean, isActivation: boolean) => void
+    showProfileWindow: (profileWindow: boolean) => void
     profileWindow: boolean
     loading: boolean
     alert: alertObjectType
-    logout: ()=> void
-    switchingWindowRegister: (registerTitle: string)=> void
+    logout: () => void
+    switchingWindowRegister: (registerTitle: string) => void
     isActivation: boolean
     avatarSrc: string | null
+    errorHandlerServer: (responseError: ErrorType, errorType: string) => void
 }
 
 const Header = (props: Props) => {
@@ -76,7 +79,7 @@ const Header = (props: Props) => {
                     <Grid item md={2} xl={1}>
                         <RegisterAvatar
                             nameBtn={props.registerTitle}
-                            showProfileWindow={() => props.showProfileWindow(props.profileWindow, props.isActivation)}
+                            showProfileWindow={() => props.showProfileWindow(props.profileWindow)}
                             openRegisterWindow={props.openRegisterWindow}
                             avatarSrc={props.avatarSrc}
                             email={props.userEmail}
@@ -93,6 +96,7 @@ const Header = (props: Props) => {
                 <h4>Право | Экономика</h4>
             </div>
             <RegisterBox
+                error={()=> props.errorHandlerServer({error: true, errorMassage: 'Email не подтвержден'}, 'error' )}
                 isActivation={props.isActivation}
                 logout={props.logout}
                 showProfileWindow={props.showProfileWindow}
@@ -142,9 +146,10 @@ function mapDispatchToProps(dispatch: any) {
         openRegisterWindow: () => dispatch(openRegisterWindow),
         validateRegisterForm: (inputValue: string, inputName: string) => dispatch(() => validateRegisterForm(dispatch, inputValue, inputName)),
         onSubmitForm: (emailValid: boolean, passwordValid: boolean, email: string, password: string, registerTitle: string) => dispatch(() => onSubmitForm(dispatch, emailValid, passwordValid, email, password, registerTitle)),
-        showProfileWindow: (profileWindow: boolean, isActivation: boolean) => dispatch(() => showProfileWindow(dispatch, profileWindow, isActivation)),
+        showProfileWindow: (profileWindow: boolean) => dispatch(() => showProfileWindow(dispatch, profileWindow)),
         logout: () => dispatch(() => logout(dispatch)),
-        switchingWindowRegister: (registerTitle: string)=> dispatch(()=> switchingWindowRegister(dispatch, registerTitle))
+        switchingWindowRegister: (registerTitle: string) => dispatch(() => switchingWindowRegister(dispatch, registerTitle)),
+        errorHandlerServer: (responseError: ErrorType, errorType: string) => dispatch(() => errorHandlerServer(dispatch, responseError, errorType))
     }
 }
 
