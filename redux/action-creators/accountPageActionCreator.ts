@@ -1,5 +1,4 @@
 import {getLocalStorage, saveLocalStorage, sendFile, updateToken} from "./rootFunction";
-import {userDto} from "../../models/UserHandler";
 import {ActionTypes, rootAction} from "../types/indexTyps";
 import {ErrorType, initAccountDto, RedirectType, updateUserReducerType} from "../../serverTypes/serverTypes";
 import {errorHandlerServer, loadingIndicator} from "./homePageActionCreator";
@@ -22,7 +21,6 @@ export async function initAccount(dispatch: (object: rootAction) => void) {
     })
     if (response.status === 401) {
         const tokenData: initAccountDto | RedirectType | ErrorType = await updateToken()
-        console.log(tokenData, 'tokenData')
         if ('accessToken' in tokenData) { // токен успешно обнавлен данные о пользователе получены
             const {accessToken} = tokenData
             saveLocalStorage('accessToken', accessToken) // токен сохраннен в localStorage
@@ -151,9 +149,10 @@ export interface editUserData {
     tel?: string
 }
 
-export async function editAccountUserData(dispatch: ()=> void, userData: editUserData, userId: string){
+export async function editAccountUserData(dispatch: (obj: rootAction)=> void, userData: editUserData, userId: string){
+    onOffEditorAccountModel(dispatch, true)// закрытие окна редактирования
     const token = getLocalStorage('accessToken')
-     const response = await fetch(`/api/edit/user/${userId}`, {
+     const response = await fetch(`/api/edit/user`, {
          method: 'POST',
          body: JSON.stringify(userData),
          headers: {
@@ -161,7 +160,22 @@ export async function editAccountUserData(dispatch: ()=> void, userData: editUse
              'Authorization': token ?? ''
          }
      })
-    const responseData = await response.json()
-    console.log(responseData)
+   if (response.status === 200){
+       await initAccount(dispatch)// данные обновились обновляем reducers
+
+   }
+   if (response.status === 401){
+       const tokenData: initAccountDto | RedirectType | ErrorType = await updateToken()
+       if ('accessToken' in tokenData) { // токен успешно обнавлен данные о пользователе получены
+           const {accessToken} = tokenData
+           saveLocalStorage('accessToken', accessToken) // токен сохраннен в localStorage
+           await editAccountUserData(dispatch, userData, userId)
+       } else {
+           // todo патанциальная ошибка
+       }
+   }
+   if (response.status === 307){
+       // todo redirect
+   }
 
 }

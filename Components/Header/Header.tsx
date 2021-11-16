@@ -46,7 +46,8 @@ type Props = {
     switchingWindowRegister: (registerTitle: string) => void
     isActivation: boolean
     avatarSrc: string | null
-    errorHandlerServer: (responseError: ErrorType, errorType: string) => void
+    errorHandlerServer: (responseError: ErrorType, errorType: string) => void,
+    surname: string | null
 }
 
 const Header = (props: Props) => {
@@ -103,7 +104,7 @@ const Header = (props: Props) => {
                 show={props.profileWindow}
                 auth={false}
                 avatarSrc={props.avatarSrc}
-                user={{name: props.userName, email: props.userEmail, surname: null, accessToken: null}}
+                user={{name: props.userName, email: props.userEmail, surname: props.surname}}
             />
 
             <RegisterModel
@@ -136,7 +137,8 @@ function mapStateToProps(state: RootState) {
         loading: state.homePageReducer.loading,
         alert: state.homePageReducer.alert,
         isActivation: state.userReducer.isActivation,
-        avatarSrc: state.homePageReducer.pathAvatar
+        avatarSrc: state.homePageReducer.pathAvatar,
+        surname: state.userReducer.surname
     }
 
 }

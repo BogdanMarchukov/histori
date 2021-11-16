@@ -1,9 +1,9 @@
 import {userType} from "../serverTypes/serverTypes";
+import {Schema} from 'mongoose'
+
 const uuid = require('uuid')
 const User = require('../models/mongoose/User')
 const bcrypt = require('bcrypt')
-import {Schema} from 'mongoose'
-import dbConnect from "../utils/dbConnect";
 
 export type userDto = {
     _id: Schema.Types.ObjectId
@@ -67,6 +67,18 @@ class UserHandler {
         }
     }
 
+    static async updateUser(id: string, data: object): Promise<userType>{
+      return new Promise( async (resolve, reject)=>{
+         const updateUser = await User.updateOne({_id: id}, data)
+          if (updateUser){
+              resolve(updateUser)
+          }else {
+              reject(null)
+          }
+      } )
+
+
+    }
 
 
     static async createUser(email: string, password: string, role: string[]){ // создание нового пользователя

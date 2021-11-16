@@ -11,7 +11,6 @@ interface userType {
     name: string | null
     surname: string | null
     email: string | null
-    accessToken: string | null
 
 
 }
@@ -67,7 +66,7 @@ const RegisterBox = (props: Props) => {
             {classClose}
             <div className={showWindow()}>
                 <div className={classes.header}>
-                    <p>Привет Ольга</p>
+                    <p>Привет {props.user.name ?? 'Гость'}</p>
                 </div>
 
                 <Avatar sx={{
