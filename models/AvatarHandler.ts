@@ -1,7 +1,7 @@
 import {ObjectId} from 'mongodb'
-import dbConnect from "../utils/dbConnect";
 import {mongoAvatarType} from "../serverTypes/serverTypes";
 import {FileHandler} from "./FileHandler";
+
 const Avatar = require('../models/mongoose/Avatar')
 
 export interface avatarDtoType {

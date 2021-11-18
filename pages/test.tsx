@@ -1,12 +1,12 @@
 import type { NextPage } from 'next'
-import Layout from "../Components/Layout/Layout";
+import MainLayout from "../Components/Layout/MainLayout";
 
 
 const Test: NextPage = () => {
     return (
-        <Layout>
+        <MainLayout>
             <h1>Hello next</h1>
-        </Layout>
+        </MainLayout>
     )
 }
 

@@ -3,7 +3,7 @@ import classes from './layout.module.css'
 import Header from "../Header/Header"
 
 
-const Layout = ({children}: any) => {
+const MainLayout = ({children}: any) => {
     return (
         <>
             <div className={classes.layout}>
@@ -18,4 +18,4 @@ const Layout = ({children}: any) => {
     )
 }
 
-export default Layout
+export default MainLayout

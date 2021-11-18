@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import Layout from "../Components/Layout/Layout";
+import MainLayout from "../Components/Layout/MainLayout";
 import {wrapper} from "../redux";
 import {initUser} from "../redux/action-creators/homePageActionCreator";
 import {TokenHandler} from "../models/TokenHandler";
@@ -12,9 +12,9 @@ interface PropsType {
 
 const Home = (props: PropsType) => {
     return (
-        <Layout>
+        <MainLayout>
                 <h1>{props.test}</h1>
-        </Layout>
+        </MainLayout>
     )
 }
 

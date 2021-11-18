@@ -1,10 +1,8 @@
 import React from 'react'
 import classes from './UserDataBlock.module.css'
 import {Avatar, Button, Grid} from '@mui/material'
-import Image from "next/image";
 import LoaderMini from "../LoaderMini/LoaderMini"
-import {FileEventTarget} from "../../redux/types/indexTyps";
-import * as Process from "process";
+import {avatarImgSrc} from '../../redux/action-creators/rootFunction'
 
 
 type Props = {
@@ -16,11 +14,11 @@ type Props = {
     tel: string | null
     onOffEditorAccountModel: (editAccountWindow: boolean) => void
     editAccountWindow: boolean
-    updateAvatar: (event: React.ChangeEvent<HTMLInputElement>)=> void
+    updateAvatar: (event: React.ChangeEvent<HTMLInputElement>) => void
+    avatarImgSrc: typeof avatarImgSrc
 }
 
 const UserDataBlock = (props: Props) => {
-    const pathAvatar = process.env.NEXT_PUBLIC_IMG_AVATAR_PATCH
 
 
     const content = (loadMini: boolean, contentText: string | null) => {
@@ -40,31 +38,24 @@ const UserDataBlock = (props: Props) => {
         }
     }
 
+    // @ts-ignore
     return (
         <div className={classes.wrepper}>
-                <input
-                    onChange={(event)=> props.updateAvatar(event)}
-                    className={classes.hiddenInput}
-                    type={'file'}
-                    title={''}
-                />
-            <Avatar sx={{
+            <input
+                onChange={(event) => props.updateAvatar(event)}
+                className={classes.hiddenInput}
+                type={'file'}
+                title={''}
+            />
+            <Avatar
+                src={props.avatarImgSrc(process.env.NEXT_PUBLIC_IMG_AVATAR_PATCH ?? '', props.avatarSrc!)}
+                variant={'circular'} sx={{
+                position: 'relative',
                 width: 120,
                 height: 120,
-                position: 'relative',
                 top: 0,
                 left: '344px'
             }} alt="Гость">
-                {
-                    props.avatarSrc ? // todo изменить путь
-                        <Image
-                            alt={''}
-                            src={`${pathAvatar}${props.avatarSrc}`}
-                            width={120}
-                            height={120}
-                        />
-                        : null
-                }
             </Avatar>
 
             <Grid container>

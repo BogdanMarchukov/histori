@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import Image from "next/image"
+import {avatarImgSrc} from '../../redux/action-creators/rootFunction'
 import {Avatar, Grid} from "@mui/material"
 import classes from './RegisterBox.module.css'
 import Button from '@mui/material/Button';
 import Link from 'next/link'
 import EditIcon from '@mui/icons-material/Edit';
+
 
 
 interface userType {
@@ -24,11 +25,11 @@ type Props = {
     logout: ()=> void
     isActivation: boolean
     error: ()=> void
+    avatarImgSrc: typeof avatarImgSrc
 }
 
 const RegisterBox = (props: Props) => {
     const {show} = props
-    const pathAvatar = process.env.NEXT_PUBLIC_IMG_AVATAR_PATCH
     const [classClose, setClassClose] = useState(null)
 
     useEffect(()=> {
@@ -69,22 +70,15 @@ const RegisterBox = (props: Props) => {
                     <p>Привет {props.user.name ?? 'Гость'}</p>
                 </div>
 
-                <Avatar sx={{
+                <Avatar
+                    src={props.avatarImgSrc(process.env.NEXT_PUBLIC_IMG_AVATAR_PATCH ?? '', props.avatarSrc!)}
+                    sx={{
                     width: 70,
                     height: 70,
                     position: 'fixed',
                     top: '84px'
-                }} alt="Гость">
-                    {
-                        props.avatarSrc ?
-                            <Image
-                                src={`${pathAvatar}${props.avatarSrc}`}
-                                alt="Picture of the author"
-                                width={80}
-                                height={80}
-                            />
-                            : userName(props.user?.name ?? null, props.user?.email ?? null)
-                    }
+                }} alt={`${userName(props.user?.name ?? null, props.user?.email ?? null)}`}>
+
 
                 </Avatar>
                 <div className={classes.content}>

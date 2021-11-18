@@ -19,6 +19,7 @@ import RegisterAvatar from "../RegisterAvatar/RegisterAvatar";
 import Loader from "../Loader/Loader";
 import AlertCustomize from "../AlertCustomize/AlertCustomize";
 import {ErrorType} from "../../serverTypes/serverTypes";
+import {avatarImgSrc} from "../../redux/action-creators/rootFunction";
 
 interface alertObjectType {
     alertType: 'error'
@@ -48,9 +49,11 @@ type Props = {
     avatarSrc: string | null
     errorHandlerServer: (responseError: ErrorType, errorType: string) => void,
     surname: string | null
+    avatarImgSrc: typeof avatarImgSrc
 }
 
 const Header = (props: Props) => {
+
     return (
         <div className={classes.layout}>
             <div className={classes.footerContact}>
@@ -79,6 +82,7 @@ const Header = (props: Props) => {
                     </Grid>
                     <Grid item md={2} xl={1}>
                         <RegisterAvatar
+                            avatarImgSrc={props.avatarImgSrc}
                             nameBtn={props.registerTitle}
                             showProfileWindow={() => props.showProfileWindow(props.profileWindow)}
                             openRegisterWindow={props.openRegisterWindow}
@@ -97,6 +101,7 @@ const Header = (props: Props) => {
                 <h4>Право | Экономика</h4>
             </div>
             <RegisterBox
+                avatarImgSrc={props.avatarImgSrc}
                 error={()=> props.errorHandlerServer({error: true, errorMassage: 'Email не подтвержден'}, 'error' )}
                 isActivation={props.isActivation}
                 logout={props.logout}
@@ -151,7 +156,8 @@ function mapDispatchToProps(dispatch: any) {
         showProfileWindow: (profileWindow: boolean) => dispatch(() => showProfileWindow(dispatch, profileWindow)),
         logout: () => dispatch(() => logout(dispatch)),
         switchingWindowRegister: (registerTitle: string) => dispatch(() => switchingWindowRegister(dispatch, registerTitle)),
-        errorHandlerServer: (responseError: ErrorType, errorType: string) => dispatch(() => errorHandlerServer(dispatch, responseError, errorType))
+        errorHandlerServer: (responseError: ErrorType, errorType: string) => dispatch(() => errorHandlerServer(dispatch, responseError, errorType)),
+        avatarImgSrc: (pathName: any, fileName: any) => dispatch(() => avatarImgSrc(pathName, fileName))
     }
 }
 

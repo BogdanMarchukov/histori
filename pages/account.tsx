@@ -12,9 +12,9 @@ import {
     updateAvatar
 } from "../redux/action-creators/accountPageActionCreator";
 import EditorAccountModel from "../Components/EditorAccountModel/EditorAccountModel";
-import {FileEventTarget} from "../redux/types/indexTyps";
 import AlertCustomize, {alertObjectType} from "../Components/AlertCustomize/AlertCustomize";
 import Loader from "../Components/Loader/Loader";
+import {avatarImgSrc} from "../redux/action-creators/rootFunction";
 
 type Props = {
     email: string | null
@@ -23,15 +23,17 @@ type Props = {
     name: string | null
     surname: string | null
     tel: string | null
-    initAccount: ()=> void
+    initAccount: () => void
     editAccountWindow: boolean
-    onOffEditorAccountModel:(editAccountWindow: boolean) => void
-    updateAvatar: (event: React.ChangeEvent<HTMLInputElement>)=> void
+    onOffEditorAccountModel: (editAccountWindow: boolean) => void
+    updateAvatar: (event: React.ChangeEvent<HTMLInputElement>) => void
     alert: alertObjectType
     loading: boolean
-    editAccountUserData: (userData: editUserData, userId: string)=> void
+    editAccountUserData: (userData: editUserData, userId: string) => void
     userId: string
     token: string
+    avatarImgSrc: typeof avatarImgSrc
+
 }
 
 
@@ -39,7 +41,7 @@ const Account = (props: Props) => {
 
     const {initAccount} = props
 
-    useEffect(()=> {
+    useEffect(() => {
         initAccount()
     }, [initAccount])
 
@@ -56,6 +58,7 @@ const Account = (props: Props) => {
             <AlertCustomize alert={props.alert}/>
             <Box sx={{display: 'flex'}}>
                 <UserDataBlock
+                    avatarImgSrc={props.avatarImgSrc}
                     updateAvatar={props.updateAvatar}
                     editAccountWindow={props.editAccountWindow}
                     onOffEditorAccountModel={props.onOffEditorAccountModel}
@@ -89,10 +92,11 @@ function mapStateToProps(state: RootState) {
 
 function mapDispatchToProps(dispatch: any) {
     return {
-        initAccount: ()=> dispatch(()=> initAccount(dispatch)),
-        onOffEditorAccountModel:(editAccountWindow: boolean) => dispatch(()=> onOffEditorAccountModel(dispatch, editAccountWindow)),
-        updateAvatar: (event: React.ChangeEvent<HTMLInputElement>)=> dispatch(()=> updateAvatar(dispatch, event)),
-        editAccountUserData: (userData: editUserData, userId: string)=> dispatch(()=> editAccountUserData(dispatch, userData, userId))
+        initAccount: () => dispatch(() => initAccount(dispatch)),
+        onOffEditorAccountModel: (editAccountWindow: boolean) => dispatch(() => onOffEditorAccountModel(dispatch, editAccountWindow)),
+        updateAvatar: (event: React.ChangeEvent<HTMLInputElement>) => dispatch(() => updateAvatar(dispatch, event)),
+        editAccountUserData: (userData: editUserData, userId: string) => dispatch(() => editAccountUserData(dispatch, userData, userId)),
+        avatarImgSrc: (pathName: any, fileName: any) => dispatch(() => avatarImgSrc(pathName, fileName))
     }
 }
 

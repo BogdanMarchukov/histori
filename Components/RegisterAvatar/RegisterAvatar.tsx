@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from "next/image";
+import {avatarImgSrc} from '../../redux/action-creators/rootFunction'
 import {Avatar, Button} from "@mui/material";
 
 type Props = {
@@ -8,29 +8,23 @@ type Props = {
     openRegisterWindow: () => void
     showProfileWindow: ()=> void
     nameBtn: string
+    avatarImgSrc: typeof avatarImgSrc
 }
 
 const RegisterAvatar = (props: Props) => {
-    const pathAvatar = process.env.NEXT_PUBLIC_IMG_AVATAR_PATCH
+    const pathAvatar = process.env.NEXT_PUBLIC_IMG_AVATAR_PATCH ?? ''
 
 
     return (
         <>
             {
                 props.email ?
-                        <Avatar onClick={props.showProfileWindow} sx={{width: 27, height: 27}} alt="Гость">
-                            {
-                                props.avatarSrc ?
-                                    <Image
-                                        src={`${pathAvatar}${props.avatarSrc}`}
-                                        alt="Picture of the author"
-                                        width={27}
-                                        height={27}
-                                    />
-                                    : null
-                            }
-                        </Avatar>
-
+                        <Avatar
+                            src={props.avatarImgSrc(pathAvatar, props.avatarSrc!)}
+                            onClick={props.showProfileWindow}
+                            sx={{width: 27, height: 27}}
+                            alt="Гость"
+                        />
                     :
                     <Button
                          onClick={props.openRegisterWindow}

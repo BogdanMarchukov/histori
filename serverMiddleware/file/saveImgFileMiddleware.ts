@@ -21,7 +21,7 @@ export async function saveImgFileMiddleware(req: any, res: NextApiResponse, next
             if (error) {
                 reject(error)
             } else {
-                resolve({userId: payload, patch: `/img/avatar/${req.file.filename}` })
+                resolve({userId: payload, patch: `${req.file.filename}` })
 
             }
 

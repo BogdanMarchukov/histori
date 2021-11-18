@@ -1,5 +1,5 @@
-
 import {ErrorType, initAccountDto, RedirectType} from "../../serverTypes/serverTypes";
+import {string} from "prop-types";
 
 
 // ====================сохранение данных в LocalStorage==================
@@ -29,7 +29,6 @@ export function getLocalStorage(name: string): string | null {
 //======================================================================
 
 
-
 // ======================обнавление токена=============================
 
 export async function updateToken() {
@@ -45,8 +44,9 @@ export async function updateToken() {
         }
     }
 }
-//===============проверка токена на наличие в ответе и сохранение в LocalStorage=====================
-const  success = async <T extends Response> (response: T): Promise<initAccountDto| ErrorType>   => {
+
+//===============проверка токена на наличие в response и сохранение в LocalStorage=====================
+const success = async <T extends Response>(response: T): Promise<initAccountDto | ErrorType> => {
     const data = await response.json()
     if ('accessToken' in data) { // елси все хорошо то сохраняем в LocalStorage и снова вызываем функцию
         const {accessToken} = data
@@ -57,14 +57,12 @@ const  success = async <T extends Response> (response: T): Promise<initAccountDt
     }
 }
 
-const  redirect = async <T extends Response> (response: T): Promise<RedirectType>  => {
+const redirect = async <T extends Response>(response: T): Promise<RedirectType> => {
     return await response.json() // todo обработать ошибку
 }
-const  unknownError = async <T extends Response> (response: T): Promise<ErrorType>  => {
+const unknownError = async <T extends Response>(response: T): Promise<ErrorType> => {
     return await response.json() // todo обработать ошибку
 }
-
-
 
 
 //=========================отпрвака файла/файлов на сервер=======================
@@ -80,4 +78,18 @@ export async function sendFile(apiUrl: string, files: Blob[], filesName: string[
         }
     })
 }
+
 //=================================================================================
+
+// =======================загрузка аватарки (src)===================================
+
+export function avatarImgSrc(patchName: string, fileName: string): string
+export function avatarImgSrc(patchName: string, fileName: null): undefined
+
+export function avatarImgSrc(patchName: any, fileName: any): any {
+    if (fileName) {
+        return `${patchName}?fileName=${fileName}`
+    } else return undefined
+}
+
+
