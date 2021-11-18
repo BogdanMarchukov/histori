@@ -56,74 +56,76 @@ const Header = (props: Props) => {
 
     return (
         <div className={classes.layout}>
-            <div className={classes.footerContact}>
-                <Grid container sx={{height: '100%'}}>
-                    <Grid item md={10} xl={11}>
-                        <Container
-                            sx={{
-                                height: '100%',
-                                padding: 0,
-                                display: 'flex',
-                                color: "white",
-                                justifyContent: 'space-around'
-                            }}
-                            maxWidth={'xl'}
-                        >
-                            <div className={classes.box}>
-                                <WatSapIcon/>
-                                <a href={'tel: +79604816532'}>+7-960-481-65-32</a>
-                            </div>
-                            <div className={classes.box}>
-                                <AddLocationOutlinedIcon/>
-                                <p>Абинск</p>
-                            </div>
+            <header>
+                <div className={classes.footerContact}>
+                    <Grid container sx={{height: '100%'}}>
+                        <Grid item md={10} xl={11}>
+                            <Container
+                                sx={{
+                                    height: '100%',
+                                    padding: 0,
+                                    display: 'flex',
+                                    color: "white",
+                                    justifyContent: 'space-around'
+                                }}
+                                maxWidth={'xl'}
+                            >
+                                <div className={classes.box}>
+                                    <WatSapIcon/>
+                                    <a href={'tel: +79604816532'}>+7-960-481-65-32</a>
+                                </div>
+                                <div className={classes.box}>
+                                    <AddLocationOutlinedIcon/>
+                                    <p>Абинск</p>
+                                </div>
 
-                        </Container>
+                            </Container>
+                        </Grid>
+                        <Grid item md={2} xl={1}>
+                            <RegisterAvatar
+                                avatarImgSrc={props.avatarImgSrc}
+                                nameBtn={props.registerTitle}
+                                showProfileWindow={() => props.showProfileWindow(props.profileWindow)}
+                                openRegisterWindow={props.openRegisterWindow}
+                                avatarSrc={props.avatarSrc}
+                                email={props.userEmail}
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item md={2} xl={1}>
-                        <RegisterAvatar
-                            avatarImgSrc={props.avatarImgSrc}
-                            nameBtn={props.registerTitle}
-                            showProfileWindow={() => props.showProfileWindow(props.profileWindow)}
-                            openRegisterWindow={props.openRegisterWindow}
-                            avatarSrc={props.avatarSrc}
-                            email={props.userEmail}
-                        />
-                    </Grid>
-                </Grid>
-            </div>
-            <AlertCustomize alert={props.alert}/>
-            <Loader loading={props.loading}/>
-            <div className={classes.flexColumn}>
-                <h1>Olga</h1>
-                <h2>Marchukova</h2>
-                <h3>История | Общество</h3>
-                <h4>Право | Экономика</h4>
-            </div>
-            <RegisterBox
-                avatarImgSrc={props.avatarImgSrc}
-                error={()=> props.errorHandlerServer({error: true, errorMassage: 'Email не подтвержден'}, 'error' )}
-                isActivation={props.isActivation}
-                logout={props.logout}
-                showProfileWindow={props.showProfileWindow}
-                show={props.profileWindow}
-                auth={false}
-                avatarSrc={props.avatarSrc}
-                user={{name: props.userName, email: props.userEmail, surname: props.surname}}
-            />
+                </div>
+                <AlertCustomize alert={props.alert}/>
+                <Loader loading={props.loading}/>
+                <div className={classes.flexColumn}>
+                    <h1>Olga</h1>
+                    <h2>Marchukova</h2>
+                    <h3>История | Общество</h3>
+                    <h4>Право | Экономика</h4>
+                </div>
+                <RegisterBox
+                    avatarImgSrc={props.avatarImgSrc}
+                    error={() => props.errorHandlerServer({error: true, errorMassage: 'Email не подтвержден'}, 'error')}
+                    isActivation={props.isActivation}
+                    logout={props.logout}
+                    showProfileWindow={props.showProfileWindow}
+                    show={props.profileWindow}
+                    auth={false}
+                    avatarSrc={props.avatarSrc}
+                    user={{name: props.userName, email: props.userEmail, surname: props.surname}}
+                />
 
-            <RegisterModel
-                switchingWindowRegister={props.switchingWindowRegister}
-                onSubmitForm={props.onSubmitForm}
-                email={props.email}
-                password={props.password}
-                emailError={props.emailError}
-                passwordError={props.passwordError}
-                validateRegisterForm={props.validateRegisterForm}
-                open={props.registerWin}
-                onClose={props.openRegisterWindow}
-                registerTitle={props.registerTitle}
-            />
+                <RegisterModel
+                    switchingWindowRegister={props.switchingWindowRegister}
+                    onSubmitForm={props.onSubmitForm}
+                    email={props.email}
+                    password={props.password}
+                    emailError={props.emailError}
+                    passwordError={props.passwordError}
+                    validateRegisterForm={props.validateRegisterForm}
+                    open={props.registerWin}
+                    onClose={props.openRegisterWindow}
+                    registerTitle={props.registerTitle}
+                />
+            </header>
         </div>
     )
 }

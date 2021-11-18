@@ -4,6 +4,8 @@ import {wrapper} from "../redux";
 import {initUser} from "../redux/action-creators/homePageActionCreator";
 import {TokenHandler} from "../models/TokenHandler";
 import {userDto} from "../models/UserHandler";
+import {Box} from "@mui/material";
+import CardMenu from "../Components/CardMain/CardMenu";
 
 
 interface PropsType {
@@ -13,7 +15,11 @@ interface PropsType {
 const Home = (props: PropsType) => {
     return (
         <MainLayout>
-                <h1>{props.test}</h1>
+            <Box>
+                <CardMenu
+                    cardList={[{name: 'История'},{name: 'Общество'},{name: 'Право'},{name: 'Экономика'}]}
+                />
+            </Box>
         </MainLayout>
     )
 }

@@ -15,6 +15,7 @@ import EditorAccountModel from "../Components/EditorAccountModel/EditorAccountMo
 import AlertCustomize, {alertObjectType} from "../Components/AlertCustomize/AlertCustomize";
 import Loader from "../Components/Loader/Loader";
 import {avatarImgSrc} from "../redux/action-creators/rootFunction";
+import PageLayout from "../Components/Layout/PageLayout";
 
 type Props = {
     email: string | null
@@ -47,30 +48,31 @@ const Account = (props: Props) => {
 
     return (
         <>
-            <MiniNavigation/>
-            <Loader loading={props.loading}/>
-            <EditorAccountModel
-                editAccountUserData={props.editAccountUserData}
-                userId={props.userId}
-                editAccountWindow={props.editAccountWindow}
-                onOffEditorAccountModel={props.onOffEditorAccountModel}
-            />
-            <AlertCustomize alert={props.alert}/>
-            <Box sx={{display: 'flex'}}>
-                <UserDataBlock
-                    avatarImgSrc={props.avatarImgSrc}
-                    updateAvatar={props.updateAvatar}
+            <PageLayout>
+                <Loader loading={props.loading}/>
+                <EditorAccountModel
+                    editAccountUserData={props.editAccountUserData}
+                    userId={props.userId}
                     editAccountWindow={props.editAccountWindow}
                     onOffEditorAccountModel={props.onOffEditorAccountModel}
-                    avatarSrc={props.avatarSrc}
-                    email={props.email}
-                    loadMini={props.loadMini}
-                    name={props.name}
-                    surname={props.surname}
-                    tel={props.tel}
                 />
-                <h1>{props.email}</h1>
-            </Box>
+                <AlertCustomize alert={props.alert}/>
+                <Box sx={{display: 'flex'}}>
+                    <UserDataBlock
+                        avatarImgSrc={props.avatarImgSrc}
+                        updateAvatar={props.updateAvatar}
+                        editAccountWindow={props.editAccountWindow}
+                        onOffEditorAccountModel={props.onOffEditorAccountModel}
+                        avatarSrc={props.avatarSrc}
+                        email={props.email}
+                        loadMini={props.loadMini}
+                        name={props.name}
+                        surname={props.surname}
+                        tel={props.tel}
+                    />
+                    <h1>{props.email}</h1>
+                </Box>
+            </PageLayout>
         </>
     )
 }
