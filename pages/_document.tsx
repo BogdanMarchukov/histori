@@ -44,7 +44,9 @@ class MyDocument extends Document {
                 </Head>
                 <body>
                 <Main/>
+                <script src="https://yastatic.net/share2/share.js" async/>
                 <NextScript/>
+
                 </body>
             </Html>
         )

@@ -1,7 +1,50 @@
-.cardContainer{
+.cardContainer {
     position: relative;
     top: 20px;
     width: 80%;
-    max-width: 1800px;
+    max-width: 1400px;
     margin: 0 auto;
+}
+
+.cardContent {
+    width: 100%;
+    height: 100%;
+}
+
+.cardHeader {
+    height: 11%;
+    width: 100%;
+}
+
+.cardFooter {
+    width: 100%;
+    height: 25%;
+}
+
+.cardFooter p {
+    font-size: 20px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    padding: 0 15px;
+}
+
+.cardImg {
+    position: relative;
+    width: 100%;
+    height: 60%;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cardHeader h1 {
+    font-size: 50px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Dosis', sans-serif;
+    font-weight: 200;
+    text-align: center;
+
+}
+.share {
+    position: relative
 }

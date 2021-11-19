@@ -4,7 +4,6 @@ import {wrapper} from "../redux";
 import {initUser} from "../redux/action-creators/homePageActionCreator";
 import {TokenHandler} from "../models/TokenHandler";
 import {userDto} from "../models/UserHandler";
-import {Box} from "@mui/material";
 import CardMenu from "../Components/CardMain/CardMenu";
 
 
@@ -13,13 +12,19 @@ interface PropsType {
 }
 
 const Home = (props: PropsType) => {
+
+
     return (
         <MainLayout>
-            <Box>
-                <CardMenu
-                    cardList={[{name: 'История'},{name: 'Общество'},{name: 'Право'},{name: 'Экономика'}]}
-                />
-            </Box>
+            <CardMenu
+                cardList={
+                    [
+                        {name: 'История', srcImg: '/img/home/histori.jpg'},
+                        {name: 'Общество', srcImg: '/img/home/society.jpg'},
+                        {name: 'Право', srcImg: '/img/home/right.jpg'},
+                        {name: 'Экономика', srcImg: '/img/home/economy.jpg'}
+                    ]}
+            />
         </MainLayout>
     )
 }
@@ -36,7 +41,7 @@ function mapDispatchToProps(dispatch: any) {
 }
 
 //@ts-ignore
-export const getServerSideProps = wrapper.getServerSideProps( (store) => async (context) => {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
     const {token} = context.req.cookies
     let userId = false
     if (token) {
