@@ -1,11 +1,15 @@
-import React, {useEffect, useRef} from 'react'
-import {Box, Grid, Paper} from "@mui/material";
+import React, {useEffect} from 'react'
+import {Grid, Paper} from "@mui/material";
 import classes from './cardMenu.module.css'
 import Image from "next/image";
+import Link from 'next/link'
 
 interface cardType {
     name: string
     srcImg: string
+    url: string
+    title: string
+    description: string
 }
 
 type Props = {
@@ -14,7 +18,7 @@ type Props = {
 
 const CardMenu = (props: Props) => {
 
-    const yandex = ()=> {
+    const yandex = () => {
         //@ts-ignore
         if (typeof window !== 'undefined' && window.Ya) {
             props.cardList.forEach((i) => {
@@ -22,6 +26,8 @@ const CardMenu = (props: Props) => {
                 window.Ya.share2(`${i.name}`, {
                     content: {
                         url: 'https://yandex.com',
+                        description: i.description,
+                        title: i.title,
 
                     },
                     theme: {
@@ -42,18 +48,18 @@ const CardMenu = (props: Props) => {
         //@ts-ignore
         if (typeof window !== 'undefined' && window.Ya) {
             yandex()
-        }
-        else setTimeout(()=> yandex(), 300)
+        } else setTimeout(() => yandex(), 300)
 
     }, [])
 
     return (
         <article className={classes.cardContainer}>
+
             <Grid container spacing={2}>
                 {
                     props.cardList.map((i, index) => {
                         return (
-                            <React.Fragment key={(index+1)*101}>
+                            <React.Fragment key={(index + 1) * 101}>
                                 <Grid item sm={6}>
                                     <Paper
                                         elevation={3}
@@ -77,17 +83,22 @@ const CardMenu = (props: Props) => {
                                                 </Grid>
                                             </div>
                                             <div className={classes.cardImg}>
-                                                <Image
-                                                    src={i.srcImg}
-                                                    layout={'fill'}
-                                                    alt={i.name}
-                                                />
+                                                <Link href={'/'}>
+                                                    <Image
+                                                        src={i.srcImg}
+                                                        layout={'fill'}
+                                                        alt={i.name}
+                                                    />
+                                                </Link>
                                             </div>
                                             <div className={classes.cardFooter}>
                                                 <p>
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. At autem
-                                                    culpa est magnam mollitia nemo optio possimus qui, similique soluta,
-                                                    tempore vel, voluptatibus. Aliquid aperiam mollitia quo repellendus,
+                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. At
+                                                    autem
+                                                    culpa est magnam mollitia nemo optio possimus qui, similique
+                                                    soluta,
+                                                    tempore vel, voluptatibus. Aliquid aperiam mollitia quo
+                                                    repellendus,
                                                     repudiandae voluptas?
                                                 </p>
                                             </div>
@@ -100,8 +111,6 @@ const CardMenu = (props: Props) => {
                     })
                 }
             </Grid>
-
-
         </article>
     )
 }

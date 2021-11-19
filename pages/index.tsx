@@ -19,10 +19,10 @@ const Home = (props: PropsType) => {
             <CardMenu
                 cardList={
                     [
-                        {name: 'История', srcImg: '/img/home/histori.jpg'},
-                        {name: 'Общество', srcImg: '/img/home/society.jpg'},
-                        {name: 'Право', srcImg: '/img/home/right.jpg'},
-                        {name: 'Экономика', srcImg: '/img/home/economy.jpg'}
+                        {name: 'История', srcImg: '/img/home/histori.jpg', url: '/', description: 'История для ЕГЭ', title: 'История | olgaMarchukova.ru'},
+                        {name: 'Общество', srcImg: '/img/home/society.jpg', url: '/', description: 'Общество для ЕГЭ', title: 'Общество | olgaMarchukova.ru'},
+                        {name: 'Право', srcImg: '/img/home/right.jpg', url: '/', description: 'Право для ЕГЭ', title: 'Право | olgaMarchukova.ru'},
+                        {name: 'Экономика', srcImg: '/img/home/economy.jpg', url: '/', description: 'Экономика для ЕГЭ', title: 'Экономика | olgaMarchukova.ru'}
                     ]}
             />
         </MainLayout>
