@@ -98,8 +98,7 @@ const Header = (props: Props) => {
                 <div className={classes.flexColumn}>
                     <h1>Olga</h1>
                     <h2>Marchukova</h2>
-                    <h3>История | Общество</h3>
-                    <h4>Право | Экономика</h4>
+                    <span>Преподаватель Истории, Обществознания, Экономики, Права</span>
                 </div>
                 <RegisterBox
                     avatarImgSrc={props.avatarImgSrc}

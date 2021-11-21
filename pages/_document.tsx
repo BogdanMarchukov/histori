@@ -13,7 +13,9 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head>
+                    <link rel="preconnect" href="https://fonts.googleapis.com"/>
                     <link
+
                         rel="stylesheet"
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
                     />
@@ -41,10 +43,13 @@ class MyDocument extends Document {
                         rel="stylesheet"
                         href='https://fonts.googleapis.com/css2?family=Dosis:wght@200&display=swap'
                     />
+                    <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet"/>
+
+
                 </Head>
                 <body>
                 <Main/>
-                <script src="https://yastatic.net/share2/share.js" async/>
+                {/*<script src="https://yastatic.net/share2/share.js" async/>*/}
                 <NextScript/>
 
                 </body>
