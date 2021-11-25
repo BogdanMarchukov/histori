@@ -1,18 +1,17 @@
 import React, {useState} from 'react'
 import classes from './homePageContent.module.css'
 import {Grid} from '@mui/material'
+import Link from 'next/link'
 
-type Props = {
-
-}
+type Props = {}
 
 const HomePageContent = (props: Props) => {
 
     const [animal, setAnimal] = useState(classes.slotOne)
 
     const animation = (name: string) => {
-            setAnimal(classes.slotStart)
-        setTimeout(()=> {
+        setAnimal(classes.slotStart)
+        setTimeout(() => {
             if (name === 'one') {
                 setAnimal(classes.slotOne)
             }
@@ -34,53 +33,63 @@ const HomePageContent = (props: Props) => {
     return (
         <div className={classes.contentContainer}>
             <Grid container>
-                <Grid item md={10} xl={10} >
+                <Grid item md={10} xl={10}>
                     <div className={classes.rootContent}>
                         <Grid container className={`${classes.rootContentCont} ${animal}`}>
                             <Grid className={classes.histori} item md={6}>
                                 <h1>История</h1>
                                 <hr/>
-                                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dignissimos eos eveniet excepturi illo incidunt necessitatibus, provident unde voluptatem! Excepturi quidem quod suscipit. Ab accusantium architecto consequuntur ipsum tenetur?</span></p>
+                                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dignissimos eos eveniet excepturi illo incidunt necessitatibus, provident unde voluptatem! Excepturi quidem quod suscipit. Ab accusantium architecto consequuntur ipsum tenetur?</span>
+                                </p>
                             </Grid>
                             <Grid className={classes.economy} item md={6}>
                                 <h1>Общество</h1>
                                 <hr/>
-                                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dignissimos eos eveniet excepturi illo incidunt necessitatibus, provident unde voluptatem! Excepturi quidem quod suscipit. Ab accusantium architecto consequuntur ipsum tenetur?</span></p>
+                                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dignissimos eos eveniet excepturi illo incidunt necessitatibus, provident unde voluptatem! Excepturi quidem quod suscipit. Ab accusantium architecto consequuntur ipsum tenetur?</span>
+                                </p>
                             </Grid>
                             <Grid className={classes.right} item md={6}>
                                 <h1>Право</h1>
                                 <hr/>
-                                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dignissimos eos eveniet excepturi illo incidunt necessitatibus, provident unde voluptatem! Excepturi quidem quod suscipit. Ab accusantium architecto consequuntur ipsum tenetur?</span></p>
+                                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dignissimos eos eveniet excepturi illo incidunt necessitatibus, provident unde voluptatem! Excepturi quidem quod suscipit. Ab accusantium architecto consequuntur ipsum tenetur?</span>
+                                </p>
                             </Grid>
                             <Grid className={classes.society} item md={6}>
                                 <h1>Экономика</h1>
                                 <hr/>
-                                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dignissimos eos eveniet excepturi illo incidunt necessitatibus, provident unde voluptatem! Excepturi quidem quod suscipit. Ab accusantium architecto consequuntur ipsum tenetur?</span></p>
+                                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam deserunt dignissimos eos eveniet excepturi illo incidunt necessitatibus, provident unde voluptatem! Excepturi quidem quod suscipit. Ab accusantium architecto consequuntur ipsum tenetur?</span>
+                                </p>
                             </Grid>
                         </Grid>
                     </div>
                 </Grid>
-                <Grid item md={2} xl={2}  >
+                <Grid item md={2} xl={2}>
                     <div className={classes.rightContent}>
                         <nav>
                             <ul>
                                 <li
-                                    onMouseOver={()=> animation('one')}
+                                    onMouseOver={() => animation('one')}
                                 >
                                     История
                                 </li>
-                                <li
-                                    onMouseOver={()=> animation('two')}
+                                <Link
+                                    href={'/society'}
                                 >
-                                    Общество
-                                </li>
+                                    <a>
+                                        <li
+                                            onMouseOver={() => animation('two')}
+                                        >
+                                            Общество
+                                        </li>
+                                    </a>
+                                </Link>
                                 <li
-                                    onMouseOver={()=> animation('three')}
+                                    onMouseOver={() => animation('three')}
                                 >
                                     Право
                                 </li>
                                 <li
-                                    onMouseOver={()=> animation('four')}
+                                    onMouseOver={() => animation('four')}
                                 >
                                     Экономика
                                 </li>
