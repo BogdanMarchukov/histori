@@ -1,13 +1,14 @@
 import React, {useEffect, useRef} from 'react'
 import {convertToRaw, Editor} from 'draft-js'
 import 'draft-js/dist/Draft.css'
-import {useEditor} from "./useEditor";
+import {useEditor} from "./useEditor"
+import classes from './editorText.module.css'
 
 function EditorText() {
     const editRef = useRef(null)
     const {
         renderClient, setRenderClient,
-        editorState,commandBlockStyle,
+        editorState, commandBlockStyle,
         handleKeyCommand, commandStyle,
         onChange, customStyle
     } = useEditor()
@@ -24,20 +25,23 @@ function EditorText() {
         <>
             {
                 renderClient ?
-                    <div>
-                        <button onClick={() => commandStyle(editorState, 'BOLD')}>Жирный</button>
-                        <button onClick={() => commandStyle(editorState, 'ITALIC')}>Курсив</button>
-                        <button onClick={() => commandBlockStyle(editorState, 'ordered-list-item')}>Список</button>
-                        <Editor
-                            editorState={editorState}
-                            onChange={onChange}
-                            editorKey="editor"
-                            handleKeyCommand={handleKeyCommand}
-                            ref={editRef}
-                            customStyleMap={customStyle}
-                            blockRendererFn={test}
-
-                        />
+                    <div className={classes.editWrapper}>
+                        <div className={classes.toolBar}>
+                            <button onClick={() => commandStyle(editorState, 'BOLD')}>Жирный</button>
+                            <button onClick={() => commandStyle(editorState, 'ITALIC')}>Курсив</button>
+                            <button onClick={() => commandBlockStyle(editorState, 'ordered-list-item')}>Список</button>
+                        </div>
+                        <div className={classes.editor}>
+                            <Editor
+                                editorState={editorState}
+                                onChange={onChange}
+                                editorKey="editor"
+                                handleKeyCommand={handleKeyCommand}
+                                ref={editRef}
+                                //@ts-ignore
+                                customStyleMap={customStyle}
+                            />
+                        </div>
                     </div>
                     :
                     null

@@ -1,0 +1,18 @@
+.editWrapper {
+    position: relative;
+    max-width: 80%;
+    margin: 30px auto;
+}
+
+.toolBar {
+    max-width: 700px;
+    height: 40px;
+    border: solid red 1px;
+    position: fixed;
+}
+
+.editor {
+    position: relative;
+    top: 50px;
+    margin-top: 40px;
+}
