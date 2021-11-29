@@ -33,7 +33,7 @@ export function useEditor(){
         onChange(RichUtils.toggleBlockType(editorState, command))
     }
 
-    const customStyle = {
+    const customInlineStyle = {
         BOLD: {
             fontWeight: 'bold'
         },
@@ -51,7 +51,7 @@ export function useEditor(){
         handleKeyCommand,
         commandStyle,
         onChange,
-        customStyle,
+        customInlineStyle,
         commandBlockStyle
     }
 }

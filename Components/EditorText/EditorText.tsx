@@ -10,7 +10,7 @@ function EditorText() {
         renderClient, setRenderClient,
         editorState, commandBlockStyle,
         handleKeyCommand, commandStyle,
-        onChange, customStyle
+        onChange, customInlineStyle
     } = useEditor()
     const contentState = editorState.getCurrentContent()
 
@@ -39,7 +39,7 @@ function EditorText() {
                                 handleKeyCommand={handleKeyCommand}
                                 ref={editRef}
                                 //@ts-ignore
-                                customStyleMap={customStyle}
+                                customStyleMap={customInlineStyle}
                             />
                         </div>
                     </div>
