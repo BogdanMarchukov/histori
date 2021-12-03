@@ -3,16 +3,30 @@
     max-width: 80%;
     margin: 30px auto;
 }
+.font, .toolBar {
+    max-width: 1000px;
+    border: solid red 1px;
+}
+
+.fontTitle {
+    height: 30px;
+    width: 488px;
+    text-align: center;
+}
+
+
+.font {
+    display: flex;
+    align-items: center;
+}
 
 .toolBar {
-    max-width: 700px;
-    height: 40px;
-    border: solid red 1px;
+    display: flex;
     position: fixed;
 }
 
 .editor {
     position: relative;
-    top: 50px;
+    top: 150px;
     margin-top: 40px;
 }

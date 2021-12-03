@@ -38,7 +38,7 @@ export function useEditor(){
             fontWeight: 'bold'
         },
         ITALIC: {
-
+            fontStyle: 'italic'
         }
     }
 
