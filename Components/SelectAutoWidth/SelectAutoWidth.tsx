@@ -7,12 +7,14 @@ import Select from '@mui/material/Select';
 interface ItemType {
     value: string
     content: string
+
 }
 
 type PropType = {
     item: Array<ItemType>
     title: string
     minWidth: number
+    commandStyle: (command: string)=> void
 }
 
 
@@ -21,6 +23,7 @@ export default function SelectAutoWidth(props: PropType) {
 
     const handleChange = (event: any) => {
         console.log(event.target.value)
+        props.commandStyle(event.target.value)
         setAge(event.target.value)
     }
 

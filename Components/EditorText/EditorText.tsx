@@ -30,9 +30,7 @@ function EditorText() {
         setRenderClient(true)
     }, [])
 
-    const test = (contentBlock: any) => {
-        console.log(contentBlock.getType().type)
-    }
+
     return (
         <>
             {
@@ -44,21 +42,26 @@ function EditorText() {
                                     <p>Шрифт</p>
                                 </div>
                                 <div className={classes.font}>
-                                    <ItalicSvg/>
-                                    <BoldSvg/>
-                                    <UnderlineSvg/>
-                                    <StrikethroughSvg/>
-                                    <SelectAutoWidth minWidth={100} title={'Шрифт'}
-                                                     item={[{value: 'Test1', content: 'Tesыыыыыыыыt1'}, {
-                                                         value: 'Test2',
-                                                         content: "Test2"
-                                                     }]}/>
-                                    <SelectAutoWidth minWidth={140} title={'Цвет текста'}
-                                                     item={[{value: 'Test1', content: 'Tesыыыыыыыыt1'}, {
-                                                         value: 'Test2',
-                                                         content: "Test2"
-                                                     }]}/>
-                                    <SelectAutoWidth minWidth={100} title={'размер'}
+                                    <ItalicSvg clickHandler={() => commandStyle('ITALIC')}/>
+                                    <BoldSvg clickHandler={() => commandStyle('BOLD')}/>
+                                    <UnderlineSvg clickHandler={() => commandStyle('UNDERLINE')}/>
+                                    <StrikethroughSvg clickHandler={() => commandStyle('LINE_THROUGH')}/>
+                                    <SelectAutoWidth commandStyle={commandStyle} minWidth={100} title={'Шрифт'}
+                                                     item={[{value: 'FONT_ROBOTO', content: 'Roboto'}
+                                                     ]}/>
+                                    <SelectAutoWidth commandStyle={commandStyle} minWidth={140} title={'Цвет текста'}
+                                                     item={[
+                                                         {value: 'Black', content: 'черный'},
+                                                         {value: 'Red', content: 'красный'},
+                                                         {value: 'Grey', content: 'серый'},
+                                                         {value: 'LightLue', content: 'голубой'},
+                                                         {value: 'DarkBlue', content: 'синий'},
+                                                         {value: 'Green', content: 'зеленый'},
+                                                         {value: 'Yellow', content: 'желтый'},
+                                                         {value: 'Pink', content: 'розовый'},
+                                                         {value: 'Orange', content: 'оранжевый'}
+                                                     ]}/>
+                                    <SelectAutoWidth commandStyle={commandStyle} minWidth={100} title={'размер'}
                                                      item={[
                                                          {value: '8', content: '8'},
                                                          {value: '9', content: "9"},
@@ -92,7 +95,7 @@ function EditorText() {
                                     <ListTextSvg/>
                                     <ListNumberSvg/>
                                     <TextParagraphSvg/>
-                                    <SelectAutoWidth minWidth={120} title={'Интервал'}
+                                    <SelectAutoWidth commandStyle={commandStyle} minWidth={120} title={'Интервал'}
                                                      item={[
                                                          {value: '1', content: '1'},
                                                          {value: '1.15', content: "1.15"},
@@ -102,7 +105,7 @@ function EditorText() {
                                                          {value: '3', content: "3"}
 
                                                      ]}/>
-                                    <SelectAutoWidth minWidth={120} title={'Заглавие'}
+                                    <SelectAutoWidth commandStyle={commandStyle} minWidth={120} title={'Заглавие'}
                                                      item={[
                                                          {value: 'Заголовок', content: 'Заголовок'},
                                                          {value: 'Подзаголовок', content: "Подзаголовок"},
