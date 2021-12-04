@@ -89,11 +89,11 @@ function EditorText() {
                                     <p>Абзац</p>
                                 </div>
                                 <div className={classes.font}>
-                                    <TextLeftSvg/>
-                                    <TextCenterSvg/>
-                                    <TextRightSvg/>
-                                    <ListTextSvg/>
-                                    <ListNumberSvg/>
+                                    <TextLeftSvg clickHandler={() => commandStyle('TEXT_LEFT')}/>
+                                    <TextCenterSvg clickHandler={() => commandStyle('TEXT_CENTER')}/>
+                                    <TextRightSvg clickHandler={() => commandStyle('TEXT_RIGHT')}/>
+                                    <ListTextSvg clickHandler={() => commandBlockStyle( 'unordered-list-item')}/>
+                                    <ListNumberSvg clickHandler={() => commandBlockStyle( 'ordered-list-item')}/>
                                     <TextParagraphSvg/>
                                     <SelectAutoWidth commandStyle={commandStyle} minWidth={120} title={'Интервал'}
                                                      item={[
@@ -105,10 +105,10 @@ function EditorText() {
                                                          {value: '3', content: "3"}
 
                                                      ]}/>
-                                    <SelectAutoWidth commandStyle={commandStyle} minWidth={120} title={'Заглавие'}
+                                    <SelectAutoWidth commandStyle={commandBlockStyle} minWidth={120} title={'Заглавие'}
                                                      item={[
-                                                         {value: 'Заголовок', content: 'Заголовок'},
-                                                         {value: 'Подзаголовок', content: "Подзаголовок"},
+                                                         {value: 'header-one', content: 'Заголовок'},
+                                                         {value: 'header-two', content: "Подзаголовок"},
 
                                                      ]}/>
                                 </div>

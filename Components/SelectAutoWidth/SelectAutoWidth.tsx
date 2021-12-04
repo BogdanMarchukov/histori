@@ -22,10 +22,10 @@ export default function SelectAutoWidth(props: PropType) {
     const [age, setAge] = React.useState('')
 
     const handleChange = (event: any) => {
-        console.log(event.target.value)
         props.commandStyle(event.target.value)
         setAge(event.target.value)
     }
+
 
     const itemArea = () => {
         return props.item.map((i, index)=> {
@@ -46,8 +46,8 @@ export default function SelectAutoWidth(props: PropType) {
                     autoWidth
                     label="Age"
                 >
-                    <MenuItem value="">
-                        <em>None</em>
+                    <MenuItem value="NONE">
+                        <em>сброс</em>
                     </MenuItem>
                     {
                         itemArea()

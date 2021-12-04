@@ -25,14 +25,18 @@ export function useEditor(){
         setEditorState(editorState)
     }
 
+
+
     function commandStyleSelect(editorState: editorStateType){
         return function (command: string) {
             onChange(RichUtils.toggleInlineStyle(editorState, command))
         }
     }
 
-    function commandBlockStyle(editorState: editorStateType, command: string){
-        onChange(RichUtils.toggleBlockType(editorState, command))
+    function commandBlockStyleSelect(editorState: editorStateType){
+        return function (command: string) {
+            onChange(RichUtils.toggleBlockType(editorState, command))
+        }
     }
 
     const customInlineStyle = {
@@ -125,6 +129,19 @@ export function useEditor(){
         },
         Orange: {
             color: '#ffa500'
+        },
+        TEXT_LEFT: {
+            display: 'flex',
+            justifyContent: 'flex-start'
+
+        },
+        TEXT_CENTER: {
+            display: 'flex',
+            justifyContent: 'center'
+        },
+        TEXT_RIGHT: {
+            display: 'flex',
+            justifyContent: 'flex-end'
         }
 
 
@@ -140,7 +157,7 @@ export function useEditor(){
         commandStyle: commandStyleSelect(editorState),
         onChange,
         customInlineStyle,
-        commandBlockStyle
+        commandBlockStyle: commandBlockStyleSelect(editorState)
     }
 }
 

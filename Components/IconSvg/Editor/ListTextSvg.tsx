@@ -1,9 +1,13 @@
 import React from 'react'
 import classes from './editorSvg.module.css'
+type Props = {
+    clickHandler: ()=> void
+}
 
-export default function ListTextSvg() {
+
+export default function ListTextSvg(props: Props) {
     return (
-        <div className={classes.wrepper}>
+        <div onClick={()=> props.clickHandler()} className={classes.wrepper}>
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
                 <path d="M0 0h24v24H0V0z" fill="none"/>
                 <path
