@@ -10,7 +10,7 @@
 
 .fontTitle {
     height: 30px;
-    width: 488px;
+    max-width: 488px;
     text-align: center;
 }
 
@@ -23,7 +23,7 @@
 .toolBar {
     display: flex;
     position: fixed;
-    left: 15%;
+    left: 20px;
 
 }
 

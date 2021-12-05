@@ -1,5 +1,8 @@
 import {useState} from "react";
-import {EditorState, RichUtils} from "draft-js";
+import React from 'react'
+import Draft, {EditorState, RichUtils, } from "draft-js";
+import TableWrap from "./TableEditor/TableWrap/TableWrap";
+import Immutable from 'immutable'
 
 export function useEditor(){
     type editorStateType = typeof editorState
@@ -23,15 +26,20 @@ export function useEditor(){
 
     function onChange(editorState: editorStateType) {
         setEditorState(editorState)
+
+
     }
-
-
 
     function commandStyleSelect(editorState: editorStateType){
         return function (command: string) {
             onChange(RichUtils.toggleInlineStyle(editorState, command))
+
+
         }
+
     }
+
+
 
     function commandBlockStyleSelect(editorState: editorStateType){
         return function (command: string) {
@@ -147,6 +155,15 @@ export function useEditor(){
 
     }
 
+    const blockRenderMap = Immutable.Map({
+        'table': {
+            element: 'td',
+            // @ts-ignore
+            wrapper: <TableWrap/>,
+        }
+    });
+    const extendedBlockRenderMap = Draft.DefaultDraftBlockRenderMap.merge(blockRenderMap);
+
 
     return {
         renderClient,
@@ -157,7 +174,8 @@ export function useEditor(){
         commandStyle: commandStyleSelect(editorState),
         onChange,
         customInlineStyle,
-        commandBlockStyle: commandBlockStyleSelect(editorState)
+        commandBlockStyle: commandBlockStyleSelect(editorState),
+        extendedBlockRenderMap
     }
 }
 

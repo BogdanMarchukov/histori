@@ -22,7 +22,8 @@ function EditorText() {
         renderClient, setRenderClient,
         editorState, commandBlockStyle,
         handleKeyCommand, commandStyle,
-        onChange, customInlineStyle
+        onChange, customInlineStyle,
+        extendedBlockRenderMap
     } = useEditor()
     const contentState = editorState.getCurrentContent()
 
@@ -113,15 +114,20 @@ function EditorText() {
                                                      ]}/>
                                 </div>
                             </div>
+                            <div>
+                                <div className={classes.fontTitle}>
+                                    <p>Таблица</p>
+                                </div>
+                                <div className={classes.font}>
+                                    <ListNumberSvg clickHandler={() => commandBlockStyle( 'table')}/>
+                                </div>
+                            </div>
 
-
-                            {/*<button onClick={() => commandStyle(editorState, 'BOLD')}>Жирный</button>*/}
-                            {/*<button onClick={() => commandStyle(editorState, 'ITALIC')}>Курсив</button>*/}
-                            {/*<button onClick={() => commandBlockStyle(editorState, 'ordered-list-item')}>Список</button>*/}
                         </div>
                         <div className={classes.editor}>
                             <Editor
                                 editorState={editorState}
+                                blockRenderMap={extendedBlockRenderMap}
                                 onChange={onChange}
                                 editorKey="editor"
                                 handleKeyCommand={handleKeyCommand}
