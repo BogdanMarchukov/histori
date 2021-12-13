@@ -1,17 +1,40 @@
 import {useState} from "react";
 import React from 'react'
-import Draft, {EditorState, RichUtils, } from "draft-js";
+import Draft, {ContentState,ContentBlock , convertFromHTML, convertToRaw, EditorState, RichUtils} from "draft-js";
 import TableWrap from "./TableEditor/TableWrap/TableWrap";
 import Immutable from 'immutable'
+import classes from './TableEditor/TableWrap/TableWrap.module.css'
+import ParagraphWrap from "./TableEditor/ParagraphWrap/ParagraphWrap";
 
 export function useEditor(){
     type editorStateType = typeof editorState
+    // const sampleMarkup =
+    //     `<table>
+    //         <tr>
+    //             <td>1</td>
+    //             <td>2</td>
+    //             <td>3</td>
+    //         </tr>
+    //         <br/>
+    //         <tr>
+    //             <td>21</td>
+    //             <td>22</td>
+    //             <td>23</td>
+    //         </tr>
+    //     </table>`
+    //
+    // const blocksFromHTML = convertFromHTML(sampleMarkup);
+    // const state = ContentState.createFromBlockArray(
+    //     blocksFromHTML.contentBlocks,
+    //     blocksFromHTML.entityMap,
+    // );
+    //
+
 
     const [renderClient, setRenderClient] = useState(false)
     const [editorState, setEditorState] = useState(
         () => EditorState.createEmpty()
     )
-
 
 
     function handleKeyCommand(command:string, editorState: editorStateType) {
@@ -25,6 +48,7 @@ export function useEditor(){
     }
 
     function onChange(editorState: editorStateType) {
+
         setEditorState(editorState)
 
 
@@ -39,6 +63,16 @@ export function useEditor(){
 
     }
 
+    function myBlockStyleFn(contentBlock: ContentBlock) {
+        const type = contentBlock.getType()
+        if (type === 'row') {
+            return classes.row.toString()
+        }
+        if (type === 'table') {
+            return classes.col
+        }
+        else return ''
+    }
 
 
     function commandBlockStyleSelect(editorState: editorStateType){
@@ -157,9 +191,16 @@ export function useEditor(){
 
     const blockRenderMap = Immutable.Map({
         'table': {
-            element: 'td',
+            element: 'div',
             // @ts-ignore
             wrapper: <TableWrap/>,
+        },
+        row: {
+            element: 'div'
+        },
+        paragraph: {
+            element: 'div',
+            wrapper: <ParagraphWrap/>
         }
     });
     const extendedBlockRenderMap = Draft.DefaultDraftBlockRenderMap.merge(blockRenderMap);
@@ -175,7 +216,8 @@ export function useEditor(){
         onChange,
         customInlineStyle,
         commandBlockStyle: commandBlockStyleSelect(editorState),
-        extendedBlockRenderMap
+        extendedBlockRenderMap,
+        myBlockStyleFn
     }
 }
 

@@ -1,5 +1,13 @@
 .wrap {
-    border: solid 1px red;
-    width: 100px;
-    height: 100px;
+    min-width: 500px;
+    min-height: 100px;
+    display: flex;
+    flex-wrap: wrap;
 }
+
+.row, .col {
+    width: 33.3%;
+    min-height: 50px;
+    border: solid 1px black;
+}
+

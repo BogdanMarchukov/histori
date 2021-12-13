@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react'
-import {Editor} from 'draft-js'
+import {Editor, convertToRaw, convertFromHTML, ContentState} from 'draft-js'
 import 'draft-js/dist/Draft.css'
 import {useEditor} from "./useEditor"
 import classes from './editorText.module.css'
@@ -14,6 +14,7 @@ import ListTextSvg from '../IconSvg/Editor/ListTextSvg'
 import ListNumberSvg from '../IconSvg/Editor/ListNumberSvg'
 import TextParagraphSvg from '../IconSvg/Editor/TextParagraphSvg'
 import SelectAutoWidth from "../SelectAutoWidth/SelectAutoWidth"
+import {Button, TextField} from "@mui/material";
 
 
 function EditorText() {
@@ -23,7 +24,8 @@ function EditorText() {
         editorState, commandBlockStyle,
         handleKeyCommand, commandStyle,
         onChange, customInlineStyle,
-        extendedBlockRenderMap
+        extendedBlockRenderMap,
+        myBlockStyleFn
     } = useEditor()
     const contentState = editorState.getCurrentContent()
 
@@ -31,6 +33,7 @@ function EditorText() {
         setRenderClient(true)
     }, [])
 
+    console.log(convertToRaw(contentState))
 
     return (
         <>
@@ -93,9 +96,9 @@ function EditorText() {
                                     <TextLeftSvg clickHandler={() => commandStyle('TEXT_LEFT')}/>
                                     <TextCenterSvg clickHandler={() => commandStyle('TEXT_CENTER')}/>
                                     <TextRightSvg clickHandler={() => commandStyle('TEXT_RIGHT')}/>
-                                    <ListTextSvg clickHandler={() => commandBlockStyle( 'unordered-list-item')}/>
-                                    <ListNumberSvg clickHandler={() => commandBlockStyle( 'ordered-list-item')}/>
-                                    <TextParagraphSvg/>
+                                    <ListTextSvg clickHandler={() => commandBlockStyle('unordered-list-item')}/>
+                                    <ListNumberSvg clickHandler={() => commandBlockStyle('ordered-list-item')}/>
+                                    <TextParagraphSvg clickHandler={() => commandBlockStyle('paragraph')}/>
                                     <SelectAutoWidth commandStyle={commandStyle} minWidth={120} title={'Интервал'}
                                                      item={[
                                                          {value: '1', content: '1'},
@@ -119,7 +122,32 @@ function EditorText() {
                                     <p>Таблица</p>
                                 </div>
                                 <div className={classes.font}>
-                                    <ListNumberSvg clickHandler={() => commandBlockStyle( 'table')}/>
+                                    <SelectAutoWidth commandStyle={commandBlockStyle} minWidth={120} title={'строки'}
+                                                     item={[
+                                                         {value: 'header-one', content: 'Заголовок'},
+                                                         {value: 'header-two', content: "Подзаголовок"},
+
+                                                     ]}/>
+                                    <SelectAutoWidth commandStyle={commandBlockStyle} minWidth={120} title={'столбцы'}
+                                                     item={[
+                                                         {value: 'header-one', content: 'Заголовок'},
+                                                         {value: 'header-two', content: "Подзаголовок"},
+
+                                                     ]}/>
+                                    <Button
+                                        variant="outlined"
+                                        onClick={() => commandBlockStyle('table')}
+                                    >
+                                        создать
+                                    </Button>
+                                    <Button
+                                        sx={{margin: '0 8px 0 5px',}}
+                                        onClick={() => commandBlockStyle('row')}
+                                        variant="outlined"
+
+                                    >
+                                        выход
+                                    </Button>
                                 </div>
                             </div>
 
@@ -134,6 +162,7 @@ function EditorText() {
                                 ref={editRef}
                                 //@ts-ignore
                                 customStyleMap={customInlineStyle}
+                                blockStyleFn={myBlockStyleFn}
                             />
                         </div>
                     </div>

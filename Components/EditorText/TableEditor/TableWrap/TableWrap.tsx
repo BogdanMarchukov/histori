@@ -2,13 +2,20 @@ import React from 'react'
 import classes from './TableWrap.module.css'
 
 
-const TableWrap = (props: any = null) => {
+type Props = {
+    children?: any
+
+}
+
+const TableWrap = (props: Props) => {
+
+
     return (
-        <table className={classes.wrap}>
-            <tr>
-                {props.children}
-            </tr>
-        </table>
+        <>
+            <div className={classes.wrap}>
+                    {props.children}
+            </div>
+        </>
     )
 }
 export default TableWrap
