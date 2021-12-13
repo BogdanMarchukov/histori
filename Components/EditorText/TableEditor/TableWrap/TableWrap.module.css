@@ -5,9 +5,30 @@
     flex-wrap: wrap;
 }
 
-.row, .col {
-    width: 33.3%;
+.row, .two, .three, .four, .five, .six {
     min-height: 50px;
     border: solid 1px black;
 }
+
+.two {
+    width: 50%;
+}
+
+.three {
+    width: 33.33%;
+}
+
+.four {
+    width: 25%;
+}
+
+.five {
+    width: 20%;
+}
+
+.six {
+    width: 16.66%;
+}
+
+
 

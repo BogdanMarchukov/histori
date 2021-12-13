@@ -31,10 +31,31 @@ export function useEditor(){
     //
 
 
-    const [renderClient, setRenderClient] = useState(false)
-    const [editorState, setEditorState] = useState(
+    const [renderClient, setRenderClient] = useState(false) // первичный рендер на клиенте
+    const [editorState, setEditorState] = useState( // начальный state
         () => EditorState.createEmpty()
     )
+    const [taleClass, setTableClass] = useState(classes.two) // присваения css класса к ячейки таблицы
+
+    function tableSelection(select: string){
+        switch (select) {
+            case '2':
+                setTableClass(classes.two)
+                break
+            case '3':
+                setTableClass(classes.three)
+                break
+            case '4':
+                setTableClass(classes.four)
+                break
+            case '5':
+                setTableClass(classes.five)
+                break
+            case '6':
+                setTableClass(classes.six)
+                break
+        }
+    }
 
 
     function handleKeyCommand(command:string, editorState: editorStateType) {
@@ -48,10 +69,7 @@ export function useEditor(){
     }
 
     function onChange(editorState: editorStateType) {
-
         setEditorState(editorState)
-
-
     }
 
     function commandStyleSelect(editorState: editorStateType){
@@ -69,7 +87,7 @@ export function useEditor(){
             return classes.row.toString()
         }
         if (type === 'table') {
-            return classes.col
+            return taleClass
         }
         else return ''
     }
@@ -217,7 +235,8 @@ export function useEditor(){
         customInlineStyle,
         commandBlockStyle: commandBlockStyleSelect(editorState),
         extendedBlockRenderMap,
-        myBlockStyleFn
+        myBlockStyleFn,
+        tableSelection
     }
 }
 

@@ -25,7 +25,7 @@ function EditorText() {
         handleKeyCommand, commandStyle,
         onChange, customInlineStyle,
         extendedBlockRenderMap,
-        myBlockStyleFn
+        myBlockStyleFn, tableSelection
     } = useEditor()
     const contentState = editorState.getCurrentContent()
 
@@ -122,16 +122,13 @@ function EditorText() {
                                     <p>Таблица</p>
                                 </div>
                                 <div className={classes.font}>
-                                    <SelectAutoWidth commandStyle={commandBlockStyle} minWidth={120} title={'строки'}
+                                    <SelectAutoWidth commandStyle={tableSelection} minWidth={120} title={'столбцы'}
                                                      item={[
-                                                         {value: 'header-one', content: 'Заголовок'},
-                                                         {value: 'header-two', content: "Подзаголовок"},
-
-                                                     ]}/>
-                                    <SelectAutoWidth commandStyle={commandBlockStyle} minWidth={120} title={'столбцы'}
-                                                     item={[
-                                                         {value: 'header-one', content: 'Заголовок'},
-                                                         {value: 'header-two', content: "Подзаголовок"},
+                                                         {value: '2', content: '2'},
+                                                         {value: '3', content: "3"},
+                                                         {value: '4', content: "4"},
+                                                         {value: '5', content: "5"},
+                                                         {value: '6', content: "6"}
 
                                                      ]}/>
                                     <Button
