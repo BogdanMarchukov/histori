@@ -1,6 +1,5 @@
-import {useState} from "react";
-import React from 'react'
-import Draft, {ContentState,ContentBlock , convertFromHTML, convertToRaw, EditorState, RichUtils} from "draft-js";
+import React, {useState} from "react";
+import Draft, {ContentBlock, EditorState, RichUtils} from "draft-js";
 import TableWrap from "./TableEditor/TableWrap/TableWrap";
 import Immutable from 'immutable'
 import classes from './TableEditor/TableWrap/TableWrap.module.css'
@@ -8,28 +7,6 @@ import ParagraphWrap from "./TableEditor/ParagraphWrap/ParagraphWrap";
 
 export function useEditor(){
     type editorStateType = typeof editorState
-    // const sampleMarkup =
-    //     `<table>
-    //         <tr>
-    //             <td>1</td>
-    //             <td>2</td>
-    //             <td>3</td>
-    //         </tr>
-    //         <br/>
-    //         <tr>
-    //             <td>21</td>
-    //             <td>22</td>
-    //             <td>23</td>
-    //         </tr>
-    //     </table>`
-    //
-    // const blocksFromHTML = convertFromHTML(sampleMarkup);
-    // const state = ContentState.createFromBlockArray(
-    //     blocksFromHTML.contentBlocks,
-    //     blocksFromHTML.entityMap,
-    // );
-    //
-
 
     const [renderClient, setRenderClient] = useState(false) // первичный рендер на клиенте
     const [editorState, setEditorState] = useState( // начальный state

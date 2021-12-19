@@ -1,10 +1,9 @@
 import React from 'react'
 import MiniNavigation from "../MiniNavigation/MiniNavigation";
 import Footer from "../Footer/Footer";
+import {Box, Grid} from "@mui/material";
 
-type Props = {
-
-}
+type Props = {}
 
 const PageLayout = ({children}: any) => {
     return (

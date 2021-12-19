@@ -15,6 +15,9 @@ import {
     updateUserReducerPayloadType
 } from "../action-creators/accountPageActionCreator";
 import {accountPageReducer, accountPageReducerType} from "../redusers/accountPageReducer";
+import {initStateTextReducer} from "../redusers/textReducer";
+import {SaveTextType} from "../action-creators/editorTextActionCreator";
+
 export type FileEventTarget = EventTarget & { files: FileList }
 
 
@@ -34,7 +37,7 @@ export type rootAction =
     | miniLoaderDispatchType
     | onOffEditorAccountModelDispatchType
     | saveAvatarType
-
+    | SaveTextType
 
 
 export type rootState =
@@ -42,6 +45,7 @@ export type rootState =
     | { testReducer: testStateType }
     | { userReducer: userState }
     | { accountPageReducer: accountPageReducerType }
+    | { textReducer: initStateTextReducer }
 
 export enum ActionTypes {
     OPEN_WINDOW_REGISTER = 'HOME_PAGE/OPEN_WINDOW_REGISTER',
@@ -60,7 +64,8 @@ export enum ActionTypes {
     UPDATE_USER_REDUCER = 'ACCOUNT/UPDATE_USER_REDUCER',
     MIMI_LOADER_START_STOP = 'ACCOUNT/MIMI_LOADER_START_STOP',
     OPEN_MODEL_WIDOW_EDIT_ACCOUNT = 'OPEN_MODEL_WIDOW_EDIT_ACCOUNT',
-    SAVE_AVATAR = 'ACCOUNT/SAVE_AVATAR'
+    SAVE_AVATAR = 'ACCOUNT/SAVE_AVATAR',
+    SAVE_TEXT = 'EDITOR_TEXT/SAVE_TEXT'
 
 }
 

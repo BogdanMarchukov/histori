@@ -1,33 +1,47 @@
 import React from 'react'
 import PageLayout from "../Components/Layout/PageLayout"
-import {Grid, Box} from "@mui/material";
+import {Grid} from "@mui/material";
 import SocietyPageMainContent from "../Components/SocietyPageMainContent/SocietyPageMainContent";
+import {connect} from "react-redux";
+import {RootState} from "../redux/redusers/indexReduser";
+import {RawDraftContentState} from "draft-js";
+import RenderText from "../Components/RenderText/RenderText";
 
 
 type Props = {
-
+    currentArticle: RawDraftContentState | null
 }
 
 const Society = (props: Props) => {
     return (
         <PageLayout>
-           <Box
-            sx={ {
-                minHeight: 800
-            } }
-           >
-               <Grid container >
-                   <Grid item lg={10}>
-                       <SocietyPageMainContent/>
-                   </Grid>
-                   <Grid item lg={2}>
+            <Grid container>
+                <Grid item lg={10}>
+                    <SocietyPageMainContent/>
+                    <hr/>
+                    {
+                        props.currentArticle ?
+                            <RenderText content={props.currentArticle}/>
+                            : null
+                    }
+                </Grid>
+                <Grid item lg={2}>
 
-                   </Grid>
-               </Grid>
-
-           </Box>
+                </Grid>
+            </Grid>
         </PageLayout>
     )
 }
 
-export default Society
+function mapStateToProps(state: RootState) {
+    return {
+        // @ts-ignore
+        currentArticle: state.textReducer.currentArticle
+    }
+}
+
+function mapDispatchToProps(dispatch: any) {
+    return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Society)

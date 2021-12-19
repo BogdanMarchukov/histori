@@ -4,7 +4,6 @@ import {wrapper} from "../redux";
 import {initUser} from "../redux/action-creators/homePageActionCreator";
 import {TokenHandler} from "../models/TokenHandler";
 import {userDto} from "../models/UserHandler";
-import CardMenu from "../Components/CardMain/CardMenu";
 import HomePageContent from "../Components/HomePageContent/HomePageContent";
 
 
@@ -18,15 +17,7 @@ const Home = (props: PropsType) => {
     return (
         <MainLayout>
             <HomePageContent/>
-            {/*<CardMenu*/}
-            {/*    cardList={*/}
-            {/*        [*/}
-            {/*            {name: 'История', srcImg: '/img/home/histori.jpg', url: '/', description: 'История для ЕГЭ', title: 'История | olgaMarchukova.ru'},*/}
-            {/*            {name: 'Общество', srcImg: '/img/home/society.jpg', url: '/', description: 'Общество для ЕГЭ', title: 'Общество | olgaMarchukova.ru'},*/}
-            {/*            {name: 'Право', srcImg: '/img/home/right.jpg', url: '/', description: 'Право для ЕГЭ', title: 'Право | olgaMarchukova.ru'},*/}
-            {/*            {name: 'Экономика', srcImg: '/img/home/economy.jpg', url: '/', description: 'Экономика для ЕГЭ', title: 'Экономика | olgaMarchukova.ru'}*/}
-            {/*        ]}*/}
-            {/*/>*/}
+
         </MainLayout>
     )
 }
@@ -34,7 +25,6 @@ const Home = (props: PropsType) => {
 
 function mapStateToProps(state: any) {
     return {
-        test: state.homePageReducer.test
     }
 }
 
