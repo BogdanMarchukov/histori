@@ -8,16 +8,17 @@ type Props = {
 }
 
 const Elements = (props: Props) => {
-    const {textBlock} = useStyleText(props.content)
-
     const {type, key} = props.content
 
+    const {textBlock} = useStyleText(props.content)
+
+    console.log(textBlock)
 
     switch (type) {
         case 'header-one':
             return (
-                <React.Fragment key={key}>
-                        <h1 className={`${classes.elementH1}`}>
+                <React.Fragment >
+                        <h1 key={key} className={classes.elementH1}>
                             {textBlock}
                         </h1>
                 </React.Fragment>
