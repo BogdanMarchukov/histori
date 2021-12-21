@@ -18,7 +18,7 @@ const Society = (props: Props) => {
             <Grid container>
                 <Grid item lg={10}>
                     <SocietyPageMainContent/>
-                    <hr/>
+                    <hr style={{marginTop: '200px'}}/>
                     {
                         props.currentArticle ?
                             <RenderText content={props.currentArticle}/>

@@ -46,7 +46,7 @@ export default function SelectAutoWidth(props: PropType) {
                     autoWidth
                     label="Age"
                 >
-                    <MenuItem value="NONE">
+                    <MenuItem value='unstyled'>
                         <em>сброс</em>
                     </MenuItem>
                     {

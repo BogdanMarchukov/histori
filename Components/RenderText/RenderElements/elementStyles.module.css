@@ -2,6 +2,18 @@
 
 }
 
+.elementH1 {
+    box-sizing: border-box;
+    font-weight: bold;
+    font-size: 32px;
+}
+
 .TEXT_CENTER {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+
+}
+
+.size80 {
+    font-size: 80px;
 }
