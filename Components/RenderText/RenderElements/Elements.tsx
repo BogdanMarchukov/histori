@@ -10,8 +10,8 @@ type Props = {
 const Elements = (props: Props) => {
     const {type, key} = props.content
 
-    const {textBlock} = useStyleText(props.content)
 
+    const {textBlock} = useStyleText(props.content)
     console.log(textBlock)
 
     switch (type) {
