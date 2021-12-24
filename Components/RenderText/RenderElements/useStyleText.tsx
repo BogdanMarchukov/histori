@@ -1,128 +1,135 @@
-import {RawDraftContentBlock} from "draft-js";
+import {RawDraftContentBlock, RawDraftInlineStyleRange} from "draft-js";
 import classes from './elementStyles.module.css'
-import React, {useEffect, useRef, useState} from "react";
-import {getLocalFileName} from "next/dist/build/webpack/plugins/webpack-conformance-plugin/utils/file-utils";
+import React, {useEffect, useMemo, useRef, useState} from "react";
+
+// сортировка по параметрам offset
+function offsetSort(inlineStyleRanges: RawDraftInlineStyleRange[]): RawDraftInlineStyleRange[][] {
+    const sortArray: RawDraftInlineStyleRange[][] = [] // отсортированный массив
+    const cache: RawDraftInlineStyleRange[] = []
+    inlineStyleRanges.forEach((i, index) => {
+
+        if (index === 0) {
+            cache.push(i)
+            return true
+        }
+        if (cache.length) {
+            if (index > 0 && i.offset === cache[cache.length - 1].offset) {
+                cache.push(i)
+                return true
+            } else {
+                sortArray.push(JSON.parse(JSON.stringify(cache)))
+                cache.length = 0
+                cache.push(i)
+            }
+        }
+
+
+    })
+    sortArray.push(cache)
+    return sortArray
+}
+
+// фильтрует классы по группам и удаляет дублирующие
+function filterBlock(styleBlock: RawDraftInlineStyleRange[][]): RawDraftInlineStyleRange[][] {
+
+    return styleBlock.map((i, index) => {
+        const flexSort: RawDraftInlineStyleRange[] = []
+        const colorSort: RawDraftInlineStyleRange[] = []
+        const sizeSort: RawDraftInlineStyleRange[] = []
+        i.forEach((item, itemIndex) => {
+            const flex = [classes.TEXT_LEFT, classes.TEXT_RIGHT, classes.TEXT_CENTER]
+            const color = [classes.Red, classes.Yellow, classes.Pink, classes.Green, classes.DarkBlue, classes.Black, classes.Grey, classes.Orange]
+            const size = [classes.size8, classes.size9, classes.size10, classes.size11, classes.size12, classes.size14, classes.size16, classes.size18, classes.size20, classes.size22, classes.size24, classes.size26, classes.size28, classes.size36, classes.size48, classes.size72]
+            if (flex.includes(item.style)) {
+                flexSort.push(item)
+                return true
+            }
+            if (color.includes(item.style)) {
+                colorSort.push(item)
+                return true
+            }
+            if (size.includes(item.style)) {
+                sizeSort.push(item)
+                return true
+            }
+        })
+        if (flexSort.length && colorSort.length && sizeSort.length) {
+            return [colorSort[colorSort.length - 1], flexSort[flexSort.length - 1], sizeSort[sizeSort.length - 1]]
+        }
+        if (flexSort.length && colorSort.length) {
+            return [flexSort[flexSort.length - 1], colorSort[colorSort.length - 1]]
+        }
+        if (flexSort.length) {
+            return [flexSort[flexSort.length - 1]]
+        } else {
+            return i
+        }
+
+    })
+
+
+}
+
+// module.exports = {
+//     offsetSort,
+//     filterBlock
+// }
 
 
 export function useStyleText(content: RawDraftContentBlock) {
 
-    const {inlineStyleRanges, text} = content
+    const {inlineStyleRanges, text} = content  // входные данные
     const textBlock = useRef([<React.Fragment key={Math.random()}><span>{text}</span></React.Fragment>]) // дефолтный контент
-    const clsArr = useRef(classes.default) // стили
-    const flexSort: any = []
-    const colorSort: any = []
-    const sizeSort: any = []
-
-    function filterClass(style: string) { // фильтрует классы по группам и удаляет дублирующие
-        const flex = [classes.TEXT_LEFT, classes.TEXT_RIGHT, classes.TEXT_CENTER]
-        const color = [classes.Red, classes.Yellow, classes.Pink, classes.Green, classes.DarkBlue, classes.Black, classes.Grey, classes.Orange]
-        const size = [classes.size8, classes.size9, classes.size10, classes.size11, classes.size12, classes.size14, classes.size16, classes.size18, classes.size20, classes.size22, classes.size24, classes.size26, classes.size28, classes.size36, classes.size48, classes.size72]
-        if (flex.includes(style)) {
-            console.log(classes[style])
-            flexSort.push(classes[style])
-        }
-        if (color.includes(style)) {
-            console.log(classes[style])
-            colorSort.push(classes[style])
-        }
-        if (size.includes(style)) {
-            console.log(classes[style])
-            sizeSort.push(classes[style])
-        }
-        if (flexSort.length && colorSort.length && sizeSort.length) {
-            clsArr.current = `${flexSort[flexSort.length - 1]} ${colorSort[colorSort.length - 1]} ${sizeSort[sizeSort.length - 1]}`
-            return true
-        }
-        if (flexSort.length && colorSort.length) {
-            clsArr.current = `${flexSort[flexSort.length - 1]} ${colorSort[colorSort.length - 1]}`
-            return true
-        }
-        if (flexSort.length) {
-            clsArr.current = `${flexSort[flexSort.length - 1]}`
-            return true
-        }
 
 
+
+    // основная логика по стилизации блоков
+        function start() {
+            if (inlineStyleRanges.length > 0) {
+                const offsetArray = offsetSort(inlineStyleRanges) // сортировка по параметрам offset
+                const deleteDabbleStyleArray = filterBlock(offsetArray) // фильтрует классы по группам и удаляет дублирующие
+                console.log(deleteDabbleStyleArray)
+                deleteDabbleStyleArray.forEach((i, index) => {
+                    let cls: string[] = []
+
+                    function clsToSorting(){
+                        let clsData: any
+                        cls.forEach((i, index)=>{
+                            if (index === 0){
+                                clsData = i
+                            }else {
+                                clsData = clsData + ' ' + i
+                            }
+
+                        })
+                        return clsData
+                    }
+                    i.forEach((item, indexItem) => {
+                        if (indexItem === 0) {
+                            cls.push(classes[item.style])
+                            return true
+                        }
+                        if (indexItem > 0 && indexItem !== i.length - 1) {
+                            cls.push(classes[item.style])
+                            return true
+                        }
+                        if (indexItem > 0 && indexItem === i.length - 1) {
+                            cls.push(classes[item.style])
+                            textBlock.current = [<React.Fragment key={Math.random()}><span
+                                className={clsToSorting()}>{text.substring(item.offset, item.length)}</span></React.Fragment>]
+                            return true
+                        }
+                    })
+                })
+            }
+        }
+
+        start()
+
+
+    return {
+        textBlock: textBlock.current
     }
-
-
-    function clsName(styleName: string) {
-        switch (styleName) {
-            case "TEXT_CENTER":
-                filterClass(styleName)
-                break
-            case "Red":
-                filterClass(styleName)
-
-                break
-            case "Grey":
-                filterClass(styleName)
-
-                break
-            case "LightLue":
-                filterClass(styleName)
-
-                break
-            case "DarkBlue":
-                filterClass(styleName)
-
-                break
-            case "Green":
-                filterClass(styleName)
-
-                break
-            case "Yellow":
-                filterClass(styleName)
-
-                break
-            case "Pink":
-                filterClass(styleName)
-
-                break
-            case "Orange":
-                filterClass(styleName)
-
-                break
-            case "TEXT_LEFT":
-                filterClass(styleName)
-
-                break
-            case "TEXT_RIGHT":
-                filterClass(styleName)
-
-                break
-            default:
-                return ''
-        }
-    } // добавление новых стилий
-
-
-    if (inlineStyleRanges.length > 0) {
-        inlineStyleRanges.forEach((i, index) => {
-            clsName(i.style)
-            textBlock.current = [
-                <React.Fragment
-                    key={Math.random().toString()}
-                >
-                <span
-                    className={clsArr.current}
-                >
-                    {text.substring(i.offset, i.length)}
-                </span>
-                </React.Fragment>]
-
-        })
-        return {
-            textBlock: textBlock.current
-        }
-    } else {
-        return {
-            textBlock: textBlock.current
-        }
-    }
-
-
-
 
 
 }

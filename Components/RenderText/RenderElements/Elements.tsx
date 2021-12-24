@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {RawDraftContentBlock} from "draft-js";
 import {useStyleText} from "./useStyleText";
 import classes from './elementStyles.module.css'
@@ -9,11 +9,7 @@ type Props = {
 
 const Elements = (props: Props) => {
     const {type, key} = props.content
-
-
-    const {textBlock} = useStyleText(props.content)
-    console.log(textBlock)
-
+    const {textBlock} = useStyleText(JSON.parse(JSON.stringify(props.content)))
     switch (type) {
         case 'header-one':
             return (

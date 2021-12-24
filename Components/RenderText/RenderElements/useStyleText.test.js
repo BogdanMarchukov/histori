@@ -1,6 +1,92 @@
 import Elements from "./Elements";
 import {render, screen} from '@testing-library/react'
+const func = require('./useStyleText')
 
+const {offsetSort, filterBlock} = func
+
+
+
+
+
+describe('test function in hook useStyleText',()=>{
+
+    test('sort the array by the offset property',()=> {
+        const inputData = [
+            {offset: 0, length: 10, style: "Orange"},
+            {offset: 0, length: 10, style: "Green"},
+            {offset: 0, length: 10, style: "Yellow"},
+            {offset: 0, length: 10, style: "TEXT_LEFT"},
+            {offset: 5, length: 10, style: "TEXT_CENTER"},
+            {offset: 5, length: 10, style: "TEXT_LEFT"},
+            {offset: 8, length: 10, style: "TEXT_CENTER"},
+            {offset: 10, length: 10, style: "TEXT_CENTER"},
+            {offset: 10, length: 10, style: "TEXT_CENTER"}
+        ]
+        const outputData = [
+            [
+                {offset: 0, length: 10, style: "Orange"},
+                {offset: 0, length: 10, style: "Green"},
+                {offset: 0, length: 10, style: "Yellow"},
+                {offset: 0, length: 10, style: "TEXT_LEFT"},
+            ],
+            [
+                {offset: 5, length: 10, style: "TEXT_CENTER"},
+                {offset: 5, length: 10, style: "TEXT_LEFT"},
+            ],
+            [
+                {offset: 8, length: 10, style: "TEXT_CENTER"}
+            ],
+            [
+                {offset: 10, length: 10, style: "TEXT_CENTER"},
+                {offset: 10, length: 10, style: "TEXT_CENTER"}
+            ]
+        ]
+        expect(JSON.stringify(offsetSort(inputData))).toBe(JSON.stringify(outputData))
+
+    })
+    test ('duplicate style filter', ()=>{
+        const inputData =  [
+            [
+                {offset: 0, length: 10, style: "Orange"},
+                {offset: 0, length: 10, style: "Green"},
+                {offset: 0, length: 10, style: "Yellow"},
+                {offset: 0, length: 10, style: "TEXT_LEFT"},
+                {offset: 0, length: 10, style: "size9"},
+                {offset: 0, length: 10, style: "size20"}
+            ],
+            [
+                {offset: 5, length: 10, style: "TEXT_CENTER"},
+                {offset: 5, length: 10, style: "TEXT_LEFT"},
+            ],
+            [
+                {offset: 8, length: 10, style: "TEXT_CENTER"}
+            ],
+            [
+                {offset: 10, length: 10, style: "TEXT_CENTER"},
+                {offset: 10, length: 10, style: "TEXT_CENTER"}
+            ]
+        ]
+        const outputData = [
+            [
+
+                {offset: 0, length: 10, style: "Yellow"},
+                {offset: 0, length: 10, style: "TEXT_LEFT"},
+                {offset: 0, length: 10, style: "size20"}
+            ],
+            [
+                {offset: 5, length: 10, style: "TEXT_LEFT"},
+            ],
+            [
+                {offset: 8, length: 10, style: "TEXT_CENTER"}
+            ],
+            [
+                {offset: 10, length: 10, style: "TEXT_CENTER"}
+            ]
+        ]
+        expect(JSON.stringify(filterBlock(inputData))).toBe(JSON.stringify(outputData))
+    })
+
+})
 
 describe('testing component Elements', () => {
     const dataTest = (inlineStyleRanges) => {
