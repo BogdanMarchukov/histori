@@ -3,7 +3,7 @@ import classes from './elementStyles.module.css'
 import React, {useEffect, useMemo, useRef, useState} from "react";
 
 // сортировка по параметрам offset
-function offsetSort(inlineStyleRanges: RawDraftInlineStyleRange[]): RawDraftInlineStyleRange[][] {
+export function offsetSort(inlineStyleRanges: RawDraftInlineStyleRange[]): RawDraftInlineStyleRange[][] {
     const sortArray: RawDraftInlineStyleRange[][] = [] // отсортированный массив
     const cache: RawDraftInlineStyleRange[] = []
     inlineStyleRanges.forEach((i, index) => {
@@ -30,7 +30,7 @@ function offsetSort(inlineStyleRanges: RawDraftInlineStyleRange[]): RawDraftInli
 }
 
 // фильтрует классы по группам и удаляет дублирующие
-function filterBlock(styleBlock: RawDraftInlineStyleRange[][]): RawDraftInlineStyleRange[][] {
+export function filterBlock(styleBlock: RawDraftInlineStyleRange[][]): RawDraftInlineStyleRange[][] {
 
     return styleBlock.map((i, index) => {
         const flexSort: RawDraftInlineStyleRange[] = []
@@ -59,9 +59,22 @@ function filterBlock(styleBlock: RawDraftInlineStyleRange[][]): RawDraftInlineSt
         if (flexSort.length && colorSort.length) {
             return [flexSort[flexSort.length - 1], colorSort[colorSort.length - 1]]
         }
+        if (colorSort.length && sizeSort.length) {
+            return [colorSort[colorSort.length - 1], sizeSort[sizeSort.length - 1]]
+        }
+        if (flexSort.length && sizeSort.length) {
+            return [flexSort[flexSort.length - 1], flexSort[flexSort.length - 1]]
+        }
         if (flexSort.length) {
             return [flexSort[flexSort.length - 1]]
-        } else {
+        }
+        if (colorSort.length) {
+            return [colorSort[colorSort.length - 1]]
+        }
+        if (sizeSort.length) {
+            return [sizeSort[sizeSort.length - 1]]
+        }
+        else {
             return i
         }
 
@@ -70,16 +83,11 @@ function filterBlock(styleBlock: RawDraftInlineStyleRange[][]): RawDraftInlineSt
 
 }
 
-// module.exports = {
-//     offsetSort,
-//     filterBlock
-// }
-
 
 export function useStyleText(content: RawDraftContentBlock) {
 
     const {inlineStyleRanges, text} = content  // входные данные
-    const textBlock = useRef([<React.Fragment key={Math.random()}><span>{text}</span></React.Fragment>]) // дефолтный контент
+    const textBlock = useRef([<React.Fragment key={Math.random()}></React.Fragment>]) // дефолтный контент
     const clsName = useRef(classes.default)
 
 
@@ -93,6 +101,9 @@ export function useStyleText(content: RawDraftContentBlock) {
 
                     i.forEach((item, indexItem) => {
                         if (indexItem === 0) {
+                            if (item.offset > 0){
+                                textBlock.current = [<React.Fragment key={Math.random()}><span>{text.substring(0, item.offset)}</span></React.Fragment>]
+                            }
                             clsName.current = `${clsName.current} ${classes[item.style]}`
                         }
                         if (indexItem > 0 && indexItem !== i.length - 1) {
@@ -102,12 +113,31 @@ export function useStyleText(content: RawDraftContentBlock) {
                         if (indexItem > 0 && indexItem === i.length - 1) {
                             clsName.current = `${clsName.current} ${classes[item.style]}`
                         }
-                        textBlock.current = [<React.Fragment key={Math.random()}><span
-                            className={clsName.current}>{text.substring(item.offset, item.length)}</span></React.Fragment>]
+                        textBlock.current = [ textBlock.current[0],
+                            <React.Fragment key={Math.random()}>
+                                <span
+                            className={clsName.current}
+                                >
+                                    {text.substring(item.offset, item.offset + item.length)}
+                                </span>
+                            </React.Fragment>
+                        ]
+                        if (indexItem === i.length - 1) {
+                            textBlock.current = [
+                                ...textBlock.current,
+                                <React.Fragment key={Math.random()}>
+                                <span
+                                >
+                                    {text.substring(item.offset + item.length)}
+                                </span>
+                                </React.Fragment>
+
+                            ]
+                        }
                     })
 
                 })
-            }
+            } else textBlock.current = [<React.Fragment key={Math.random()}><span>{text}</span></React.Fragment>]
         }
 
         start()
