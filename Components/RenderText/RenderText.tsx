@@ -16,15 +16,15 @@ const RenderText = (props: Props) => {
         content.blocks.forEach((item, index) => {
             const {type} = item
             if (type === 'header-one') {
-                blockParagraph.push(item)
+                blockParagraph.push(JSON.parse(JSON.stringify(item)))
                 return true
             }
             if (type !== 'header-two') {
                 if (content.blocks.length - 1 === index) {
-                    blockParagraph.push(item)
+                    blockParagraph.push(JSON.parse(JSON.stringify(item)))
                     blocksContent.push([JSON.parse(JSON.stringify(blockParagraph))])
                 } else {
-                    blockParagraph.push(item)
+                    blockParagraph.push(JSON.parse(JSON.stringify(item)))
                     return true
                 }
 
@@ -32,7 +32,7 @@ const RenderText = (props: Props) => {
             if (type === 'header-two') {
                 blocksContent.push([JSON.parse(JSON.stringify(blockParagraph))])
                 blockParagraph.length = 0
-                blockParagraph.push(item)
+                blockParagraph.push(JSON.parse(JSON.stringify(item)))
             }
 
 
@@ -56,9 +56,9 @@ const RenderText = (props: Props) => {
                                                             {
                                                                 i.map((k, indexK)=> {
                                                                     return(
-                                                                        <>
+                                                                        <React.Fragment key={Math.random()}>
                                                                             <Elements content={k}/>
-                                                                        </>
+                                                                        </React.Fragment>
                                                                     )
                                                                 })
                                                             }
@@ -79,4 +79,4 @@ const RenderText = (props: Props) => {
     )
 }
 
-export default RenderText
+export default React.memo(RenderText)

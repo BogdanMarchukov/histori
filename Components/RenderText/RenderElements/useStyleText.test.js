@@ -16,11 +16,7 @@ describe('test function in hook useStyleText',()=>{
             {offset: 0, length: 10, style: "Green"},
             {offset: 0, length: 10, style: "Yellow"},
             {offset: 0, length: 10, style: "TEXT_LEFT"},
-            {offset: 5, length: 10, style: "TEXT_CENTER"},
-            {offset: 5, length: 10, style: "TEXT_LEFT"},
-            {offset: 8, length: 10, style: "TEXT_CENTER"},
-            {offset: 10, length: 10, style: "TEXT_CENTER"},
-            {offset: 10, length: 10, style: "TEXT_CENTER"}
+
         ]
         const outputData = [
             [
@@ -28,19 +24,9 @@ describe('test function in hook useStyleText',()=>{
                 {offset: 0, length: 10, style: "Green"},
                 {offset: 0, length: 10, style: "Yellow"},
                 {offset: 0, length: 10, style: "TEXT_LEFT"},
-            ],
-            [
-                {offset: 5, length: 10, style: "TEXT_CENTER"},
-                {offset: 5, length: 10, style: "TEXT_LEFT"},
-            ],
-            [
-                {offset: 8, length: 10, style: "TEXT_CENTER"}
-            ],
-            [
-                {offset: 10, length: 10, style: "TEXT_CENTER"},
-                {offset: 10, length: 10, style: "TEXT_CENTER"}
             ]
         ]
+        console.log(offsetSort(inputData))
         expect(JSON.stringify(offsetSort(inputData))).toBe(JSON.stringify(outputData))
 
     })
@@ -83,6 +69,7 @@ describe('test function in hook useStyleText',()=>{
                 {offset: 10, length: 10, style: "TEXT_CENTER"}
             ]
         ]
+        console.log(filterBlock(inputData))
         expect(JSON.stringify(filterBlock(inputData))).toBe(JSON.stringify(outputData))
     })
 
