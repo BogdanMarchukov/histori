@@ -73,22 +73,22 @@ function EditorText(props: Props) {
                                                          ]}/>
                                         <SelectAutoWidth commandStyle={commandStyle} minWidth={100} title={'размер'}
                                                          item={[
-                                                             {value: '8', content: '8'},
-                                                             {value: '9', content: "9"},
-                                                             {value: '10', content: "10"},
-                                                             {value: '11', content: "11"},
-                                                             {value: '12', content: "12"},
-                                                             {value: '14', content: "14"},
-                                                             {value: '16', content: "16"},
-                                                             {value: '18', content: "18"},
-                                                             {value: '20', content: "20"},
-                                                             {value: '22', content: "22"},
-                                                             {value: '24', content: "24"},
-                                                             {value: '26', content: "26"},
-                                                             {value: '28', content: "28"},
-                                                             {value: '36', content: "36"},
-                                                             {value: '48', content: "48"},
-                                                             {value: '72', content: "72"},
+                                                             {value: 'size8', content: '8'},
+                                                             {value: 'size9', content: "9"},
+                                                             {value: 'size10', content: "10"},
+                                                             {value: 'size11', content: "11"},
+                                                             {value: 'size12', content: "12"},
+                                                             {value: 'size14', content: "14"},
+                                                             {value: 'size16', content: "16"},
+                                                             {value: 'size18', content: "18"},
+                                                             {value: 'size20', content: "20"},
+                                                             {value: 'size22', content: "22"},
+                                                             {value: 'size24', content: "24"},
+                                                             {value: 'size26', content: "26"},
+                                                             {value: 'size28', content: "28"},
+                                                             {value: 'size36', content: "36"},
+                                                             {value: 'size48', content: "48"},
+                                                             {value: 'size72', content: "72"},
                                                          ]}
 
                                         />

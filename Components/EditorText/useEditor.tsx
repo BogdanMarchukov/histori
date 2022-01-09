@@ -92,52 +92,52 @@ export function useEditor(){
         FONT_ROBOTO: {
             fontFamily : '\'Roboto\', sans-serif'
         },
-        '8': {
+        'size8': {
             fontSize: '8px'
         },
-        '9': {
+        'size9': {
             fontSize: '9px'
         },
-        '10': {
+        'size10': {
             fontSize: '10px'
         },
-        '11': {
+        'size11': {
             fontSize: '11px'
         },
-        '12': {
+        'size12': {
             fontSize: '12px'
         },
-        '14': {
+        'size14': {
             fontSize: '14px'
         },
-        '16': {
+        'size16': {
             fontSize: '16px'
         },
-        '18': {
+        'size18': {
             fontSize: '18px'
         },
-        '20': {
+        'size20': {
             fontSize: '20px'
         },
-        '22': {
+        'size22': {
             fontSize: '22px'
         },
-        '24': {
+        'size24': {
             fontSize: '24px'
         },
-        '26': {
+        'size26': {
             fontSize: '26px'
         },
-        '28': {
+        'size28': {
             fontSize: '28px'
         },
-        '36': {
+        'size36': {
             fontSize: '36px'
         },
-        '48': {
+        'size48': {
             fontSize: '48px'
         },
-        '72': {
+        'size72': {
             fontSize: '72px'
         },
         Black: {

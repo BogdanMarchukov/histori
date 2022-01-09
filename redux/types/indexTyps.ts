@@ -1,20 +1,26 @@
 import {
-    closeRegisterWindow, errorInitType,
-    initUserType, loadingIndicatorType, loginErrorType, logoutType,
+    closeRegisterWindow,
+    errorInitType,
+    initUserType,
+    loadingIndicatorType,
+    loginErrorType,
+    logoutType,
     openRegisterActionType,
     RegisterFormActionType,
-    ShowProfileWindowType, switchingDispatchType
+    ShowProfileWindowType,
+    switchingDispatchType
 } from "../action-creators/homePageActionCreator";
 import {homePageState} from "../redusers/homePageReducer";
 import {testStateType} from "../redusers/testReducer";
 import {userState} from "../redusers/userReducer";
-import {ResponseTypeLogin} from "../../pages/api/login";
 import {
     initAccountActionType,
-    miniLoaderDispatchType, onOffEditorAccountModelDispatchType, saveAvatarType,
+    miniLoaderDispatchType,
+    onOffEditorAccountModelDispatchType,
+    saveAvatarType,
     updateUserReducerPayloadType
 } from "../action-creators/accountPageActionCreator";
-import {accountPageReducer, accountPageReducerType} from "../redusers/accountPageReducer";
+import {accountPageReducerType} from "../redusers/accountPageReducer";
 import {initStateTextReducer} from "../redusers/textReducer";
 import {SaveTextType} from "../action-creators/editorTextActionCreator";
 
@@ -38,6 +44,7 @@ export type rootAction =
     | onOffEditorAccountModelDispatchType
     | saveAvatarType
     | SaveTextType
+
 
 
 export type rootState =
@@ -65,7 +72,8 @@ export enum ActionTypes {
     MIMI_LOADER_START_STOP = 'ACCOUNT/MIMI_LOADER_START_STOP',
     OPEN_MODEL_WIDOW_EDIT_ACCOUNT = 'OPEN_MODEL_WIDOW_EDIT_ACCOUNT',
     SAVE_AVATAR = 'ACCOUNT/SAVE_AVATAR',
-    SAVE_TEXT = 'EDITOR_TEXT/SAVE_TEXT'
+    SAVE_TEXT = 'EDITOR_TEXT/SAVE_TEXT',
+
 
 }
 

@@ -7,6 +7,10 @@ export interface SaveTextType {
     payload: RawDraftContentState
 }
 
+//====================== сохранение текста в store================
 export function saveText (dispatch: (object: SaveTextType)=> void, content: RawDraftContentState){
     dispatch({type: ActionTypes.SAVE_TEXT, payload: content})
 }
+//============================================================================
+
+
