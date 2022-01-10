@@ -10,6 +10,7 @@ import RenderText from "../Components/RenderText/RenderText";
 
 type Props = {
     currentArticle: RawDraftContentState | null
+    tableCells: string[]
 }
 
 const Society = (props: Props) => {
@@ -21,7 +22,7 @@ const Society = (props: Props) => {
                     <hr style={{marginTop: '200px'}}/>
                     {
                         props.currentArticle ?
-                            <RenderText content={props.currentArticle}/>
+                            <RenderText content={props.currentArticle} tableCells={props.tableCells}/>
                             : null
                     }
                 </Grid>
@@ -36,7 +37,9 @@ const Society = (props: Props) => {
 function mapStateToProps(state: RootState) {
     return {
         // @ts-ignore
-        currentArticle: state.textReducer.currentArticle
+        currentArticle: state.textReducer.currentArticle,
+        // @ts-ignore
+        tableCells: state.textReducer.tableCells
     }
 }
 

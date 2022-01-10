@@ -5,11 +5,13 @@ import {RawDraftContentState} from 'draft-js'
 
 export type initStateTextReducer = {
    currentArticle: RawDraftContentState | null
+   tableCells: string[]
 
 }
 
 const initState = {
-   currentArticle: null
+   currentArticle: null,
+   tableCells: []
 }
 
 
@@ -20,6 +22,11 @@ export const textReducer = (state = initState, action: rootAction ): initStateTe
          return {
             ...state,
             currentArticle: action.payload
+         }
+      case ActionTypes.TABLE_SELECT_SAVE:
+         return {
+            ...state,
+            tableCells: [...state.tableCells, action.payload]
          }
 
       default:

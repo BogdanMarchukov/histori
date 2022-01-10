@@ -6,11 +6,13 @@ import Elements from "./RenderElements/Elements";
 
 type Props = {
     content: RawDraftContentState
+    tableCells: string[]
 }
 
 const RenderText = (props: Props) => {
-    console.log(props.content)
 
+
+    // функция разбивает контент на параграфы
     const paragraph = (content: RawDraftContentState): RawDraftContentBlock[][][] => { // сортировка контента по блокам параграфам
         const blockParagraph: RawDraftContentBlock[] = []
         const blocksContent: RawDraftContentBlock[][][] = []
@@ -51,24 +53,95 @@ const RenderText = (props: Props) => {
                         return (
                             <React.Fragment key={Math.random()}>
 
-                                {index === 0 ? <Elements content={item[0][0]}/>: null} {/*выносим заголовок статьи за приделы section*/}
+                                {index === 0 ? <Elements
+                                    content={item[0][0]}/> : null} {/*выносим заголовок статьи за приделы section*/}
 
                                 <section>
                                     {
                                         item.map((i, ind) => {
 
-                                            const ulList: RawDraftContentBlock[] = [] // сохраняем элименты li
-                                            let ulListMap: RawDraftContentBlock[] = [] // капируем элимены li для того чтобы отчистить массив радитель
-                                            const olList: RawDraftContentBlock[] = []
-                                            let olListMap: RawDraftContentBlock[] = []
+
+                                            const ulList: RawDraftContentBlock[] = [] // сохраняем элименты li маркированный список
+                                            let ulListCache: RawDraftContentBlock[] = [] // капируем элимены li для того чтобы отчистить массив радитель
+                                            const olList: RawDraftContentBlock[] = [] // нумерованный список
+                                            let olListCache: RawDraftContentBlock[] = []
+                                            const line: RawDraftContentBlock[] = [] // сортировка ячеек таблицы по строкам
+                                            let lineCache: RawDraftContentBlock[] = [] // кеш строк таблицы
+                                            let table: RawDraftContentBlock[][] = [] // вся таблица целеком разбита на строки
+                                            let tableCache: RawDraftContentBlock[][] = []
                                             let lastElement = true
                                             return (
                                                 <React.Fragment key={Math.random()}>
                                                     {
                                                         i.map((k, indexK) => {
-                                                            if (index === 0 && ind ===0 && indexK ===0){
+                                                            function renderTable() {
+                                                                    tableCache = JSON.parse(JSON.stringify(table))
+                                                                    table.length = 0
+                                                                    return (
+                                                                        <React.Fragment key={Math.random()}>
+                                                                            <table key={Math.random()}>
+                                                                                <tbody key={Math.random()}>
+                                                                                {
+                                                                                    tableCache.map(line => { // линия таблицы
+                                                                                        return (
+                                                                                            <React.Fragment key={Math.random()}>
+                                                                                                <tr>
+                                                                                                    {
+                                                                                                        line.map(cell => { // ячейка табл
+                                                                                                            return (
+                                                                                                                <React.Fragment key={Math.random()}>
+                                                                                                                    <Elements content={cell}/>
+                                                                                                                </React.Fragment>
+
+                                                                                                            )
+                                                                                                        })
+                                                                                                    }
+                                                                                                </tr>
+                                                                                            </React.Fragment>
+                                                                                        )
+                                                                                    })
+                                                                                }
+                                                                                </tbody>
+                                                                            </table>
+                                                                            {lastElement ? <Elements content={k}/> : null}
+                                                                        </React.Fragment>
+                                                                    )
+
+                                                            }
+
+
+                                                            if (index === 0 && ind === 0 && indexK === 0) {
                                                                 return null // исключаем заголовок h1
                                                             }
+
+                                                            if (k.type === 'table' && line.length === +props.tableCells[0]) {
+                                                                lineCache = JSON.parse(JSON.stringify(line))
+                                                                line.length = 0
+                                                                table.push(lineCache)
+                                                                line.push(k)
+                                                                return null
+
+                                                            }
+
+
+
+                                                            if (k.type !== 'table' && table.length || indexK === i.length - 1 && table.length) {
+                                                                if (k.type === 'table'){
+                                                                    line.push(k)
+                                                                }
+                                                                lineCache = JSON.parse(JSON.stringify(line))
+                                                                line.length = 0
+                                                                table.push(lineCache)
+                                                                return  renderTable()
+
+                                                            }
+                                                            if (k.type === 'table' && line.length !== +props.tableCells[0]) {
+                                                                line.push(k)
+                                                                return null
+
+                                                            }
+
+
 
                                                             if (k.type === 'unordered-list-item') {
                                                                 ulList.push(k)
@@ -80,13 +153,13 @@ const RenderText = (props: Props) => {
 
                                                             }
                                                             if (ulList.length) {
-                                                                ulListMap = JSON.parse(JSON.stringify(ulList))
+                                                                ulListCache = JSON.parse(JSON.stringify(ulList))
                                                                 ulList.length = 0
                                                                 return (
                                                                     <React.Fragment key={Math.random()}>
                                                                         <ul>
                                                                             {
-                                                                                ulListMap.map(ul => {
+                                                                                ulListCache.map(ul => {
                                                                                     return (
                                                                                         <React.Fragment
                                                                                             key={Math.random()}>
@@ -111,13 +184,13 @@ const RenderText = (props: Props) => {
                                                                 }
                                                             }
                                                             if (olList.length) {
-                                                                olListMap = JSON.parse(JSON.stringify(olList))
+                                                                olListCache = JSON.parse(JSON.stringify(olList))
                                                                 olList.length = 0
                                                                 return (
                                                                     <React.Fragment key={Math.random()}>
                                                                         <ol>
                                                                             {
-                                                                                olListMap.map(ul => {
+                                                                                olListCache.map(ul => {
                                                                                     return (
                                                                                         <React.Fragment
                                                                                             key={Math.random()}>

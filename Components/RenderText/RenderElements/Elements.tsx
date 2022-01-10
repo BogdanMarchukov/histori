@@ -15,6 +15,7 @@ const Elements = (props: Props) => {
 
 
     switch (type) {
+
         case 'header-one':
             return (
                 <React.Fragment>
@@ -42,6 +43,15 @@ const Elements = (props: Props) => {
                     <br/>
                 </React.Fragment>
             )
+        case 'split-block':
+            return (
+                <React.Fragment key={key}>
+                    <span>
+                        {textBlock}
+                    </span>
+                    <br/>
+                </React.Fragment>
+            )
         case 'unordered-list-item':
                 return (
                     <React.Fragment key={key}>
@@ -50,6 +60,14 @@ const Elements = (props: Props) => {
                             </li>
                     </React.Fragment>
                 )
+        case 'table':
+            return (
+                <React.Fragment key={key}>
+                    <td>
+                        {textBlock}
+                    </td>
+                </React.Fragment>
+            )
         case 'ordered-list-item':
             return (
                 <React.Fragment key={key}>
@@ -58,6 +76,7 @@ const Elements = (props: Props) => {
                     </li>
                 </React.Fragment>
             )
+
 
         default:
             return null

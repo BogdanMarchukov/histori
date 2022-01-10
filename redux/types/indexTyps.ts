@@ -22,7 +22,8 @@ import {
 } from "../action-creators/accountPageActionCreator";
 import {accountPageReducerType} from "../redusers/accountPageReducer";
 import {initStateTextReducer} from "../redusers/textReducer";
-import {SaveTextType} from "../action-creators/editorTextActionCreator";
+import {SaveTextType, TableSelectionType} from "../action-creators/editorTextActionCreator";
+
 
 export type FileEventTarget = EventTarget & { files: FileList }
 
@@ -44,7 +45,7 @@ export type rootAction =
     | onOffEditorAccountModelDispatchType
     | saveAvatarType
     | SaveTextType
-
+    | TableSelectionType
 
 
 export type rootState =
@@ -73,6 +74,7 @@ export enum ActionTypes {
     OPEN_MODEL_WIDOW_EDIT_ACCOUNT = 'OPEN_MODEL_WIDOW_EDIT_ACCOUNT',
     SAVE_AVATAR = 'ACCOUNT/SAVE_AVATAR',
     SAVE_TEXT = 'EDITOR_TEXT/SAVE_TEXT',
+    TABLE_SELECT_SAVE = 'EDITOR_TEXT/TABLE_SELECT_SAVE'
 
 
 }

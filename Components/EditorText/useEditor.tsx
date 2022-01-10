@@ -4,17 +4,26 @@ import TableWrap from "./TableEditor/TableWrap/TableWrap";
 import Immutable from 'immutable'
 import classes from './TableEditor/TableWrap/TableWrap.module.css'
 import ParagraphWrap from "./TableEditor/ParagraphWrap/ParagraphWrap";
+import {useDispatch} from "react-redux";
+import {saveTableCells} from "../../redux/action-creators/editorTextActionCreator";
+
 
 export function useEditor(){
     type editorStateType = typeof editorState
 
     const [renderClient, setRenderClient] = useState(false) // первичный рендер на клиенте
+    const [cellsTable, setCellsTable] = useState('')
     const [editorState, setEditorState] = useState( // начальный state
         () => EditorState.createEmpty()
     )
     const [taleClass, setTableClass] = useState(classes.two) // присваения css класса к ячейки таблицы
 
+    const dispatch = useDispatch()
+
+
     function tableSelection(select: string){
+        setCellsTable(select)// сохраняем в store колличество ячеек в лакальном state
+            // todo присутствует баг если в статье более одной таблице
         switch (select) {
             case '2':
                 setTableClass(classes.two)
@@ -49,8 +58,12 @@ export function useEditor(){
         setEditorState(editorState)
     }
 
+
+
     function commandStyleSelect(editorState: editorStateType){
+
         return function (command: string) {
+
             onChange(RichUtils.toggleInlineStyle(editorState, command))
 
 
@@ -72,6 +85,10 @@ export function useEditor(){
 
     function commandBlockStyleSelect(editorState: editorStateType){
         return function (command: string) {
+            if (command === 'table') {
+                saveTableCells(dispatch, cellsTable) // сохраняю колличество сталбцов в таблице, для дальнейшего
+                                                    // рэндера
+            }
             onChange(RichUtils.toggleBlockType(editorState, command))
         }
     }
