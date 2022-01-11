@@ -10,8 +10,9 @@ export type initStateTextReducer = {
 }
 
 const initState = {
-   currentArticle: null,
-   tableCells: []
+   tableCells: [],
+   currentArticle: null
+
 }
 
 

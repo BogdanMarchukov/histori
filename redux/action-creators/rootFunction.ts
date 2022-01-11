@@ -1,5 +1,7 @@
 import {ErrorType, initAccountDto, RedirectType} from "../../serverTypes/serverTypes";
 import {string} from "prop-types";
+import {NextApiResponse} from "next";
+import {onOffMiniLoader, updateReducers} from "./accountPageActionCreator";
 
 
 // ====================сохранение данных в LocalStorage==================
@@ -33,16 +35,23 @@ export function getLocalStorage(name: string): string | null {
 
 export async function updateToken() {
 
-    const response = await fetch('/api/token/update')
-    if (response.status === 307) {
-        return redirect(response) // редирект RedirectType
-    } else {
-        if (response.status === 200) {  // токен и данные пользователя обнавлены
-            return success(response)
+    try {
+        const response = await fetch('/api/token/update')
+        if (response.status === 307) {
+            return redirect(response) // редирект RedirectType
         } else {
-            return unknownError(response)
+            if (response.status === 200) {
+                // токен и данные пользователя обнавлены
+                return success(response)
+            } else {
+                return unknownError(response)
+            }
         }
+    }catch (e){
+       // todo обработать
     }
+
+
 }
 
 //===============проверка токена на наличие в response и сохранение в LocalStorage=====================
@@ -90,6 +99,33 @@ export function avatarImgSrc(patchName: any, fileName: any): any {
     if (fileName) {
         return `${patchName}?fileName=${fileName}`
     } else return undefined
+}
+//======================================================================================
+
+
+export function responseHandler(response: Response): Promise<string> {
+    return new Promise((async (resolve, reject) => {
+        switch (response.status){
+            case 401:
+            updateToken()
+                .then(data => {
+                    if (data) {
+                        if ('accessToken' in data) { // токен успешно обнавлен данные о пользователе получены
+                            const {accessToken} = data
+                            saveLocalStorage('accessToken', accessToken) // токен сохраннен в localStorage
+                            resolve('restartFunction')
+                        }
+                    }
+
+
+
+                })
+                .catch(e => reject(e))
+
+                break
+        }
+    }))
+
 }
 
 

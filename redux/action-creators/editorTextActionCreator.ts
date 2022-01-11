@@ -1,11 +1,15 @@
 import {ActionTypes} from "../types/indexTyps";
 import {RawDraftContentState} from "draft-js";
+import {getLocalStorage, responseHandler} from "./rootFunction";
+import {log} from "util";
 
 
 export interface SaveTextType {
     type: ActionTypes.SAVE_TEXT
     payload: RawDraftContentState
 }
+
+
 
 
 
@@ -28,4 +32,40 @@ export function saveTableCells(dispatch: (object: TableSelectionType) => void, s
 
 //=========================================================================================
 
+// =========================сохраняем старью в БД =================================
 
+export async function saveArticle(dispatch: ()=> void, article: RawDraftContentState, tableCells: string[], categoryName: string){
+    const inputData = {
+        categoryName,
+        article,
+        tableCells
+    }
+    try {
+        const responseData: Response = await fetch('api/create/article', { /// отправка новой статьи для сохранения
+            method: 'POST',
+            headers: {
+                'Authorization': getLocalStorage('accessToken') ?? '',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(inputData)
+        })
+
+        responseHandler(responseData)// обработка запроса
+            .then(data => {
+                if (data === 'restartFunction'){
+                    saveArticle(dispatch, article, tableCells, categoryName) // перезапись токена и перезапуск функции
+
+                }
+            })
+            .catch(e => {
+                console.log(e)
+            })
+    } catch (e) {
+
+    }
+
+
+
+
+
+}

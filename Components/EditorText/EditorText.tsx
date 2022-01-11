@@ -16,6 +16,9 @@ import TextParagraphSvg from '../IconSvg/Editor/TextParagraphSvg'
 import SelectAutoWidth from "../SelectAutoWidth/SelectAutoWidth"
 import {Button} from "@mui/material";
 import SaveProject from "../IconSvg/Editor/SaveProject";
+import {RootState} from "../../redux/redusers/indexReduser";
+import {useDispatch, useSelector} from "react-redux";
+import {saveArticle} from "../../redux/action-creators/editorTextActionCreator";
 
 
 type Props = {
@@ -37,6 +40,26 @@ function EditorText(props: Props) {
     useEffect(() => {
         setRenderClient(true)
     }, [])
+
+    function textReducerSelect(state: RootState) {
+
+        return {
+            // @ts-ignore
+            tableCells: state.textReducer.tableCells
+        }
+    }
+
+    interface useSelector {
+        tableCells: string[]
+
+    }
+
+
+
+    const {tableCells}: useSelector = useSelector(textReducerSelect)
+    const dispatch: ()=> void = useDispatch()
+
+
 
 
 
@@ -160,7 +183,7 @@ function EditorText(props: Props) {
                                         <p>Проект</p>
                                     </div>
                                     <div className={classes.font}>
-                                       <SaveProject clickHandler={()=> props.saveText(convertToRaw(contentState))}/>
+                                       <SaveProject clickHandler={()=> saveArticle(dispatch, convertToRaw(contentState), tableCells, 'society')}/>
                                     </div>
 
                                 </div>

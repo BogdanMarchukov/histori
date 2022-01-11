@@ -1,7 +1,6 @@
 import { combineReducers} from "redux";
 import {homePageReducer, initHomePage} from "./homePageReducer";
 import {HYDRATE} from "next-redux-wrapper";
-import {initTestReducer, testReducer} from "./testReducer";
 import {userReducer} from "./userReducer";
 import {accountPageReducer} from "./accountPageReducer";
 import {textReducer} from "./textReducer";
@@ -10,7 +9,6 @@ import {textReducer} from "./textReducer";
 
 const rootReducer = combineReducers({
     homePageReducer,
-    testReducer,
     userReducer,
     accountPageReducer,
     textReducer

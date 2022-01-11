@@ -20,7 +20,7 @@ export async function initAccount(dispatch: (object: rootAction) => void) {
         }
     })
     if (response.status === 401) {
-        const tokenData: initAccountDto | RedirectType | ErrorType = await updateToken()
+        const tokenData: any = await updateToken()
         if ('accessToken' in tokenData) { // токен успешно обнавлен данные о пользователе получены
             const {accessToken} = tokenData
             saveLocalStorage('accessToken', accessToken) // токен сохраннен в localStorage
@@ -58,7 +58,6 @@ export interface updateUserReducerPayloadType {
 }
 
 export function updateReducers(dispatch: (object: updateUserReducerPayloadType) => void, userData: initAccountDto) {
-    console.log(userData)
     dispatch({type: ActionTypes.UPDATE_USER_REDUCER, payload: userData})
 }
 
@@ -165,7 +164,7 @@ export async function editAccountUserData(dispatch: (obj: rootAction)=> void, us
 
    }
    if (response.status === 401){
-       const tokenData: initAccountDto | RedirectType | ErrorType = await updateToken()
+       const tokenData: any = await updateToken()
        if ('accessToken' in tokenData) { // токен успешно обнавлен данные о пользователе получены
            const {accessToken} = tokenData
            saveLocalStorage('accessToken', accessToken) // токен сохраннен в localStorage
