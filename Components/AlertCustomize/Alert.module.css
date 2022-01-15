@@ -1,7 +1,7 @@
 .alertWrapper {
     top: 56px;
     right: 200px;
-    position: absolute;
+    position: fixed;
     width: 350px;
     height: 60px;
     overflow: hidden;

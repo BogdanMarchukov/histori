@@ -11,7 +11,6 @@ import {
     switchingDispatchType
 } from "../action-creators/homePageActionCreator";
 import {homePageState} from "../redusers/homePageReducer";
-import {testStateType} from "../redusers/testReducer";
 import {userState} from "../redusers/userReducer";
 import {
     initAccountActionType,
@@ -50,7 +49,6 @@ export type rootAction =
 
 export type rootState =
     | { homePageReducer: homePageState }
-    | { testReducer: testStateType }
     | { userReducer: userState }
     | { accountPageReducer: accountPageReducerType }
     | { textReducer: initStateTextReducer }

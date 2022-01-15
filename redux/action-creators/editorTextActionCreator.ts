@@ -1,7 +1,8 @@
-import {ActionTypes} from "../types/indexTyps";
+import {ActionTypes, rootAction} from "../types/indexTyps";
 import {RawDraftContentState} from "draft-js";
 import {getLocalStorage, responseHandler} from "./rootFunction";
-import {log} from "util";
+import {ErrorType} from "../../serverTypes/serverTypes";
+import {errorHandlerServer} from "./homePageActionCreator";
 
 
 export interface SaveTextType {
@@ -40,6 +41,7 @@ export async function saveArticle(dispatch: ()=> void, article: RawDraftContentS
         article,
         tableCells
     }
+
     try {
         const responseData: Response = await fetch('api/create/article', { /// отправка новой статьи для сохранения
             method: 'POST',
@@ -51,17 +53,24 @@ export async function saveArticle(dispatch: ()=> void, article: RawDraftContentS
         })
 
         responseHandler(responseData)// обработка запроса
-            .then(data => {
-                if (data === 'restartFunction'){
-                    saveArticle(dispatch, article, tableCells, categoryName) // перезапись токена и перезапуск функции
 
+            .then(async data => {
+                if (data === 'restartFunction') {
+                    saveArticle(dispatch, article, tableCells, categoryName)
                 }
-            })
-            .catch(e => {
-                console.log(e)
+                if (typeof data === 'object'){
+                    if ('error' in data){
+                       errorHandlerServer(dispatch, data, 'error') // error 403
+
+                    }
+                }
+                if (data === 'Ok') {
+                    console.log(await responseData.json(), 'Ok') // todo продолжить тут
+                }
+
             })
     } catch (e) {
-
+        errorHandlerServer(dispatch, {error: true, errorMassage: 'Данные не отправлненны'}, 'error') // error 403
     }
 
 

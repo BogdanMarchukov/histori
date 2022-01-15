@@ -103,7 +103,7 @@ export function avatarImgSrc(patchName: any, fileName: any): any {
 //======================================================================================
 
 
-export function responseHandler(response: Response): Promise<string> {
+export function responseHandler(response: Response): Promise<string | ErrorType> {
     return new Promise((async (resolve, reject) => {
         switch (response.status){
             case 401:
@@ -122,6 +122,12 @@ export function responseHandler(response: Response): Promise<string> {
                 })
                 .catch(e => reject(e))
 
+                break
+            case 403:
+                resolve({error: true, errorMassage: 'Доступ запрещен'})
+                break
+            case 200:
+                resolve('Ok')
                 break
         }
     }))

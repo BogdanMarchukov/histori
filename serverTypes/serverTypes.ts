@@ -2,6 +2,8 @@ import {Schema} from 'mongoose'
 import {userDto} from "../models/UserHandler";
 import {avatarDtoType} from "../models/AvatarHandler";
 import {tokenDtoType} from "../models/TokenHandler";
+import {RawDraftContentState} from "draft-js";
+import {ObjectId} from "mongodb";
 
 export interface userType {
     _id: Schema.Types.ObjectId
@@ -56,6 +58,24 @@ export interface saveFileType {
     userId: string
     patch: string
 }
+
+
+export interface ArticleType {
+    _id: ObjectId
+    article: RawDraftContentState
+    tableCells: string[]
+    keyWords?: string[]
+    name: string
+    __v: number
+}
+
+export interface ArticleListType {
+    _id: ObjectId
+    __v: number
+    articleList: Array<object>
+}
+
+
 
 export interface statusFile {
     saveResult: boolean
