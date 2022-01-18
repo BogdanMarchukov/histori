@@ -73,7 +73,7 @@ const HomePageContent = (props: Props) => {
                                     История
                                 </li>
                                 <Link
-                                    href={'/society'}
+                                    href={'/post/society?id=0'}
                                 >
                                     <a>
                                         <li

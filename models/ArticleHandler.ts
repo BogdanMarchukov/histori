@@ -80,7 +80,7 @@ class ArticleHandler {
     async saveArticle() { // сохранение в базу данных
         if (this.inputData) {
             switch (this.inputData.categoryName) {
-                case 'society':
+                case 'post':
                    return  await this.articleDir(SocietyArticle, SocietyArticleList)
 
             }

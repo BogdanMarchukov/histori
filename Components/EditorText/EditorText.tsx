@@ -22,7 +22,6 @@ import {saveArticle} from "../../redux/action-creators/editorTextActionCreator";
 
 
 type Props = {
-    saveText: (content: RawDraftContentState)=> void
 }
 
 function EditorText(props: Props) {
@@ -183,7 +182,7 @@ function EditorText(props: Props) {
                                         <p>Проект</p>
                                     </div>
                                     <div className={classes.font}>
-                                       <SaveProject clickHandler={()=> saveArticle(dispatch, convertToRaw(contentState), tableCells, 'society')}/>
+                                       <SaveProject clickHandler={()=> saveArticle(dispatch, convertToRaw(contentState), tableCells, 'post')}/>
                                     </div>
 
                                 </div>

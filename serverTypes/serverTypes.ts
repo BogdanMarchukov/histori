@@ -58,10 +58,15 @@ export interface saveFileType {
     userId: string
     patch: string
 }
+export interface responseArticle {
+    article: ArticleType
+    articleList: Array<object>
+    dir: string
+}
 
 
 export interface ArticleType {
-    _id: ObjectId
+    _id: ObjectId | string
     article: RawDraftContentState
     tableCells: string[]
     keyWords?: string[]

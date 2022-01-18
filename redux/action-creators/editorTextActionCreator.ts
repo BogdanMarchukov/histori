@@ -1,13 +1,13 @@
-import {ActionTypes, rootAction} from "../types/indexTyps";
+import {ActionTypes} from "../types/indexTyps";
 import {RawDraftContentState} from "draft-js";
 import {getLocalStorage, responseHandler} from "./rootFunction";
-import {ErrorType} from "../../serverTypes/serverTypes";
+import {ArticleType, responseArticle} from "../../serverTypes/serverTypes";
 import {errorHandlerServer} from "./homePageActionCreator";
 
 
 export interface SaveTextType {
     type: ActionTypes.SAVE_TEXT
-    payload: RawDraftContentState
+    payload: responseArticle
 }
 
 
@@ -15,7 +15,7 @@ export interface SaveTextType {
 
 
 //====================== сохранение текста в store================
-export function saveText(dispatch: (object: SaveTextType) => void, content: RawDraftContentState) {
+export function saveText(dispatch: (object: SaveTextType) => void, content: responseArticle) {
     dispatch({type: ActionTypes.SAVE_TEXT, payload: content})
 }
 
@@ -34,6 +34,8 @@ export function saveTableCells(dispatch: (object: TableSelectionType) => void, s
 //=========================================================================================
 
 // =========================сохраняем старью в БД =================================
+
+
 
 export async function saveArticle(dispatch: ()=> void, article: RawDraftContentState, tableCells: string[], categoryName: string){
     const inputData = {
@@ -57,6 +59,7 @@ export async function saveArticle(dispatch: ()=> void, article: RawDraftContentS
             .then(async data => {
                 if (data === 'restartFunction') {
                     saveArticle(dispatch, article, tableCells, categoryName)
+                    return true
                 }
                 if (typeof data === 'object'){
                     if ('error' in data){
@@ -65,16 +68,13 @@ export async function saveArticle(dispatch: ()=> void, article: RawDraftContentS
                     }
                 }
                 if (data === 'Ok') {
-                    console.log(await responseData.json(), 'Ok') // todo продолжить тут
+                   const currentArticle: responseArticle =  await responseData.json()
+                    saveText(dispatch, currentArticle) // сохранение в store
                 }
 
             })
     } catch (e) {
         errorHandlerServer(dispatch, {error: true, errorMassage: 'Данные не отправлненны'}, 'error') // error 403
     }
-
-
-
-
 
 }

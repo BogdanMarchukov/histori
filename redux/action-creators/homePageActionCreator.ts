@@ -154,7 +154,6 @@ export interface initUserType {
 
 
 export const initUser = <T extends userDto & avatarDtoType>(userData: T ) => (dispatch: (object: initUserType)=> void) => {
-    console.log(userData, 'initUser111111')
     dispatch({type: ActionTypes.INIT_USER_SSR, payload: userData})
 }
 //*********************************************************************************************
