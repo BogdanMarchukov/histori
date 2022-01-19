@@ -20,10 +20,14 @@ const PageLayout = ({children}: any) => {
 
     return (
         <>
-            <MiniNavigation/>
-            <AlertCustomize alert={alert}/>
-            <main>{children}</main>
-            <Footer/>
+
+            <main>
+                <MiniNavigation/>
+                <AlertCustomize alert={alert}/>
+                {children}
+                <Footer/>
+            </main>
+
         </>
     )
 }

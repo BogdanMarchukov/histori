@@ -2,6 +2,8 @@
     width: 100%;
     height: 30px;
     background-color: black;
+    position: fixed;
+    z-index: 1000;
 }
 
 .wrepper ul {

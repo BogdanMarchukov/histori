@@ -1,0 +1,35 @@
+.lest {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn {
+    background-color: rgb(247, 247, 247);
+    border: 0;
+    cursor: pointer;
+}
+
+.textBlock, .textBlockActive {
+    color: rgb(109, 109, 109);
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 3;
+    text-transform: uppercase;
+    text-align: start;
+    letter-spacing: 0.08em;
+}
+
+.textBlock:hover {
+    color: black;
+}
+
+.textBlockActive {
+    color: black;
+}
+
+.textBlock svg {
+    transform: rotateX(0deg);
+    margin-left: 3px;
+}

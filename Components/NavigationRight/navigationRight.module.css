@@ -1,0 +1,16 @@
+.nawWrapper {
+    width: 100%;
+    height: calc(100vh - 30px);
+    position: fixed;
+    background-color: rgb(247, 247, 247);
+    z-index: 5;
+    top: 30px;
+}
+
+.navigation {
+    margin-top: 80px;
+}
+
+.navigation nav {
+    padding-left: 40px;
+}

@@ -2,6 +2,7 @@
     width: 100%;
     height: 400px;
     background-color: black;
+    z-index: 100;
 
 }
 .footerContainer{

@@ -2,13 +2,10 @@ import React from 'react'
 import PageLayout from "../../Components/Layout/PageLayout"
 import {Grid} from "@mui/material";
 import PageMainContent from "../../Components/PageMainContent/PageMainContent";
-import {connect} from "react-redux";
-import {RootState} from "../../redux/redusers/indexReduser";
-import {RawDraftContentState} from "draft-js";
 import {wrapper} from "../../redux";
 import {responseArticle} from "../../serverTypes/serverTypes";
 import {saveText} from "../../redux/action-creators/editorTextActionCreator";
-import {useRouter} from "next/router";
+import NavigationRight from "../../Components/NavigationRight/NavigationRight";
 
 
 type Props = {
@@ -21,11 +18,10 @@ const Text = (props: Props) => {
             <Grid container>
                 <Grid item xs={9}>
                     <PageMainContent/>
-
                 </Grid>
 
                 <Grid item xs={3}>
-
+                    <NavigationRight/>
                 </Grid>
             </Grid>
         </PageLayout>
