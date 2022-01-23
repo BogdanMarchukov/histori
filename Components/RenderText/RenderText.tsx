@@ -1,7 +1,10 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import classes from './RenderText.module.css'
 import {RawDraftContentBlock, RawDraftContentState} from "draft-js";
 import Elements from "./RenderElements/Elements";
+import {useDispatch, useSelector} from "react-redux";
+import {saveParagraph} from "../../redux/action-creators/editorTextActionCreator";
+import {RootState} from "../../redux/redusers/indexReduser";
 
 
 type Props = {
@@ -11,6 +14,10 @@ type Props = {
 
 const RenderText = (props: Props) => {
 
+    const dispatch = useDispatch()
+    const [clientRender, setClientRender] = useState(false)
+
+
 
     // функция разбивает контент на параграфы
     const paragraph = (content: RawDraftContentState): RawDraftContentBlock[][][] => { // сортировка контента по блокам параграфам
@@ -19,6 +26,10 @@ const RenderText = (props: Props) => {
         content.blocks.forEach((item, index) => {
             const {type} = item
             if (type === 'header-one') {
+                blockParagraph.push(JSON.parse(JSON.stringify(item)))
+                return true
+            }
+            if (type === 'header-two' && index === 0) {
                 blockParagraph.push(JSON.parse(JSON.stringify(item)))
                 return true
             }
@@ -40,8 +51,14 @@ const RenderText = (props: Props) => {
 
 
         })
+         if (!clientRender){
+            setClientRender(true)
+            saveParagraph(dispatch, blocksContent) // сохраняем в store отсартированный массив
+
+        }
         return blocksContent
     }
+
 
 
     return (

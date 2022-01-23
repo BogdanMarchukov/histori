@@ -34,6 +34,7 @@ const Text = (props: Props) => {
 export const getServerSideProps = wrapper.getServerSideProps( store => async context => {
    const {query: {id, dir}} = context
 
+
     try {
         const firstArticle = await fetch(`${process.env.API_URL}/api/init/post/${dir}?id=${id}`, {
             method: 'GET'
@@ -41,6 +42,7 @@ export const getServerSideProps = wrapper.getServerSideProps( store => async con
        const response: responseArticle = await firstArticle.json()
         const {dispatch} = store
         saveText(dispatch, response)
+
     } catch (e) {
 
     }

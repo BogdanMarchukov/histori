@@ -11,6 +11,12 @@
     margin-top: 80px;
 }
 
+.margin {
+    margin-top: 20px;
+}
+
 .navigation nav {
+    display: flex;
+    flex-direction: column;
     padding-left: 40px;
 }

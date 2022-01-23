@@ -1,6 +1,13 @@
 .lest {
-    display: flex;
+    display: inline-block;
     flex-direction: column;
+    box-sizing: inherit;
+    width: content-box;
+
+}
+.none {
+    transition: .2s;
+    display: none;
 }
 
 .btn {
@@ -29,7 +36,47 @@
     color: black;
 }
 
-.textBlock svg {
+.textBlock svg, .textBlockActive svg {
     transform: rotateX(0deg);
     margin-left: 3px;
+    transition: 0.2s;
 }
+
+.textBlockActive svg {
+    transform: rotateX(180deg);
+}
+
+
+.activeList li, .currentList {
+    cursor: pointer;
+    color: rgb(109, 109, 109);
+    margin-top: 10px;
+}
+.currentList {
+    color: black!important;
+}
+.activeList li:first-child {
+    margin: 0;
+}
+.activeList li:hover {
+    color: black;
+}
+
+.activeList {
+    transition: .2s;
+    margin: 0;
+    padding: 0 0 0 10px;
+    display: block;
+    list-style: none;
+}
+
+.activeSpan {
+    width: 4px;
+    height: 20px;
+    border-left: 4px solid #aa00ff;
+    padding-left: 16px;
+    position: absolute;
+    left: 30px;
+    margin-top: 2px;
+}
+
