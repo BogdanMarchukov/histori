@@ -22,6 +22,7 @@ import {saveArticle} from "../../redux/action-creators/editorTextActionCreator";
 
 
 type Props = {
+    startState: RawDraftContentState | null
 }
 
 function EditorText(props: Props) {
@@ -33,7 +34,7 @@ function EditorText(props: Props) {
         onChange, customInlineStyle,
         extendedBlockRenderMap,
         myBlockStyleFn, tableSelection
-    } = useEditor()
+    } = useEditor(props.startState)
     const contentState = editorState.getCurrentContent()
 
     useEffect(() => {
@@ -43,19 +44,23 @@ function EditorText(props: Props) {
     function textReducerSelect(state: RootState) {
 
         return {
-            // @ts-ignore
-            tableCells: state.textReducer.tableCells
+            dirName: state.textReducer.dirName,
+            tableCells: state.textReducer.tableCells,
+            editorStatus: state.textReducer.editorStatus,
+            id: state.textReducer._id
         }
     }
 
     interface useSelector {
         tableCells: string[]
-
+        dirName: string | null
+        editorStatus: string | null
+        id: string | null
     }
 
 
 
-    const {tableCells}: useSelector = useSelector(textReducerSelect)
+    const {tableCells, dirName, editorStatus, id}: useSelector = useSelector(textReducerSelect)
     const dispatch: ()=> void = useDispatch()
 
 
@@ -182,7 +187,7 @@ function EditorText(props: Props) {
                                         <p>Проект</p>
                                     </div>
                                     <div className={classes.font}>
-                                       <SaveProject clickHandler={()=> saveArticle(dispatch, convertToRaw(contentState), tableCells, 'post')}/>
+                                       <SaveProject clickHandler={()=> saveArticle(dispatch, convertToRaw(contentState), tableCells, dirName ?? 'society', editorStatus ?? 'create', id)}/>
                                     </div>
 
                                 </div>

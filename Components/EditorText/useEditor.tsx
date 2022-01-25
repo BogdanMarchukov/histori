@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Draft, {ContentBlock, EditorState, RichUtils} from "draft-js";
+import Draft, {ContentBlock, convertFromRaw, EditorState, RawDraftContentState, RichUtils} from "draft-js";
 import TableWrap from "./TableEditor/TableWrap/TableWrap";
 import Immutable from 'immutable'
 import classes from './TableEditor/TableWrap/TableWrap.module.css'
@@ -8,13 +8,20 @@ import {useDispatch} from "react-redux";
 import {saveTableCells} from "../../redux/action-creators/editorTextActionCreator";
 
 
-export function useEditor(){
+export function useEditor(startState: RawDraftContentState | null){
     type editorStateType = typeof editorState
 
     const [renderClient, setRenderClient] = useState(false) // первичный рендер на клиенте
     const [cellsTable, setCellsTable] = useState('')
     const [editorState, setEditorState] = useState( // начальный state
-        () => EditorState.createEmpty()
+        () => {
+            if (startState) {
+                return EditorState.createWithContent(convertFromRaw(startState))
+            } else {
+                return  EditorState.createEmpty()
+            }
+
+        }
     )
     const [taleClass, setTableClass] = useState(classes.two) // присваения css класса к ячейки таблицы
 

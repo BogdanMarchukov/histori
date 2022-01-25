@@ -17,8 +17,41 @@ export interface saveParagraphActionType {
     payload: string[]
 }
 
-export function saveParagraph(dispatch: (obj: saveParagraphActionType) => void, paragraph: RawDraftContentBlock[][][]) {
-    const list = (): string[] => paragraph.map(paragraph => paragraph[0][0].text)
+export function saveParagraph(dispatch: (obj: saveParagraphActionType) => void, content: RawDraftContentState) {
+
+    const blockParagraph: RawDraftContentBlock[] = []
+    const blocksContent: RawDraftContentBlock[][][] = []
+    content.blocks.forEach((item, index) => {
+        const {type} = item
+        if (type === 'header-one') {
+            blockParagraph.push(JSON.parse(JSON.stringify(item)))
+            return true
+        }
+        if (type === 'header-two' && index === 0) {
+            blockParagraph.push(JSON.parse(JSON.stringify(item)))
+            return true
+        }
+        if (type !== 'header-two') {
+            if (content.blocks.length - 1 === index) {
+                blockParagraph.push(JSON.parse(JSON.stringify(item)))
+                blocksContent.push([JSON.parse(JSON.stringify(blockParagraph))])
+            } else {
+                blockParagraph.push(JSON.parse(JSON.stringify(item)))
+                return true
+            }
+
+        }
+        if (type === 'header-two') {
+            blocksContent.push([JSON.parse(JSON.stringify(blockParagraph))])
+            blockParagraph.length = 0
+            blockParagraph.push(JSON.parse(JSON.stringify(item)))
+        }
+
+
+    })
+
+
+    const list = (): string[] => blocksContent.map(paragraph => paragraph[0][0].text)
     dispatch({type: ActionTypes.SAVE_PARAGRAPH, payload: list()})
 }
 
@@ -48,15 +81,33 @@ export function saveTableCells(dispatch: (object: TableSelectionType) => void, s
 // =========================сохраняем старью в БД =================================
 
 
-export async function saveArticle(dispatch: () => void, article: RawDraftContentState, tableCells: string[], categoryName: string) {
+export async function saveArticle(
+    dispatch: () => void,
+    article: RawDraftContentState,
+    tableCells: string[],
+    categoryName: string,
+    command: string,
+    id: string | null = null
+
+) {
     const inputData = {
         categoryName,
         article,
         tableCells
     }
 
+    const returnPath = () => {
+        if (command === 'create') {
+            return 'api/create/article'
+        }
+        if (command === 'edit') {
+            return `api/edit/post/${id}`
+        }
+    }
+
+
     try {
-        const responseData: Response = await fetch('api/create/article', { /// отправка новой статьи для сохранения
+        const responseData: Response = await fetch(returnPath() ?? '', { /// отправка новой статьи для сохранения
             method: 'POST',
             headers: {
                 'Authorization': getLocalStorage('accessToken') ?? '',
@@ -69,7 +120,7 @@ export async function saveArticle(dispatch: () => void, article: RawDraftContent
 
             .then(async data => {
                 if (data === 'restartFunction') {
-                    saveArticle(dispatch, article, tableCells, categoryName)
+                    saveArticle(dispatch, article, tableCells, categoryName, command, id)
                     return true
                 }
                 if (typeof data === 'object') {
@@ -135,4 +186,15 @@ export function navigationArticle(dispatch: (obj: navigationArticleDispatch) => 
         }
     }
 
+}
+
+// ========================= переключатель статуса editor-text=============================
+
+export interface editorTextSelectStatusActionType {
+    type: ActionTypes.SELECT_STATUS_EDITOR_TEXT,
+    payload: string
+}
+
+export function editorTextSelectStatus(dispatch: (obj: editorTextSelectStatusActionType) => void, status: string) {
+    dispatch({type: ActionTypes.SELECT_STATUS_EDITOR_TEXT, payload: status})
 }

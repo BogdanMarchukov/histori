@@ -1,0 +1,47 @@
+.trigger, .panel,  .closePanel {
+    position: fixed;
+    right: 0;
+    height: 100%;
+    width: 50px;
+    z-index: 10;
+}
+
+.panel {
+    width: 250px;
+    background-color: black;
+}
+.closePanel {
+    right: 250px;
+    background: none;
+}
+
+.none {
+    display: none;
+}
+
+.namePanel {
+    text-transform: uppercase;
+    text-align: center;
+    position: relative;
+    top: 50px;
+    color: white;
+}
+
+
+.content ul {
+    color: white;
+    position: relative;
+    top: 100px;
+    left: 20px;
+    list-style-type: none;
+}
+
+.content ul li {
+    font-size: 18px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.content ul li:hover {
+    color: #aa00ff;
+}

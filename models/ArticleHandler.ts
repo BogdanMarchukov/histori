@@ -18,19 +18,22 @@ interface saveDataObjectType {
     name: string
 }
 
-type classSchemaType =
+type articleSchemaType =
     | typeof SocietyArticle
 
-type listClassType =
+type listSchemaType =
     | typeof SocietyArticleList
 
 class ArticleHandler {
     constructor(
-        public inputData: inputDataType | null = null
+        public inputData: inputDataType | null = null,
+        public id: string | null = null,
+        public command: string | null = null
     ) {
     }
 
-    saveDataObject(): saveDataObjectType | null { // данные для сохранения статьи в БД
+    private saveDataObject(): saveDataObjectType | null { // данные для сохранения статьи в БД
+
         if (this.inputData) {
             return {
                 article: this.inputData.article,
@@ -41,8 +44,32 @@ class ArticleHandler {
 
     }
 
+    // ==================== редактирование данных ========================================
+   private async editArticle(articleSchema:articleSchemaType, listSchema: listSchemaType ) {
+        try {
+            let articleMongo = await articleSchema.findById(this.id)
+            articleMongo.article.blocks = this.inputData?.article.blocks
+            articleMongo.article.entityMap = this.inputData?.article.entityMap
+            articleMongo.tableCells = this.inputData?.tableCells
+            await articleMongo.save()
+            const societyArticleList = await listSchema.findOne() // если есть данные дабавляет новые в список статей
+            societyArticleList.articleList = [
+                ...societyArticleList.articleList,
+                {[articleMongo._id.valueOf().toString()]: articleMongo.name}
+            ]
+            return true
+
+        } catch (e) {
+            console.log(e, 'error editArticle')
+        }
+
+
+    }
+
+
+
 ///=================== функция сохранения статьи и списка статей в указанную категорию =======================
-    async articleDir(schema: classSchemaType, listClass: listClassType): Promise<{article: ArticleType, articleList: ArticleListType}> {
+    private async articleDir(schema: articleSchemaType, listClass: listSchemaType): Promise<{article: ArticleType, articleList: ArticleListType}> {
         const societyArticle = new schema(
             this.saveDataObject()
         )
@@ -80,7 +107,10 @@ class ArticleHandler {
     async saveArticle() { // сохранение в базу данных
         if (this.inputData) {
             switch (this.inputData.categoryName) {
-                case 'post':
+                case 'society':
+                    if (this.command === 'edit') {
+                        return await this.editArticle(SocietyArticle, SocietyArticleList)
+                    }
                    return  await this.articleDir(SocietyArticle, SocietyArticleList)
 
             }

@@ -6,6 +6,7 @@ import RenderText from "../RenderText/RenderText";
 import {Grid} from "@mui/material";
 import {RawDraftContentState} from "draft-js";
 import {wrapper} from "../../redux";
+import {RootState} from "../../redux/redusers/indexReduser";
 
 type Props = {
     currentArticle: RawDraftContentState | null
@@ -23,11 +24,9 @@ const PageMainContent = (props: Props) => {
         </div>
     )
 }
-function mapStateToProps(state: rootState) {
+function mapStateToProps(state: RootState) {
     return {
-        // @ts-ignore
         currentArticle: state.textReducer.currentArticle,
-        // @ts-ignore
         tableCells: state.textReducer.tableCells
     }
 }

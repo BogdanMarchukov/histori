@@ -51,11 +51,7 @@ const RenderText = (props: Props) => {
 
 
         })
-         if (!clientRender){
-            setClientRender(true)
-            saveParagraph(dispatch, blocksContent) // сохраняем в store отсартированный массив
 
-        }
         return blocksContent
     }
 

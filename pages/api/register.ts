@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                         cookie.serialize("role", JSON.stringify(role), {
                             httpOnly: true,
                             secure: false,
-                            maxAge: 30 * 24 * 60 * 60 * 1000,
+                            maxAge: 30 * 24 * 60 * 60 * 1001,
                             path: "/"
                         })
                     ])

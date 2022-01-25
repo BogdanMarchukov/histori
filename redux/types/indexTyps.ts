@@ -22,11 +22,13 @@ import {
 import {accountPageReducerType} from "../redusers/accountPageReducer";
 import {initStateTextReducer} from "../redusers/textReducer";
 import {
+    editorTextSelectStatusActionType,
     navigationArticleDispatch,
     saveParagraphActionType,
     SaveTextType,
     TableSelectionType
 } from "../action-creators/editorTextActionCreator";
+import {initStateAdminPanelReducer} from "../redusers/adminPanelReducer";
 
 
 export type FileEventTarget = EventTarget & { files: FileList }
@@ -52,6 +54,8 @@ export type rootAction =
     | TableSelectionType
     | saveParagraphActionType
     | navigationArticleDispatch
+    | editorTextSelectStatusActionType
+
 
 
 export type rootState =
@@ -59,6 +63,7 @@ export type rootState =
     | { userReducer: userState }
     | { accountPageReducer: accountPageReducerType }
     | { textReducer: initStateTextReducer }
+    | { adminPanelReducer: initStateAdminPanelReducer }
 
 export enum ActionTypes {
     OPEN_WINDOW_REGISTER = 'HOME_PAGE/OPEN_WINDOW_REGISTER',
@@ -81,7 +86,8 @@ export enum ActionTypes {
     SAVE_TEXT = 'EDITOR_TEXT/SAVE_TEXT',
     TABLE_SELECT_SAVE = 'EDITOR_TEXT/TABLE_SELECT_SAVE',
     SAVE_PARAGRAPH = 'EDITOR_TEXT/SAVE_PARAGRAPH',
-    FILTER_NAVIGATION_PARAGRAPH = 'EDITOR_TEXT/FILTER_NAVIGATION_PARAGRAPH'
+    FILTER_NAVIGATION_PARAGRAPH = 'EDITOR_TEXT/FILTER_NAVIGATION_PARAGRAPH',
+    SELECT_STATUS_EDITOR_TEXT = 'EDITOR_TEXT/SELECT_STATUS_EDITOR_TEXT'
 
 
 }

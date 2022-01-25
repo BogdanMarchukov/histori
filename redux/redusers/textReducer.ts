@@ -10,17 +10,19 @@ export type initStateTextReducer = {
     dirName: string | null
     paragraphList: string[] | null
     articleList: object[] | null
+    editorStatus: string | null
 
 }
 
-const initState = {
+const initState: initStateTextReducer = {
     tableCells: [],
     currentArticle: null,
     _id: null,
     dirName: null,
     paragraphList: null,
     currentArticleCash: null,
-    articleList: null
+    articleList: null,
+    editorStatus: null
 }
 
 
@@ -52,6 +54,11 @@ export const textReducer = (state = initState, action: rootAction): initStateTex
             return {
                 ...state,
                currentArticle: action.payload
+            }
+        case ActionTypes.SELECT_STATUS_EDITOR_TEXT:
+            return {
+                ...state,
+                editorStatus: action.payload
             }
 
         default:

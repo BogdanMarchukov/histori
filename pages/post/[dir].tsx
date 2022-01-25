@@ -4,8 +4,12 @@ import {Grid} from "@mui/material";
 import PageMainContent from "../../Components/PageMainContent/PageMainContent";
 import {wrapper} from "../../redux";
 import {responseArticle} from "../../serverTypes/serverTypes";
-import {saveText} from "../../redux/action-creators/editorTextActionCreator";
+import {saveParagraph, saveText} from "../../redux/action-creators/editorTextActionCreator";
 import NavigationRight from "../../Components/NavigationRight/NavigationRight";
+import {TokenHandler} from "../../models/TokenHandler";
+import {userDto} from "../../models/UserHandler";
+import {initUser} from "../../redux/action-creators/homePageActionCreator";
+import AdminNavigation from "../../Components/AdminNavigation/AdminNavigation";
 
 
 type Props = {
@@ -21,6 +25,7 @@ const Text = (props: Props) => {
                 </Grid>
 
                 <Grid item xs={3}>
+                    <AdminNavigation/>
                     <NavigationRight/>
                 </Grid>
             </Grid>
@@ -32,7 +37,27 @@ const Text = (props: Props) => {
 
 //@ts-ignore
 export const getServerSideProps = wrapper.getServerSideProps( store => async context => {
-   const {query: {id, dir}} = context
+   const {query: {id, dir}, req: {cookies: {token}}} = context
+    let userId = ''
+    if (token) {
+        userId = await TokenHandler.decodedPayloadRefresh(token)
+        if (userId) {
+            const response = await fetch(`${process.env.API_URL}/api/init/user`, {
+                method: 'POST',
+                body: JSON.stringify({userId}),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+            const result: userDto = await response.json()
+
+            // @ts-ignore
+            if (!result.error) {
+                // @ts-ignore
+                store.dispatch(initUser(result))
+            }
+        }
+    }
 
 
     try {
@@ -42,6 +67,7 @@ export const getServerSideProps = wrapper.getServerSideProps( store => async con
        const response: responseArticle = await firstArticle.json()
         const {dispatch} = store
         saveText(dispatch, response)
+        saveParagraph(dispatch, response.article.article)
 
     } catch (e) {
 

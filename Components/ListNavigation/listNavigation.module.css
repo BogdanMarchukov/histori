@@ -5,6 +5,7 @@
     width: content-box;
 
 }
+
 .none {
     transition: .2s;
     display: none;
@@ -47,11 +48,13 @@
 }
 
 
-.activeList li, .currentList {
+.activeList li, .link, .currentList {
     cursor: pointer;
     color: rgb(109, 109, 109);
-    margin-top: 10px;
+    margin-top: 10px!important;
 }
+
+
 .currentList {
     color: black!important;
 }

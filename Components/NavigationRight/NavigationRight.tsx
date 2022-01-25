@@ -35,10 +35,9 @@ const NavigationRight = (props: Props) => {
 
   function createCallback() {
         if (paragraphList) {
-            return paragraphList.map(paragraphName => {
-                return () => navigationArticle(dispatch, currentArticleCash, paragraphName)
-            })
-
+                return paragraphList.map(paragraphName => {
+                    return () => navigationArticle(dispatch, currentArticleCash, paragraphName)
+                })
         } else return []
 
 
@@ -87,7 +86,7 @@ const NavigationRight = (props: Props) => {
                     <div className={classes.margin}>
                         <ListNavigation categoryName={'Список статей'} list={listName}
                                         linksHref={linkList}
-                                        callbackHandlers={[() => console.log('test navigation'), () => console.log('test navigation')]} firstPoint={null}/>
+                                         firstPoint={null}/>
                     </div>
                 </nav>
             </div>

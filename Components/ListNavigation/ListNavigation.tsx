@@ -6,12 +6,12 @@ import Link from 'next/link'
 type Props = {
     categoryName: string
     list: string[]
-    callbackHandlers: any[]
+    callbackHandlers?: Function[] | null
     firstPoint: string | null
     linksHref?: string[]
 }
 
-const ListNavigation = ({categoryName, list, callbackHandlers, firstPoint, linksHref = []}: Props) => {
+const ListNavigation = ({categoryName, list, callbackHandlers = null, firstPoint, linksHref = []}: Props) => {
     const [open, setOpen] = useState(false)
     const [indexActive, setIndexActive] = useState(0)
 
@@ -37,12 +37,18 @@ const ListNavigation = ({categoryName, list, callbackHandlers, firstPoint, links
         } else return ''
     }
 
+    const onClickHandler = (index: number) => {
+        if (callbackHandlers) {
+            return callbackHandlers[index]()
+        } else return true
+    }
+
     const linkWrap = (jsx: JSX.Element, index: number) => {
         if (linksHref.length) {
             return (
                 <React.Fragment key={Math.random()}>
                     <Link href={linksHref[index]}>
-                        <a>
+                        <a className={classes.link}>
                             {jsx}
                         </a>
                     </Link>
@@ -75,7 +81,7 @@ const ListNavigation = ({categoryName, list, callbackHandlers, firstPoint, links
                                 <React.Fragment key={Math.random()}>
                                     <li
                                         onClick={() => {
-                                            callbackHandlers[index]()
+                                            onClickHandler(index)
                                             setIndexActive(index)
                                         }}
                                         className={currentList(index)}
