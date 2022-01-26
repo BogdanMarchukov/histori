@@ -46,7 +46,11 @@ const AdminNavigation = (props: Props) => {
 
                                 </li>
                                 <li>
-                                    создать новую
+                                    <Link href={'/edit-text'}>
+                                        <a onClick={() => editorTextSelectStatus(dispatch, 'create')}>
+                                            создать новую
+                                        </a>
+                                    </Link>
                                 </li>
                                 <li>
                                     удалить текущую

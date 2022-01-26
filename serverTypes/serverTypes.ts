@@ -1,4 +1,4 @@
-import {Schema} from 'mongoose'
+import {Schema, Document} from 'mongoose'
 import {userDto} from "../models/UserHandler";
 import {avatarDtoType} from "../models/AvatarHandler";
 import {tokenDtoType} from "../models/TokenHandler";
@@ -74,7 +74,7 @@ export interface ArticleType {
     __v: number
 }
 
-export interface ArticleListType {
+export interface ArticleListType extends Document{
     _id: ObjectId
     __v: number
     articleList: Array<object>

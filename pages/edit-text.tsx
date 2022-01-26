@@ -13,16 +13,17 @@ const EditText = (props: PropsType) => {
 
     const selector = (state: RootState) => {
         return {
-            currentArticle: state.textReducer.currentArticle
+            currentArticle: state.textReducer.currentArticle,
+            editorStatus: state.textReducer.editorStatus
         }
     }
 
-    const {currentArticle} = useSelector(selector)
+    const {currentArticle, editorStatus} = useSelector(selector)
 
 
     return (
         <PageLayout>
-            <EditorText startState={currentArticle}/>
+            <EditorText startState={currentArticle} editorStatus={editorStatus}/>
         </PageLayout>
     )
 }

@@ -5,7 +5,9 @@ const {Schema, model, models} = require('mongoose')
 
 
 
-const societyArticle = new Schema(
+
+
+const storyArticle = new Schema(
     {
         article: {
             type: RawDraftContentState,
@@ -24,4 +26,5 @@ const societyArticle = new Schema(
 )
 
 
-module.exports = models.SocietyArticle || model('SocietyArticle', societyArticle)
+
+module.exports = models.StoryArticle ||  model('StoryArticle', storyArticle)

@@ -8,14 +8,14 @@ import {useDispatch} from "react-redux";
 import {saveTableCells} from "../../redux/action-creators/editorTextActionCreator";
 
 
-export function useEditor(startState: RawDraftContentState | null){
+export function useEditor(startState: RawDraftContentState | null, editorStatus: string | null){
     type editorStateType = typeof editorState
 
     const [renderClient, setRenderClient] = useState(false) // первичный рендер на клиенте
     const [cellsTable, setCellsTable] = useState('')
     const [editorState, setEditorState] = useState( // начальный state
         () => {
-            if (startState) {
+            if (startState && editorStatus === 'edit') {
                 return EditorState.createWithContent(convertFromRaw(startState))
             } else {
                 return  EditorState.createEmpty()

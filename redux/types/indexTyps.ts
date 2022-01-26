@@ -22,6 +22,7 @@ import {
 import {accountPageReducerType} from "../redusers/accountPageReducer";
 import {initStateTextReducer} from "../redusers/textReducer";
 import {
+    derNameSelectActionType,
     editorTextSelectStatusActionType,
     navigationArticleDispatch,
     saveParagraphActionType,
@@ -55,7 +56,7 @@ export type rootAction =
     | saveParagraphActionType
     | navigationArticleDispatch
     | editorTextSelectStatusActionType
-
+    | derNameSelectActionType
 
 
 export type rootState =
@@ -87,7 +88,8 @@ export enum ActionTypes {
     TABLE_SELECT_SAVE = 'EDITOR_TEXT/TABLE_SELECT_SAVE',
     SAVE_PARAGRAPH = 'EDITOR_TEXT/SAVE_PARAGRAPH',
     FILTER_NAVIGATION_PARAGRAPH = 'EDITOR_TEXT/FILTER_NAVIGATION_PARAGRAPH',
-    SELECT_STATUS_EDITOR_TEXT = 'EDITOR_TEXT/SELECT_STATUS_EDITOR_TEXT'
+    SELECT_STATUS_EDITOR_TEXT = 'EDITOR_TEXT/SELECT_STATUS_EDITOR_TEXT',
+    SELECT_DIR_NAME = 'EDITOR_TEXT/SELECT_DIR_NAME'
 
 
 }

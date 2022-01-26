@@ -60,6 +60,11 @@ export const textReducer = (state = initState, action: rootAction): initStateTex
                 ...state,
                 editorStatus: action.payload
             }
+        case ActionTypes.SELECT_DIR_NAME:
+            return {
+                ...state,
+                dirName: action.payload
+            }
 
         default:
             return state

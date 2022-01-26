@@ -2,6 +2,8 @@ import {ErrorType, initAccountDto, RedirectType} from "../../serverTypes/serverT
 import {string} from "prop-types";
 import {NextApiResponse} from "next";
 import {onOffMiniLoader, updateReducers} from "./accountPageActionCreator";
+import {errorHandlerServer} from "./homePageActionCreator";
+import {rootAction} from "../types/indexTyps";
 
 
 // ====================сохранение данных в LocalStorage==================
@@ -47,8 +49,8 @@ export async function updateToken() {
                 return unknownError(response)
             }
         }
-    }catch (e){
-       // todo обработать
+    } catch (e) {
+        // todo обработать
     }
 
 
@@ -100,31 +102,33 @@ export function avatarImgSrc(patchName: any, fileName: any): any {
         return `${patchName}?fileName=${fileName}`
     } else return undefined
 }
+
 //======================================================================================
 
 
-export function responseHandler(response: Response): Promise<string | ErrorType> {
+export function responseHandler(response: Response, restartFunction: () => void, dispatch: ((obj: rootAction)=> void) | null = null): Promise<string | ErrorType> {
     return new Promise((async (resolve, reject) => {
-        switch (response.status){
+        switch (response.status) {
             case 401:
-            updateToken()
-                .then(data => {
-                    if (data) {
-                        if ('accessToken' in data) { // токен успешно обнавлен данные о пользователе получены
-                            const {accessToken} = data
-                            saveLocalStorage('accessToken', accessToken) // токен сохраннен в localStorage
-                            resolve('restartFunction')
+                updateToken()
+                    .then(data => {
+                        if (data) {
+                            if ('accessToken' in data) { // токен успешно обнавлен данные о пользователе получены
+                                const {accessToken} = data
+                                saveLocalStorage('accessToken', accessToken) // токен сохраннен в localStorage
+                                restartFunction()
+                            }
                         }
-                    }
 
 
-
-                })
-                .catch(e => reject(e))
+                    })
+                    .catch(e => reject(e))
 
                 break
             case 403:
-                resolve({error: true, errorMassage: 'Доступ запрещен'})
+                if (dispatch){
+                    errorHandlerServer(dispatch, {error: true, errorMassage: 'Доступ запрещенн'}, 'error')
+                }
                 break
             case 200:
                 resolve('Ok')

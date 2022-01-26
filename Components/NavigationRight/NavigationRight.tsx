@@ -24,12 +24,13 @@ const NavigationRight = (props: Props) => {
         }
     }
 
+    // @ts-ignore
     const {
         paragraphList,
         currentArticleCash,
         articleList,
         dirName
-    }: { paragraphList: string[], currentArticleCash: RawDraftContentState, articleList: object[], dirName: string } = useSelector(selector)
+    }: { paragraphList: string[], currentArticleCash: RawDraftContentState | null, articleList: object[] | null, dirName: string | null } = useSelector(selector)
 
     const dispatch = useDispatch()
 

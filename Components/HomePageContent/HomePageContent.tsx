@@ -67,11 +67,16 @@ const HomePageContent = (props: Props) => {
                     <div className={classes.rightContent}>
                         <nav>
                             <ul>
-                                <li
-                                    onMouseOver={() => animation('one')}
-                                >
-                                    История
-                                </li>
+                                <Link  href={'/post/story?id=0'}>
+                                    <a>
+                                        <li
+                                            onMouseOver={() => animation('one')}
+                                        >
+                                            История
+                                        </li>
+                                    </a>
+                                </Link>
+
                                 <Link
                                     href={'/post/society?id=0'}
                                 >
@@ -83,16 +88,25 @@ const HomePageContent = (props: Props) => {
                                         </li>
                                     </a>
                                 </Link>
-                                <li
-                                    onMouseOver={() => animation('three')}
-                                >
-                                    Право
-                                </li>
-                                <li
-                                    onMouseOver={() => animation('four')}
-                                >
-                                    Экономика
-                                </li>
+                                <Link href={'/post/jurisprudence?id=0'}>
+                                    <a>
+                                        <li
+                                            onMouseOver={() => animation('three')}
+                                        >
+                                            Право
+                                        </li>
+                                    </a>
+                                </Link>
+                                <Link href={'/post/economy?id=0'} >
+                                    <a>
+                                        <li
+                                            onMouseOver={() => animation('four')}
+                                        >
+                                            Экономика
+                                        </li>
+                                    </a>
+                                </Link>
+
                             </ul>
                         </nav>
                     </div>

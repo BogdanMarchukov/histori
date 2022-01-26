@@ -116,19 +116,8 @@ export async function saveArticle(
             body: JSON.stringify(inputData)
         })
 
-        responseHandler(responseData)// обработка запроса
-
+        responseHandler(responseData, ()=>  saveArticle(dispatch, article, tableCells, categoryName, command, id), dispatch)// обработка запроса
             .then(async data => {
-                if (data === 'restartFunction') {
-                    saveArticle(dispatch, article, tableCells, categoryName, command, id)
-                    return true
-                }
-                if (typeof data === 'object') {
-                    if ('error' in data) {
-                        errorHandlerServer(dispatch, data, 'error') // error 403
-
-                    }
-                }
                 if (data === 'Ok') {
                     const currentArticle: responseArticle = await responseData.json()
                     saveText(dispatch, currentArticle) // сохранение в store
@@ -140,6 +129,21 @@ export async function saveArticle(
     }
 
 }
+
+//=============================Удаление текущей статьи  ==============================================
+
+export async function deleteCurrentArticle(dispatch: ()=> void, dirName: string, idArticle: string) {
+    const response = await fetch(`/api/delete/post/${dirName}?id=${idArticle}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': getLocalStorage('accessToken') ?? ''
+        }
+    })
+    await responseHandler(response, ()=> deleteCurrentArticle(dispatch, dirName, idArticle), dispatch)
+
+}
+
+//==============================================================================================
 
 //============================навигация по статье=============================================
 
@@ -197,4 +201,16 @@ export interface editorTextSelectStatusActionType {
 
 export function editorTextSelectStatus(dispatch: (obj: editorTextSelectStatusActionType) => void, status: string) {
     dispatch({type: ActionTypes.SELECT_STATUS_EDITOR_TEXT, payload: status})
+}
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// =========================== переключение дерриктории ======================================
+
+export interface derNameSelectActionType {
+    type: ActionTypes.SELECT_DIR_NAME,
+    payload: string
+}
+
+export function dirNameSelect(dispatch: (odj: derNameSelectActionType)=> void, dirName: string) {
+    dispatch({type: ActionTypes.SELECT_DIR_NAME, payload: dirName})
 }

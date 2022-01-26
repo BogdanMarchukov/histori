@@ -1,12 +1,7 @@
 import {RawDraftContentState} from "draft-js";
 
-
-const {Schema, model, models} = require('mongoose')
-
-
-
-const societyArticle = new Schema(
-    {
+const articleFields = () => {
+    return {
         article: {
             type: RawDraftContentState,
             required: true
@@ -21,7 +16,6 @@ const societyArticle = new Schema(
         },
         name: String
     }
-)
+}
 
-
-module.exports = models.SocietyArticle || model('SocietyArticle', societyArticle)
+module.exports = articleFields

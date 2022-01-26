@@ -4,7 +4,7 @@ import {Grid} from "@mui/material";
 import PageMainContent from "../../Components/PageMainContent/PageMainContent";
 import {wrapper} from "../../redux";
 import {responseArticle} from "../../serverTypes/serverTypes";
-import {saveParagraph, saveText} from "../../redux/action-creators/editorTextActionCreator";
+import {dirNameSelect, saveParagraph, saveText} from "../../redux/action-creators/editorTextActionCreator";
 import NavigationRight from "../../Components/NavigationRight/NavigationRight";
 import {TokenHandler} from "../../models/TokenHandler";
 import {userDto} from "../../models/UserHandler";
@@ -66,11 +66,17 @@ export const getServerSideProps = wrapper.getServerSideProps( store => async con
         })
        const response: responseArticle = await firstArticle.json()
         const {dispatch} = store
+
+        if (!('entityMap' in response.article.article)){
+            response.article.article.entityMap = {}
+        }
         saveText(dispatch, response)
         saveParagraph(dispatch, response.article.article)
 
     } catch (e) {
-
+        const {dispatch} = store
+        // @ts-ignore
+        dirNameSelect(dispatch, dir)
     }
 
 

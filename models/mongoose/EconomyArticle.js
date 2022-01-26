@@ -1,11 +1,13 @@
 import {RawDraftContentState} from "draft-js";
 
 
+
 const {Schema, model, models} = require('mongoose')
 
 
 
-const societyArticle = new Schema(
+
+const economyArticle = new Schema(
     {
         article: {
             type: RawDraftContentState,
@@ -24,4 +26,5 @@ const societyArticle = new Schema(
 )
 
 
-module.exports = models.SocietyArticle || model('SocietyArticle', societyArticle)
+
+module.exports = models.EconomyArticle ||  model('EconomyArticle', economyArticle)

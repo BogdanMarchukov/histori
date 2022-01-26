@@ -18,7 +18,6 @@ const Home = (props: PropsType) => {
     return (
         <MainLayout>
             <HomePageContent/>
-
         </MainLayout>
     )
 }

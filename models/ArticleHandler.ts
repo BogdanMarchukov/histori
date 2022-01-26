@@ -1,9 +1,16 @@
 import {RawDraftContentState} from "draft-js";
-import {ArticleListType, ArticleType} from "../serverTypes/serverTypes";
+import {ArticleListType, ArticleType, ErrorType} from "../serverTypes/serverTypes";
 import {Class} from "type-fest";
+import {log} from "util";
 
 const SocietyArticle = require('./mongoose/SocietyArticle')
 const SocietyArticleList = require('./mongoose/SocietyArticleList')
+const StoryArticle = require('./mongoose/StoryArticle')
+const StoryArticleList = require('./mongoose/StoryArticleList')
+const EconomyArticle = require('./mongoose/EconomyArticle')
+const EconomyArticleList = require('./mongoose/EconomyArticleList')
+const JurisprudenceArticle = require('./mongoose/JurisprudenceArticle')
+const JurisprudenceArticleList = require('./mongoose/JurisprudenceArticleList')
 
 interface inputDataType {
     categoryName: string
@@ -28,7 +35,8 @@ class ArticleHandler {
     constructor(
         public inputData: inputDataType | null = null,
         public id: string | null = null,
-        public command: string | null = null
+        public command: string | null = null,
+        public dirName: string | null = null
     ) {
     }
 
@@ -45,19 +53,20 @@ class ArticleHandler {
     }
 
     // ==================== редактирование данных ========================================
-   private async editArticle(articleSchema:articleSchemaType, listSchema: listSchemaType ) {
+    private async editArticle(articleSchema: articleSchemaType, listSchema: listSchemaType) {
         try {
             let articleMongo = await articleSchema.findById(this.id)
-            articleMongo.article.blocks = this.inputData?.article.blocks
-            articleMongo.article.entityMap = this.inputData?.article.entityMap
+            articleMongo.article = this.inputData?.article
             articleMongo.tableCells = this.inputData?.tableCells
+            articleMongo.name = this.inputData?.article.blocks[0].text
             await articleMongo.save()
-            const societyArticleList = await listSchema.findOne() // если есть данные дабавляет новые в список статей
-            societyArticleList.articleList = [
-                ...societyArticleList.articleList,
-                {[articleMongo._id.valueOf().toString()]: articleMongo.name}
-            ]
-            return true
+            const articleListMongo = await listSchema.findOne() // если есть данные дабавляет новые в список статей
+            articleListMongo.articleList = articleListMongo.articleList.map((list: object) => {
+                if (Object.keys(list)[0] === articleMongo._id.valueOf().toString()) {
+                    return {[articleMongo._id.valueOf().toString()]: articleMongo.name}
+                } else return list
+            })
+            return Promise.all([articleMongo.save(), articleListMongo.save()])
 
         } catch (e) {
             console.log(e, 'error editArticle')
@@ -66,10 +75,45 @@ class ArticleHandler {
 
     }
 
+    // ===============================удаление из БД==================================
+    private async deleteArticle(schema: articleSchemaType, listClass: listSchemaType) {
+        const id = this.id
+        async function getList() {
+            return new Promise<ArticleListType | ErrorType>( async (resolve, reject) => {
+                try {
+                    const articleListMongo: any = await listClass.findOne()
+                    resolve(articleListMongo)
+                } catch (e) {
+                    reject(e)
+                }
+            })
+        }
+        async function delPost() {
+            return new Promise( async (resolve, reject) => {
+                try {
+                    await schema.deleteOne({_id: id})
+                    resolve(true)
+                }catch (e) {
+                    reject(false)
+                }
+            })
+        }
+        try {
+            const deleteResultArray = await Promise.all([getList, delPost])
+            console.log(deleteResultArray, 'ArticleHandler++++++++++++')
+                //@ts-ignore
+            // deleteResultArray[0].articleList.filter( (listObjItem: object ) => !Object.keys(listObjItem) === id)
+            // deleteResultArray[0].save()
+        } catch (e) {
+            return {error: true, errorMassage: 'Не удалось удалить'}
+        }
+
+    }
+
 
 
 ///=================== функция сохранения статьи и списка статей в указанную категорию =======================
-    private async articleDir(schema: articleSchemaType, listClass: listSchemaType): Promise<{article: ArticleType, articleList: ArticleListType}> {
+    private async saveArticle(schema: articleSchemaType, listClass: listSchemaType): Promise<{ article: ArticleType, articleList: ArticleListType }> {
         const societyArticle = new schema(
             this.saveDataObject()
         )
@@ -102,16 +146,44 @@ class ArticleHandler {
         }
 
     }
+
     ///======================================================================
 
-    async saveArticle() { // сохранение в базу данных
+    async actionArticle() { // сохранение/удаление/редактирование в/из базу данных
         if (this.inputData) {
             switch (this.inputData.categoryName) {
                 case 'society':
                     if (this.command === 'edit') {
                         return await this.editArticle(SocietyArticle, SocietyArticleList)
                     }
-                   return  await this.articleDir(SocietyArticle, SocietyArticleList)
+                    if (this.command === 'delete') {
+                        return await this.deleteArticle(SocietyArticle, SocietyArticleList)
+                    }
+                    return await this.saveArticle(SocietyArticle, SocietyArticleList)
+                case 'story':
+                    if (this.command === 'edit') {
+                        return await this.editArticle(StoryArticle, StoryArticleList)
+                    }
+                    if (this.command === 'delete') {
+                        return await this.deleteArticle(StoryArticle, StoryArticleList)
+                    }
+                    return await this.saveArticle(StoryArticle, StoryArticleList)
+                case 'jurisprudence':
+                    if (this.command === 'edit') {
+                        return await this.editArticle(JurisprudenceArticle, JurisprudenceArticleList)
+                    }
+                    if (this.command === 'delete') {
+                        return await this.deleteArticle(JurisprudenceArticle, JurisprudenceArticleList)
+                    }
+                    return await this.saveArticle(JurisprudenceArticle, JurisprudenceArticleList)
+                case 'economy':
+                    if (this.command === 'edit') {
+                        return await this.editArticle(EconomyArticle, EconomyArticleList)
+                    }
+                    if (this.command === 'delete') {
+                        return await this.deleteArticle(EconomyArticle, EconomyArticleList)
+                    }
+                    return await this.saveArticle(EconomyArticle, EconomyArticleList)
 
             }
         }

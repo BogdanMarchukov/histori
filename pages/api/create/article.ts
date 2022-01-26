@@ -16,7 +16,7 @@ export default async function articleHandler(req: NextApiRequest, res: NextApiRe
     try{
         const role = await adminCheckMiddleware(req, res, cors)// проверка прав admin
         const articleHandler = new ArticleHandler(req.body)
-        const saveArticle = await articleHandler.saveArticle() // сохранение в БД
+        const saveArticle = await articleHandler.actionArticle() // сохранение в БД
         res.statusCode = 200
         res.json(saveArticle)
     }
