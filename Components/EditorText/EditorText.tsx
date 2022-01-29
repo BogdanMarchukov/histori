@@ -19,6 +19,7 @@ import SaveProject from "../IconSvg/Editor/SaveProject";
 import {RootState} from "../../redux/redusers/indexReduser";
 import {useDispatch, useSelector} from "react-redux";
 import {saveArticle} from "../../redux/action-creators/editorTextActionCreator";
+import {useRouter} from "next/router";
 
 
 type Props = {
@@ -62,6 +63,7 @@ function EditorText(props: Props) {
 
     const {tableCells, dirName, editorStatus, id}: useSelector = useSelector(textReducerSelect)
     const dispatch: () => void = useDispatch()
+    const router = useRouter()
 
 
     return (
@@ -185,7 +187,7 @@ function EditorText(props: Props) {
                                 </div>
                                 <div className={classes.font}>
                                     <SaveProject
-                                        clickHandler={() => saveArticle(dispatch, convertToRaw(contentState), tableCells, dirName ?? '', editorStatus ?? '', id)}/>
+                                        clickHandler={() => saveArticle(dispatch, convertToRaw(contentState), tableCells, dirName ?? '', editorStatus ?? '', id, router)}/>
                                 </div>
 
                             </div>

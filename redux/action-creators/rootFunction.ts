@@ -130,6 +130,11 @@ export function responseHandler(response: Response, restartFunction: () => void,
                     errorHandlerServer(dispatch, {error: true, errorMassage: 'Доступ запрещенн'}, 'error')
                 }
                 break
+            case 500:
+                if (dispatch){
+                    errorHandlerServer(dispatch, {error: true, errorMassage: 'Ошибка сервера'}, 'error')
+                }
+                break
             case 200:
                 resolve('Ok')
                 break

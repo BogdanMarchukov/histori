@@ -92,7 +92,10 @@ const RenderText = (props: Props) => {
                                                                     table.length = 0
                                                                     return (
                                                                         <React.Fragment key={Math.random()}>
-                                                                            <table key={Math.random()}>
+                                                                            <table
+                                                                                key={Math.random()}
+                                                                                className={classes.table}
+                                                                            >
                                                                                 <tbody key={Math.random()}>
                                                                                 {
                                                                                     tableCache.map(line => { // линия таблицы

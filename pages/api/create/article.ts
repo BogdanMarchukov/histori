@@ -12,8 +12,9 @@ const cors = Cors({
 
 export default async function articleHandler(req: NextApiRequest, res: NextApiResponse) {
 
-       await authorizationMiddleware(req, res, cors) // авторизация
+
     try{
+        await authorizationMiddleware(req, res, cors) // авторизация
         const role = await adminCheckMiddleware(req, res, cors)// проверка прав admin
         const articleHandler = new ArticleHandler(req.body)
         const saveArticle = await articleHandler.actionArticle() // сохранение в БД
@@ -21,15 +22,7 @@ export default async function articleHandler(req: NextApiRequest, res: NextApiRe
         res.json(saveArticle)
     }
     catch (e){
-        if (e){
-            if(typeof e === 'object'){
-                // @ts-ignore
-                if('error' in e){
-                    res.statusCode = 501
-                    res.json({e})
-                }
-            }
-        }
+
 
     }
 

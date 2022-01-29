@@ -91,7 +91,7 @@ class ArticleHandler {
         async function delPost() {
             return new Promise( async (resolve, reject) => {
                 try {
-                    await schema.deleteOne({_id: id})
+                    const result = await schema.deleteOne({_id: id})
                     resolve(true)
                 }catch (e) {
                     reject(false)
@@ -99,12 +99,18 @@ class ArticleHandler {
             })
         }
         try {
-            const deleteResultArray = await Promise.all([getList, delPost])
-            console.log(deleteResultArray, 'ArticleHandler++++++++++++')
+            const deleteResultArray = await Promise.all([getList(), delPost()])
+
                 //@ts-ignore
-            // deleteResultArray[0].articleList.filter( (listObjItem: object ) => !Object.keys(listObjItem) === id)
-            // deleteResultArray[0].save()
+             deleteResultArray[0].articleList = deleteResultArray[0].articleList.filter( (listObjItem: object ) => {
+                return Object.keys(listObjItem)[0] !== id;
+             } )
+            //@ts-ignore
+            console.log( deleteResultArray[0].articleList, 'ArticleList+++')
+            //@ts-ignore
+             await deleteResultArray[0].save()
         } catch (e) {
+            console.log(e, 'ArticleHandler== Error')
             return {error: true, errorMassage: 'Не удалось удалить'}
         }
 
@@ -150,8 +156,8 @@ class ArticleHandler {
     ///======================================================================
 
     async actionArticle() { // сохранение/удаление/редактирование в/из базу данных
-        if (this.inputData) {
-            switch (this.inputData.categoryName) {
+        if (this.inputData || this.dirName) {
+            switch (this.inputData?.categoryName ?? this.dirName) {
                 case 'society':
                     if (this.command === 'edit') {
                         return await this.editArticle(SocietyArticle, SocietyArticleList)

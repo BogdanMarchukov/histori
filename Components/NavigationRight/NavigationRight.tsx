@@ -46,13 +46,6 @@ const NavigationRight = (props: Props) => {
 
 
 
-
-
-
-
-
-
-
     const createLink = () => {
         let linkList: string[] = []
         let listName: string[] = []

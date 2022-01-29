@@ -2,3 +2,15 @@
    max-width: 1000px;
    padding-top: 80px;
 }
+
+.table {
+   width: 95%;
+   padding-left: calc(50% - 475px);
+   border-collapse: collapse;
+   border: 2px solid black;
+}
+
+.table td {
+   text-align: center;
+   border: solid 1px black;
+}

@@ -4,7 +4,8 @@ import Cookies from 'js-cookie';
 import {RootState} from "../../redux/redusers/indexReduser";
 import {useDispatch, useSelector} from "react-redux";
 import Link from 'next/link'
-import {editorTextSelectStatus} from "../../redux/action-creators/editorTextActionCreator";
+import {deleteCurrentArticle, editorTextSelectStatus} from "../../redux/action-creators/editorTextActionCreator";
+import {useRouter} from "next/router";
 
 
 type Props = {}
@@ -14,12 +15,15 @@ const AdminNavigation = (props: Props) => {
 
     const selector = (state: RootState) => {
         return {
-            role: state.userReducer.role
+            role: state.userReducer.role,
+            dirName: state.textReducer.dirName,
+            idArticle: state.textReducer._id
         }
     }
 
-    const {role} = useSelector(selector)
+    const {role, dirName, idArticle} = useSelector(selector)
     const dispatch = useDispatch()
+    const router = useRouter()
 
 
     if (role) {
@@ -52,7 +56,9 @@ const AdminNavigation = (props: Props) => {
                                         </a>
                                     </Link>
                                 </li>
-                                <li>
+                                <li
+                                    onClick={()=> deleteCurrentArticle(dispatch, dirName ?? '', idArticle ?? '', router )}
+                                >
                                     удалить текущую
                                 </li>
                             </ul>

@@ -7,30 +7,39 @@ const User = require('../models/mongoose/User')
 
 export async function adminCheckMiddleware(req: NextApiRequest, res: NextApiResponse, next: any): Promise <boolean | ErrorType>{
     return new Promise(async (resolve, reject) => {
-        const {token} = req.cookies
-
-        try {
-            const userId = await TokenHandler.decodedPayloadRefresh(token) // userId from cookies
-
+        const {authorization} = req.headers
+        if (authorization) {
             try {
-                const user  = await User.findById(userId.payload)
-                const userHandler = new UserHandler(user) // поиск пользователя по id
+                const userId = await TokenHandler.decodedPayloadAccess(authorization) // userId from cookies
+
+                try {
+                    const user  = await User.findById(userId.payload)
+                    const userHandler = new UserHandler(user) // поиск пользователя по id
 
 
-                if ( userHandler.userDto().role.includes('admin')) { // проверка роли на admin
-                    resolve(true)
-                } else {
-                    res.statusCode = 403
-                    res.json({error: true, errorMassage: 'доступ запрещен'})
+                    if ( userHandler.userDto().role.includes('admin')) { // проверка роли на admin
+                        resolve(true)
+                    } else {
+                        res.statusCode = 403
+                        res.json({error: true, errorMassage: 'доступ запрещен'})
+                        reject()
+                    }
+
+                } catch (e) {
+                    res.status(401).json({error: true, errorMassage: 'не авторизован'})
+                    reject()
                 }
 
             } catch (e) {
-                reject({error: true, errorMassage: 'пользователь не найден'})
+                res.status(401).json({error: true, errorMassage: 'не авторизован'})
+                reject()
             }
-
-        } catch (e) {
-            reject({error: true, errorMassage: 'токен не верный'})
+        } else {
+            res.status(401).json({error: true, errorMassage: 'не авторизован'})
+            reject()
         }
+
+
 
     })
 

@@ -1,8 +1,11 @@
-import {ActionTypes} from "../types/indexTyps";
+import {ActionTypes, rootAction} from "../types/indexTyps";
 import {RawDraftContentBlock, RawDraftContentState} from "draft-js";
 import {getLocalStorage, responseHandler} from "./rootFunction";
 import {responseArticle} from "../../serverTypes/serverTypes";
 import {errorHandlerServer} from "./homePageActionCreator";
+import {useRouter} from "next/router";
+import {log} from "util";
+
 
 
 export interface SaveTextType {
@@ -60,7 +63,6 @@ export function saveParagraph(dispatch: (obj: saveParagraphActionType) => void, 
 
 //====================== сохранение текста в store================
 export function saveText(dispatch: (object: SaveTextType) => void, content: responseArticle) {
-    console.log(content)
     dispatch({type: ActionTypes.SAVE_TEXT, payload: content})
 }
 
@@ -87,7 +89,8 @@ export async function saveArticle(
     tableCells: string[],
     categoryName: string,
     command: string,
-    id: string | null = null
+    id: string | null = null,
+    router: any
 
 ) {
     const inputData = {
@@ -110,17 +113,18 @@ export async function saveArticle(
         const responseData: Response = await fetch(returnPath() ?? '', { /// отправка новой статьи для сохранения
             method: 'POST',
             headers: {
-                'Authorization': getLocalStorage('accessToken') ?? '',
+                'Authorization': getLocalStorage('accessToken') ?? 'null',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(inputData)
         })
 
-        responseHandler(responseData, ()=>  saveArticle(dispatch, article, tableCells, categoryName, command, id), dispatch)// обработка запроса
+        responseHandler(responseData, ()=>  saveArticle(dispatch, article, tableCells, categoryName, command, id, router), dispatch)// обработка запроса
             .then(async data => {
                 if (data === 'Ok') {
                     const currentArticle: responseArticle = await responseData.json()
                     saveText(dispatch, currentArticle) // сохранение в store
+                    return router.push(`/post/${categoryName}?id=${currentArticle.article._id}`) // редирект
                 }
 
             })
@@ -129,21 +133,30 @@ export async function saveArticle(
     }
 
 }
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //=============================Удаление текущей статьи  ==============================================
 
-export async function deleteCurrentArticle(dispatch: ()=> void, dirName: string, idArticle: string) {
+export async function deleteCurrentArticle(dispatch: (odj: rootAction)=> void, dirName: string, idArticle: string, router: any) {
     const response = await fetch(`/api/delete/post/${dirName}?id=${idArticle}`, {
         method: 'POST',
         headers: {
             'Authorization': getLocalStorage('accessToken') ?? ''
         }
     })
-    await responseHandler(response, ()=> deleteCurrentArticle(dispatch, dirName, idArticle), dispatch)
+     const processedResponse = await  responseHandler(response, ()=> deleteCurrentArticle(dispatch, dirName, idArticle, router), dispatch)
+    if (processedResponse === 'Ok') {
+        errorHandlerServer(dispatch, {error: true, errorMassage: 'Материал удален'}, 'success')
+        setTimeout(()=> {
+            return router.push(`/post/${dirName}?id=0`) // редирект
+        }, 1000)
 
+    }
 }
 
 //==============================================================================================
+
+
 
 //============================навигация по статье=============================================
 
@@ -153,7 +166,6 @@ export interface navigationArticleDispatch {
 }
 
 export function navigationArticle(dispatch: (obj: navigationArticleDispatch) => void, currentArticleCash: RawDraftContentState | null, paragraphName: string) {
-    console.log('click')
     if (currentArticleCash) {
         const {blocks} = currentArticleCash
         let flagStopContent = false
@@ -214,3 +226,4 @@ export interface derNameSelectActionType {
 export function dirNameSelect(dispatch: (odj: derNameSelectActionType)=> void, dirName: string) {
     dispatch({type: ActionTypes.SELECT_DIR_NAME, payload: dirName})
 }
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
