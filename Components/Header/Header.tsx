@@ -20,6 +20,7 @@ import Loader from "../Loader/Loader";
 import AlertCustomize from "../AlertCustomize/AlertCustomize";
 import {ErrorType} from "../../serverTypes/serverTypes";
 import {avatarImgSrc} from "../../redux/action-creators/rootFunction";
+import BurgerMenu from "../BurgerMenu/BurgerMenu";
 
 interface alertObjectType {
     alertType: 'error'
@@ -80,6 +81,7 @@ const Header = (props: Props) => {
                                 </div>
 
                             </Container>
+                            <BurgerMenu/>
                         </Grid>
                         <Grid item md={2} xl={1} sx={{
                             display: { xs: 'none', sm: 'block'}

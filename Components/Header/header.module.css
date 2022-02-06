@@ -82,6 +82,7 @@
         height: 50px;
         background-color: #aa00ff;
         border-radius: 3px;
+        position: relative;
     }
 }
 
