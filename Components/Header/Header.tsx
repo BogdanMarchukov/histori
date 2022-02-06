@@ -1,6 +1,6 @@
 import React from 'react'
 import classes from "./header.module.css";
-import {Container} from "@mui/material";
+import {Box, Container} from "@mui/material";
 import WatSapIcon from "../../icons/WatSapIcon";
 import AddLocationOutlinedIcon from "@mui/icons-material/AddLocationOutlined";
 import Grid from "@mui/material/Grid";
@@ -64,9 +64,9 @@ const Header = (props: Props) => {
                                 sx={{
                                     height: '100%',
                                     padding: 0,
-                                    display: 'flex',
+                                    display: { sm :'flex', xs: 'none'},
                                     color: "white",
-                                    justifyContent: 'space-around'
+                                    justifyContent: 'space-around',
                                 }}
                                 maxWidth={'xl'}
                             >
@@ -81,15 +81,17 @@ const Header = (props: Props) => {
 
                             </Container>
                         </Grid>
-                        <Grid item md={2} xl={1}>
-                            <RegisterAvatar
-                                avatarImgSrc={props.avatarImgSrc}
-                                nameBtn={props.registerTitle}
-                                showProfileWindow={() => props.showProfileWindow(props.profileWindow)}
-                                openRegisterWindow={props.openRegisterWindow}
-                                avatarSrc={props.avatarSrc}
-                                email={props.userEmail}
-                            />
+                        <Grid item md={2} xl={1} sx={{
+                            display: { xs: 'none', sm: 'block'}
+                        }}>
+                                <RegisterAvatar
+                                    avatarImgSrc={props.avatarImgSrc}
+                                    nameBtn={props.registerTitle}
+                                    showProfileWindow={() => props.showProfileWindow(props.profileWindow)}
+                                    openRegisterWindow={props.openRegisterWindow}
+                                    avatarSrc={props.avatarSrc}
+                                    email={props.userEmail}
+                                />
                         </Grid>
                     </Grid>
                 </div>
