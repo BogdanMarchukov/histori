@@ -65,7 +65,7 @@ const Header = (props: Props) => {
                                 sx={{
                                     height: '100%',
                                     padding: 0,
-                                    display: { sm :'flex', xs: 'none'},
+                                    display: {sm: 'flex', xs: 'none'},
                                     color: "white",
                                     justifyContent: 'space-around',
                                 }}
@@ -81,22 +81,23 @@ const Header = (props: Props) => {
                                 </div>
 
                             </Container>
-                            <BurgerMenu/>
+
                         </Grid>
                         <Grid item md={2} xl={1} sx={{
-                            display: { xs: 'none', sm: 'block'}
+                            display: {xs: 'none', sm: 'block'}
                         }}>
-                                <RegisterAvatar
-                                    avatarImgSrc={props.avatarImgSrc}
-                                    nameBtn={props.registerTitle}
-                                    showProfileWindow={() => props.showProfileWindow(props.profileWindow)}
-                                    openRegisterWindow={props.openRegisterWindow}
-                                    avatarSrc={props.avatarSrc}
-                                    email={props.userEmail}
-                                />
+                            <RegisterAvatar
+                                avatarImgSrc={props.avatarImgSrc}
+                                nameBtn={props.registerTitle}
+                                showProfileWindow={() => props.showProfileWindow(props.profileWindow)}
+                                openRegisterWindow={props.openRegisterWindow}
+                                avatarSrc={props.avatarSrc}
+                                email={props.userEmail}
+                            />
                         </Grid>
                     </Grid>
                 </div>
+                <BurgerMenu/>
                 <AlertCustomize alert={props.alert}/>
                 <Loader loading={props.loading}/>
                 <div className={classes.flexColumn}>
@@ -104,30 +105,39 @@ const Header = (props: Props) => {
                     <h2>Marchukova</h2>
                     <span>Преподаватель Истории, Обществознания, Экономики, Права</span>
                 </div>
-                <RegisterBox
-                    avatarImgSrc={props.avatarImgSrc}
-                    error={() => props.errorHandlerServer({error: true, errorMassage: 'Email не подтвержден'}, 'error')}
-                    isActivation={props.isActivation}
-                    logout={props.logout}
-                    showProfileWindow={props.showProfileWindow}
-                    show={props.profileWindow}
-                    auth={false}
-                    avatarSrc={props.avatarSrc}
-                    user={{name: props.userName, email: props.userEmail, surname: props.surname}}
-                />
+                <Box
+                    sx={{
+                        display: {xs: 'none', sm: 'block'}
+                    }}
+                >
+                    <RegisterBox
+                        avatarImgSrc={props.avatarImgSrc}
+                        error={() => props.errorHandlerServer({
+                            error: true,
+                            errorMassage: 'Email не подтвержден'
+                        }, 'error')}
+                        isActivation={props.isActivation}
+                        logout={props.logout}
+                        showProfileWindow={props.showProfileWindow}
+                        show={props.profileWindow}
+                        auth={false}
+                        avatarSrc={props.avatarSrc}
+                        user={{name: props.userName, email: props.userEmail, surname: props.surname}}
+                    />
 
-                <RegisterModel
-                    switchingWindowRegister={props.switchingWindowRegister}
-                    onSubmitForm={props.onSubmitForm}
-                    email={props.email}
-                    password={props.password}
-                    emailError={props.emailError}
-                    passwordError={props.passwordError}
-                    validateRegisterForm={props.validateRegisterForm}
-                    open={props.registerWin}
-                    onClose={props.openRegisterWindow}
-                    registerTitle={props.registerTitle}
-                />
+                    <RegisterModel
+                        switchingWindowRegister={props.switchingWindowRegister}
+                        onSubmitForm={props.onSubmitForm}
+                        email={props.email}
+                        password={props.password}
+                        emailError={props.emailError}
+                        passwordError={props.passwordError}
+                        validateRegisterForm={props.validateRegisterForm}
+                        open={props.registerWin}
+                        onClose={props.openRegisterWindow}
+                        registerTitle={props.registerTitle}
+                    />
+                </Box>
             </header>
         </div>
     )
