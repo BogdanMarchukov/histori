@@ -5,6 +5,7 @@ import {Avatar, Drawer} from "@material-ui/core";
 import {RootState} from "../../redux/redusers/indexReduser";
 import {useSelector} from "react-redux";
 import {avatarImgSrc} from "../../redux/action-creators/rootFunction";
+import link from 'next/link'
 
 type Props = {}
 const BurgerMenu = (props: Props) => {
@@ -47,7 +48,14 @@ const BurgerMenu = (props: Props) => {
                                     <span>Личный кабинет</span>
                                     <hr/>
                                     <ul>
-                                        <li>Главная</li>
+                                        <link
+                                            href={'/'}
+                                        >
+                                            <a>
+                                                <li>Главная</li>
+                                            </a>
+                                        </link>
+
                                         <li>История</li>
                                         <li>Общество</li>
                                         <li>Право</li>
