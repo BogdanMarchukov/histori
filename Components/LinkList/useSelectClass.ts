@@ -1,5 +1,5 @@
 import {useState} from "react";
-import classes from "./MiniNavigation.module.css";
+import classes from "../MiniNavigation/MiniNavigation.module.css";
 
 
 export function useSelectClass(dirName: string | null, className: string ){

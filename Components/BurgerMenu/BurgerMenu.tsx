@@ -5,11 +5,14 @@ import {Avatar, Drawer} from "@material-ui/core";
 import {RootState} from "../../redux/redusers/indexReduser";
 import {useSelector} from "react-redux";
 import {avatarImgSrc} from "../../redux/action-creators/rootFunction";
-import link from 'next/link'
+import Link from 'next/link'
+import LinkList from "../LinkList/LinkList";
 
 type Props = {}
 const BurgerMenu = (props: Props) => {
     const [openDrawer, setOpenDrawer] = useState(false)
+
+
 
     const selector = (state: RootState) => {
         return {
@@ -44,24 +47,11 @@ const BurgerMenu = (props: Props) => {
                                     sx={{width: 100, height: 100}}
                                 />
                             </div>
-                                <nav className={classes.drawerContent}>
+                                <div className={classes.drawerContent}>
                                     <span>Личный кабинет</span>
                                     <hr/>
-                                    <ul>
-                                        <link
-                                            href={'/'}
-                                        >
-                                            <a>
-                                                <li>Главная</li>
-                                            </a>
-                                        </link>
-
-                                        <li>История</li>
-                                        <li>Общество</li>
-                                        <li>Право</li>
-                                        <li>Экономика</li>
-                                    </ul>
-                                </nav>
+                                   <LinkList clsName={'active'}/>
+                                </div>
 
                         </div>
                     </Drawer>
