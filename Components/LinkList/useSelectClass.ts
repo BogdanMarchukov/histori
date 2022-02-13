@@ -1,8 +1,7 @@
 import {useState} from "react";
-import classes from "../MiniNavigation/MiniNavigation.module.css";
 
 
-export function useSelectClass(dirName: string | null, className: string ){
+export function useSelectClass(dirName: string | null, className: string) {
 
     const [classLink, setClassLink] = useState([className, '', '', '', ''])
 

@@ -12,7 +12,7 @@ const MiniNavigation = (props: Props) => {
     return (
         <div className={classes.wrepper}>
             <div className={classes.container}>
-              <LinkList clsName={'activeLink'} />
+              <LinkList clsName={'activeLink'} classes={classes} />
             </div>
         </div>
     )
