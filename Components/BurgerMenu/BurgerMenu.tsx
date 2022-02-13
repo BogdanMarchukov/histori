@@ -50,7 +50,7 @@ const BurgerMenu = (props: Props) => {
                                 <div className={classes.drawerContent}>
                                     <span>Личный кабинет</span>
                                     <hr/>
-                                   <LinkList clsName={'active'}/>
+                                   <LinkList clsName={'active'} classes={classes}/>
                                 </div>
 
                         </div>

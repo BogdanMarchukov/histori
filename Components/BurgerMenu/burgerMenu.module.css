@@ -62,8 +62,8 @@
         font-size: 34px;
     }
 
-    .active {
-        color: #aa00ff;
+    .active li {
+        color: #aa00ff !important;
     }
 
     .active span {
