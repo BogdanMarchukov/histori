@@ -32,7 +32,7 @@ const HomePageContent = (props: Props) => {
 
     return (
         <div className={classes.contentContainer}>
-            <Grid container>
+            <Grid container className={classes.desktop}>
                 <Grid item md={10} xl={10}>
                     <div className={classes.rootContent}>
                         <Grid container className={`${classes.rootContentCont} ${animal}`}>
@@ -112,6 +112,9 @@ const HomePageContent = (props: Props) => {
                     </div>
                 </Grid>
             </Grid>
+            <div className={classes.mobile}>
+                <h1>test</h1>
+            </div>
         </div>
     )
 }

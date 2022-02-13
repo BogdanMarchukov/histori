@@ -78,15 +78,27 @@
 }
 
 @media (max-width: 599px) {
+
     .footerContact {
         height: 50px;
         background-color: #aa00ff;
         border-radius: 3px;
         position: relative;
     }
+    .layout h1 {
+        font-size: 80px;
+    }
+
+    .layout span {
+        font-size: 27px;
+    }
+
+    .layout header {
+       height: 320px;
+    }
 }
 
-@media (max-width: 1536px) {
+@media (min-width: 1536px) {
     .layout header{
         height: 290px;
     }

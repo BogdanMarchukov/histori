@@ -109,6 +109,11 @@
 
 }
 
+
+.mobile {
+    display: none;
+}
+
 .right {
 
 }
@@ -117,7 +122,21 @@
 
 }
 
-@media (max-width: 1536px) {
+@media (max-width: 599px) {
+    .rightContent {
+        display: none;
+    }
+
+    .desktop {
+        display: none;
+    }
+
+    .mobile {
+        display: block;
+    }
+}
+
+@media (min-width: 1536px) {
     .rightContent ul {
        padding: 0;
     }
