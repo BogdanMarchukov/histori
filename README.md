@@ -39,4 +39,18 @@ Next.js API
 - Rest API - Next.js API
 - reverse proxy - NGiNX
 
+# About the project
+A personal website of a history teacher. It will host resources for preparing for exams. It is also planned to conduct **interactive testing**.
+
+All articles are added through the admin panel. To do this, use framework - [**Draft.js**](https://draftjs.org/)
+
+Articles are rendered on the server, render functionality implemented independently
+
+## Admin Panel
+Run the app locally
+
+
+**Move your mouse cursor to the right side of the screen**
+![admin.png](./adminPanel.png)
+
 
